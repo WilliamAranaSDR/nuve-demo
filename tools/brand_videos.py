@@ -255,6 +255,7 @@ def brand_dashboard(logo_color, brand, out_dir):
     delta = (tgt - ref).astype(np.float32)
     ref_chroma = float(np.hypot(ref[1], ref[2]))
     txt = (255, 255, 255)
+    tint = (np.array(dashboard_tint(brand), np.float32)[::-1] / 255).reshape(1, 1, 3)   # BGR
     # header left edge per frame (the laptop slides left as the modal comes in)
     hx = []
     for f in fr:
@@ -288,6 +289,10 @@ def brand_dashboard(logo_color, brand, out_dir):
             g = np.clip(cv2.cvtColor(lab, cv2.COLOR_Lab2BGR) * 255, 0, 255).astype(np.uint8)
         else:
             g = f.copy()
+        # white backdrop -> pale brand shade (multiply, so the soft shadows keep their depth)
+        bm = bg_mask(f)
+        gf = g.astype(np.float32)
+        g = np.clip(gf * (1 - bm) + gf * tint * bm, 0, 255).astype(np.uint8)
         x = hx[i] if hx[i] is not None else (hx[first] + v * (i - first) if i < first else hx[max(j for j in gi if j < i)])
         if i >= first - 4:
             dx, dy, w, h = DB_WORD
@@ -305,12 +310,108 @@ def brand_dashboard(logo_color, brand, out_dir):
     return out
 
 
+def dashboard_tint(brand):
+    """Pale shade of the brand for the dashboard backdrop: clearly not white, still light behind the white modal."""
+    return tuple(int(round(0.30 * c + 0.70 * 255)) for c in brand)
+
+
+def bg_mask(f):
+    """The clip's white backdrop and its soft shadows: flood fill from the borders that follows gentle
+    gradients (shadows) but stops at hard edges (the white modal card, the laptop)."""
+    H, W = f.shape[:2]
+    m = np.zeros((H + 2, W + 2), np.uint8)
+    flags = 4 | cv2.FLOODFILL_MASK_ONLY | (255 << 8)
+    g = f
+    # hard edges (modal card outline, laptop) act as walls so the fill can't seep in at soft corners
+    gr = cv2.cvtColor(f, cv2.COLOR_BGR2GRAY).astype(np.float32)
+    mag = np.hypot(cv2.Sobel(gr, cv2.CV_32F, 1, 0, ksize=3), cv2.Sobel(gr, cv2.CV_32F, 0, 1, ksize=3)) / 8
+    wall = cv2.dilate((mag > 3.5).astype(np.uint8), np.ones((3, 3), np.uint8))
+    m[1:-1, 1:-1] = wall
+    seeds = [(x, 0) for x in range(0, W, 40)] + [(x, H - 1) for x in range(0, W, 40)] + \
+            [(0, y) for y in range(0, H, 40)] + [(W - 1, y) for y in range(0, H, 40)]
+    for x, y in seeds:
+        if m[y + 1, x + 1] or g[y, x].min() < 240: continue
+        cv2.floodFill(g, m, (x, y), 0, (2, 2, 2), (2, 2, 2), flags)
+    a = (m[1:-1, 1:-1] == 255).astype(np.uint8)
+    # take back the wall pixels on the shadow side, but never step onto the white card
+    grow = cv2.dilate(a, np.ones((5, 5), np.uint8)) & wall & (gr < 254).astype(np.uint8)
+    a = (a | grow).astype(np.float32)
+    return cv2.GaussianBlur(a, (0, 0), 0.7)[..., None]
+
+
+# ---------- tap image: stat on the wall ----------
+TAP_WORD = (164, 147, 196, 160)        # "nuve" on the stat face (x0, y0, x1, y1) in assets/tap.jpg
+TAP_C, TAP_MAX = (179.5, 153.5), (40, 15)
+
+
+def brand_tap(logo_light, out_dir):
+    im = cv2.imread(os.path.join(ASSETS, 'tap.jpg'))
+    x0, y0, x1, y1 = TAP_WORD
+    ring = np.concatenate([im[y0 - 3:y0, x0:x1].reshape(-1, 3), im[y1:y1 + 3, x0:x1].reshape(-1, 3)])
+    im[y0:y1, x0:x1] = np.median(ring, 0).astype(np.uint8)
+    L = fit(logo_light, *TAP_MAX)
+    paste(im, L, int(round(TAP_C[0] - L.width / 2)), int(round(TAP_C[1] - L.height / 2)))
+    cv2.imwrite(os.path.join(out_dir, 'tap.jpg'), im, [cv2.IMWRITE_JPEG_QUALITY, 90])
+    return im
+
+
+# ---------- phone clip: app home screen ----------
+PH_REF = (259, 460, 41)                 # phone left, right, top at the settled frame
+PH_C, PH_MAX = (360, 263), (92, 32)     # logo box: under the "Holding" pill, between the arc ends, above Fan/Mode
+
+
+def brand_phone(logo_light, out_dir):
+    fr, fps = read('phone.mp4')
+    L0 = fit(logo_light, PH_MAX[0] * 2, PH_MAX[1] * 2)
+    boxes, ks = [], []
+    for f in fr:
+        g = cv2.cvtColor(f, cv2.COLOR_BGR2GRAY)
+        k = float(g.max()) / 255
+        ks.append(k)
+        if k < 0.5: boxes.append(None); continue
+        ys, xs = np.where(g > 60 * k)
+        boxes.append((xs.min(), xs.max(), ys.min()) if len(xs) else None)
+    gi = [i for i, b in enumerate(boxes) if b is not None]
+    out = []
+    for i, f in enumerate(fr):
+        g = f.copy()
+        b = boxes[i] if boxes[i] is not None else boxes[min(gi, key=lambda j: abs(j - i))]
+        s = (b[1] - b[0]) / (PH_REF[1] - PH_REF[0])
+        cx = (b[0] + b[1]) / 2 + (PH_C[0] - (PH_REF[0] + PH_REF[1]) / 2) * s
+        cy = b[2] + (PH_C[1] - PH_REF[2]) * s
+        L = fit(L0, PH_MAX[0] * s, PH_MAX[1] * s)
+        if ks[i] > 0.02:
+            paste(g, L, int(round(cx - L.width / 2)), int(round(cy - L.height / 2)), opacity=min(1.0, ks[i]))
+        out.append(g)
+    write(out, fps, os.path.join(out_dir, 'phone.mp4'), 61, os.path.join(out_dir, 'phone.jpg'))
+    return out
+
+
+# ---------- remote diagnostics clip: small stat next to the condenser ----------
+RD_C, RD_MAX = (397, 249.5), (42, 15)   # between the menu and calendar icons (1280x720 base)
+
+
+def brand_remote(logo_light, out_dir):
+    fr, fps = read('remotediag.mp4')
+    L = fit(logo_light, *RD_MAX)
+    x, y = int(round(RD_C[0] - L.width / 2)), int(round(RD_C[1] - L.height / 2))
+    out = []
+    for f in fr:
+        g = f.copy(); paste(g, L, x, y); out.append(g)
+    write(out, fps, os.path.join(out_dir, 'remotediag.mp4'), 36, os.path.join(out_dir, 'remotediag.jpg'))
+    return out
+
+
 def brand_all(logo_color, logo_light, brand, out_dir, bg=None):
     a = brand_app(logo_color, bg, brand, out_dir)
     b = brand_alerts(logo_light, out_dir)
     c = brand_dashboard(logo_color, brand, out_dir)
-    # review sheet: one settled frame from each clip (gitignored)
-    tiles = [a[60], b[60], c[89]]
+    t = brand_tap(logo_light, out_dir)
+    p = brand_phone(logo_light, out_dir)
+    r = brand_remote(logo_light, out_dir)
+    # review sheet: one settled frame from each clip, plus zooms on the small logos (gitignored)
     th = 300
-    tiles = [cv2.resize(t, (int(t.shape[1] * th / t.shape[0]), th)) for t in tiles]
-    cv2.imwrite(os.path.join(out_dir, '_check_videos.png'), np.hstack(tiles))
+    row = lambda ims: np.hstack([cv2.resize(t, (int(t.shape[1] * th / t.shape[0]), th)) for t in ims])
+    zoom = [t[100:210, 115:245], p[61][180:330, 280:440], r[36][190:310, 320:475]]
+    cv2.imwrite(os.path.join(out_dir, '_check_videos.png'), row([a[60], b[60], c[89]]))
+    cv2.imwrite(os.path.join(out_dir, '_check_more.png'), row([t, p[61], r[36]] + zoom))

@@ -274,7 +274,8 @@ def main():
     x0, y0, x1, y1 = [v * UP for v in BOX]
     stat.crop((x0 - 120, y0 - 120, x1 + 120, y1 + 80)).save(os.path.join(out, '_check.png'))
 
-    vids = {k: f'../assets/{k}' for k in ('app.mp4', 'app.jpg', 'alerts.mp4', 'alerts.jpg', 'dashboard.mp4', 'dashboard.jpg')}
+    vids = {k: f'../assets/{k}' for k in ('app.mp4', 'app.jpg', 'alerts.mp4', 'alerts.jpg', 'dashboard.mp4', 'dashboard.jpg',
+                                          'tap.jpg', 'phone.mp4', 'phone.jpg', 'remotediag.mp4', 'remotediag.jpg')}
     if logo is not None and not args.no_videos:
         if args.color:
             h = args.color.lstrip('#'); brand = tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
@@ -303,12 +304,15 @@ def main():
         '{{APP_MP4}}': vids['app.mp4'], '{{APP_JPG}}': vids['app.jpg'],
         '{{ALERTS_MP4}}': vids['alerts.mp4'], '{{ALERTS_JPG}}': vids['alerts.jpg'],
         '{{DASH_MP4}}': vids['dashboard.mp4'], '{{DASH_JPG}}': vids['dashboard.jpg'],
+        '{{TAP_IMG}}': vids['tap.jpg'],
+        '{{PHONE_MP4}}': vids['phone.mp4'], '{{PHONE_JPG}}': vids['phone.jpg'],
+        '{{RD_MP4}}': vids['remotediag.mp4'], '{{RD_JPG}}': vids['remotediag.jpg'],
     }
     for k, v in rep.items(): tpl = tpl.replace(k, v)
     open(os.path.join(out, 'index.html'), 'w', encoding='utf-8').write(tpl)
     print(f'built {slug}/  accent {accent}  logo {logo.size if logo else None}')
     print(f'{BASE_URL}/{slug}/')
-    print(f'review: {slug}/_check.png, {slug}/og.jpg' + (f', {slug}/_check_videos.png (app tiles, stat face, dashboard)' if os.path.exists(os.path.join(out, '_check_videos.png')) else ''))
+    print(f'review: {slug}/_check.png, {slug}/og.jpg' + (f', {slug}/_check_videos.png (app tiles, stat face, dashboard), {slug}/_check_more.png (wall stat, phone, remote diagnostics + zooms)' if os.path.exists(os.path.join(out, '_check_videos.png')) else ''))
 
 
 if __name__ == '__main__':
