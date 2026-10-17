@@ -33,7 +33,7 @@ body{background:var(--bg);color:var(--text);font-family:Manrope,system-ui,-apple
 img,video{display:block;max-width:100%}
 /* faint brand glow around the screen edges */
 body:after{content:"";position:fixed;inset:0;z-index:30;pointer-events:none;
-  box-shadow:inset 0 0 70px -10px rgba(var(--brand-rgb),.28),inset 0 0 18px -6px rgba(var(--brand-rgb),.22)}
+  box-shadow:inset 0 0 60px -14px rgba(var(--brand-rgb),.09),inset 0 0 14px -8px rgba(var(--brand-rgb),.06)}
 a{color:inherit}
 .wrap{max-width:520px;margin:0 auto;padding:0 20px}
 section{padding:56px 0}
@@ -56,7 +56,8 @@ p strong{color:var(--text);font-weight:700}
 .hero{padding:28px 20px 40px;text-align:center;position:relative}
 .hero:before{content:"";position:absolute;inset:40px 0 auto;height:420px;
   background:radial-gradient(closest-side,rgba(var(--brand-rgb),.22),transparent 70%);pointer-events:none}
-.stat{width:min(70vw,300px);height:auto;margin:6px auto 26px;position:relative;animation:float 6s ease-in-out infinite}
+.stat{width:min(70vw,300px);height:auto;margin:6px auto 26px;position:relative;animation:float 6s ease-in-out infinite,breathe 5s ease-in-out infinite}
+@keyframes breathe{0%,100%{filter:brightness(.9) drop-shadow(0 0 4px rgba(var(--brand-rgb),.12))}50%{filter:brightness(1.1) drop-shadow(0 0 22px rgba(var(--brand-rgb),.38))}}
 @keyframes float{50%{transform:translateY(-6px)}}
 .hero p{max-width:420px;margin:14px auto 0}
 .ctas{display:flex;gap:10px;justify-content:center;margin-top:24px;flex-wrap:wrap}
