@@ -266,17 +266,14 @@ def brand_dashboard(logo_color, brand, out_dir):
     gi = [i for i, v in enumerate(hx) if v is not None]
     if not gi: raise SystemExit('dashboard: could not find the header')
     first = gi[0]; v = (hx[gi[1]] - hx[first]) if len(gi) > 1 else 0
-    # wordmark-style logos go in white like the original "nuve"; solid/blocky logos would turn into
-    # a white blob that way, so those sit on a small white chip in their own colors instead
-    al = np.array(logo_color)[:, :, 3] > 128
-    if al.mean() > 0.5:
-        ss = 4; Lc = fit(logo_color, (DB_MAX[0] - 4) * ss, (DB_MAX[1] - 4) * ss, ss=1)
-        chip = Image.new('RGBA', (Lc.width + 4 * ss, Lc.height + 4 * ss), (0, 0, 0, 0))
-        ImageDraw.Draw(chip).rounded_rectangle((0, 0, chip.width - 1, chip.height - 1), radius=3 * ss, fill=(255, 255, 255, 255))
-        chip.alpha_composite(Lc, (2 * ss, 2 * ss))
-        L = chip.resize((chip.width // ss, chip.height // ss), Image.LANCZOS)
-    else:
-        L = silhouette(fit(logo_color, *DB_MAX), txt)
+    # the logo always sits on a small white badge in its real colors: any logo (navy, black,
+    # multicolor, blocky) stays readable on any header color, and nothing turns into a white shape
+    ss = 4; pad = 2.5
+    Lc = fit(logo_color, (DB_MAX[0] + 6 - 2 * pad) * ss, (DB_MAX[1] + 2 - 2 * pad) * ss, ss=1)
+    chip = Image.new('RGBA', (int(Lc.width + 2 * pad * ss), int(Lc.height + 2 * pad * ss)), (0, 0, 0, 0))
+    ImageDraw.Draw(chip).rounded_rectangle((0, 0, chip.width - 1, chip.height - 1), radius=3 * ss, fill=(255, 255, 255, 255))
+    chip.alpha_composite(Lc, (int(pad * ss), int(pad * ss)))
+    L = chip.resize((max(1, chip.width // ss), max(1, chip.height // ss)), Image.LANCZOS)
     out = []
     for i, f in enumerate(fr):
         # recolor every cyan pixel, weighted by how cyan it is (keeps gradients, fades and edges)

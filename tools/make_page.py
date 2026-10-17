@@ -56,14 +56,35 @@ def prep_logo(path, keep_dark=False):
                     seen[ny, nx] = True; q.append((ny, nx))
         a[seen, 3] = 0
     if not keep_dark:
-        lum = a[:, :, 0] * .2126 + a[:, :, 1] * .7152 + a[:, :, 2] * .0722
-        dark = (lum < 62) & (a[:, :, 3] > 0)  # would vanish on the black screen
-        a[dark, :3] = 255
+        a = lift_dark(a)
     out = Image.fromarray(a.astype(np.uint8))
     bb = out.getbbox()
     if not bb:
         raise SystemExit('Logo is empty after background removal; try --keep-dark.')
     return out.crop(bb)
+
+
+def lift_dark(a):
+    """Make a logo readable on the black thermostat screen without losing its colors.
+    Colored parts that are too dark (navy, maroon, forest green) are lightened in place,
+    keeping their hue, so a navy-and-red logo stays blue and red. Only black/gray parts,
+    which have no color to keep, turn white."""
+    import colorsys
+    rgb = a[:, :, :3].astype(float) / 255
+    lum = rgb[:, :, 0] * .2126 + rgb[:, :, 1] * .7152 + rgb[:, :, 2] * .0722
+    mx, mn = rgb.max(2), rgb.min(2)
+    vis = a[:, :, 3] > 0
+    gray = vis & (mx - mn < 0.12) & (lum < 0.45)          # black / charcoal: no hue to keep
+    a[gray, :3] = 255
+    dark = vis & ~gray & (lum < 0.42)                      # dark but colored
+    if dark.any():
+        px = rgb[dark]
+        out = np.empty_like(px)
+        for i, (r, g, b) in enumerate(px):
+            h, l, s = colorsys.rgb_to_hls(r, g, b)
+            out[i] = colorsys.hls_to_rgb(h, max(l, 0.62), min(1.0, max(s, 0.55)))
+        a[dark, :3] = np.round(out * 255)
+    return a
 
 
 def logo_color(logo):
@@ -97,6 +118,53 @@ def brand_color(logo):
             keys, counts = np.unique(key, return_counts=True)
             return tuple(int(v) for v in good[key == keys[counts.argmax()]].mean(0))
     return (42, 47, 54)
+
+
+def logo_palette(logo):
+    """Up to two distinct brand colors from the logo, most common first (RGB tuples)."""
+    import colorsys
+    a = np.array(logo.convert('RGBA')).reshape(-1, 4).astype(float)
+    a = a[a[:, 3] > 200][:, :3]
+    if not len(a): return []
+    mx, mn = a.max(1), a.min(1)
+    good = a[((mx - mn) / np.maximum(mx, 1) > 0.35) & (mx > 45)]
+    if len(good) < max(50, 0.04 * len(a)): return []
+    q = (good // 32).astype(int); key = q[:, 0] * 64 + q[:, 1] * 8 + q[:, 2]
+    keys, counts = np.unique(key, return_counts=True)
+    cols = []
+    for k in keys[np.argsort(-counts)]:
+        if (key == k).sum() < 0.08 * len(good) and cols: break
+        c = good[key == k].mean(0)
+        h = colorsys.rgb_to_hls(*(c / 255))[0]
+        if all(min(abs(h - colorsys.rgb_to_hls(*(np.array(o) / 255))[0]), 1 - abs(h - colorsys.rgb_to_hls(*(np.array(o) / 255))[0])) > 0.1 for o in cols):
+            cols.append(tuple(int(v) for v in c))
+        if len(cols) == 2: break
+    return cols
+
+
+def on_dark(rgb):
+    """Same hue, light enough to read and glow on the dark page."""
+    import colorsys
+    h, l, s = colorsys.rgb_to_hls(*(np.array(rgb) / 255))
+    r, g, b = colorsys.hls_to_rgb(h, min(max(l, 0.58), 0.72), min(1.0, max(s, 0.6)))
+    return tuple(int(round(v * 255)) for v in (r, g, b))
+
+
+def page_theme(logo, override=None):
+    """CSS colors for the page: their brand for outlines, accents and numbers; Nuve cyan stays on
+    the Nuve wordmark, highlights and buttons. Black/white logos keep the all-Nuve look."""
+    cols = [override] if override else (logo_palette(logo) if logo is not None else [])
+    if not cols:
+        b1 = b2 = (69, 227, 247)
+    else:
+        b1 = on_dark(cols[0]); b2 = on_dark(cols[1]) if len(cols) > 1 else b1
+    hexc = lambda c: '#%02x%02x%02x' % c
+    ink = '#06090c' if (0.2126 * b1[0] + 0.7152 * b1[1] + 0.0722 * b1[2]) > 150 else '#ffffff'
+    return {
+        '{{BRAND}}': hexc(b1), '{{BRAND_RGB}}': '%d,%d,%d' % b1,
+        '{{BRAND2}}': hexc(b2), '{{BRAND2_RGB}}': '%d,%d,%d' % b2,
+        '{{BRAND_INK}}': ink, '{{CHECK_INK}}': ink.replace('#', '%23'),
+    }
 
 
 def make_stat(logo, scale, nx, ny):
@@ -197,7 +265,12 @@ def main():
     sms = urllib.parse.quote(f"Hi Will, it's {first + ' ' if first else ''}from {args.company}. I checked out the Nuve page, let's talk.")
     city_line = f' across {html.escape(args.city)}' if args.city else ''
     tpl = open(os.path.join(TOOLS, 'template.html'), encoding='utf-8').read()
+    override = None
+    if args.color:
+        hx = args.color.lstrip('#'); override = tuple(int(hx[i:i + 2], 16) for i in (0, 2, 4))
+    theme = page_theme(prep_logo(args.logo, keep_dark=True) if args.logo else None, override)
     rep = {
+        **theme,
         '{{COMPANY}}': co,
         '{{GREET}}': greet,
         '{{CITY_LINE}}': city_line,
