@@ -22,9 +22,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#07090c; --bg2:#0c1016; --card:#11161d; --line:#1d242e;
-  --text:#eef3f6; --muted:#93a0ac; --cyan:#45e3f7; --cyan-d:#1fb8cc;
-  --brand:#ff2929; --brand-rgb:255,41,41;
+  --bg:#07090c; --band:#131b26; --card:#141a22; --card2:#1d2733; --line:#283342;
+  --text:#eef3f6; --muted:#9aa7b3; --cyan:#45e3f7; --cyan-d:#1fb8cc;
+  --brand:#ff2929; --brand-rgb:255,41,41; --brand2:#ff2929; --brand2-rgb:255,41,41; --brand-ink:#ffffff;
+  --edge:rgba(var(--brand-rgb),.32);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
@@ -36,26 +37,32 @@ body:after{content:"";position:fixed;inset:0;z-index:30;pointer-events:none;
   box-shadow:inset 0 0 60px -14px rgba(var(--brand-rgb),.09),inset 0 0 14px -8px rgba(var(--brand-rgb),.06)}
 a{color:inherit}
 .wrap{max-width:520px;margin:0 auto;padding:0 20px}
-section{padding:56px 0}
-.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}
+section{padding:60px 0;position:relative}
+/* alternating bands so each section reads as its own block */
+.band{background:linear-gradient(180deg,var(--band),#0f1620);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.band:before{content:"";position:absolute;left:0;right:0;top:-1px;height:2px;
+  background:linear-gradient(90deg,transparent,var(--brand) 30%,var(--brand2) 70%,transparent);opacity:.75}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--brand)}
+.eyebrow:before{content:"";width:18px;height:3px;border-radius:2px;background:var(--brand)}
 h1{font-size:clamp(32px,9vw,44px);line-height:1.05;font-weight:800;letter-spacing:-.025em}
 h2{font-size:clamp(26px,7.2vw,34px);line-height:1.1;font-weight:800;letter-spacing:-.02em;margin:10px 0 14px}
 h3{font-size:18px;font-weight:700;letter-spacing:-.01em}
 p{color:var(--muted);font-size:16px}
 p strong{color:var(--text);font-weight:700}
 .hl{color:var(--cyan)}
+.lead{font-size:17px;color:#c3ccd4}
 
 /* top */
 .top{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 0;max-width:520px;margin:0 auto}
 .nuve{font-weight:800;font-size:22px;letter-spacing:-.03em;color:var(--cyan)}
 .pill{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--text);
-  background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 12px;max-width:74%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  background:var(--card);border:1px solid var(--edge);border-radius:99px;padding:6px 12px;max-width:74%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pill i{width:8px;height:8px;border-radius:50%;background:var(--brand);flex:none;box-shadow:0 0 10px var(--brand)}
 
 /* hero */
-.hero{padding:28px 20px 40px;text-align:center;position:relative}
-.hero:before{content:"";position:absolute;inset:40px 0 auto;height:420px;
-  background:radial-gradient(closest-side,rgba(var(--brand-rgb),.22),transparent 70%);pointer-events:none}
+.hero{padding:28px 20px 44px;text-align:center;position:relative}
+.hero:before{content:"";position:absolute;inset:30px 0 auto;height:440px;
+  background:radial-gradient(closest-side,rgba(var(--brand-rgb),.20),rgba(var(--brand2-rgb),.08) 55%,transparent 75%);pointer-events:none}
 .stat{width:min(70vw,300px);height:auto;margin:6px auto 26px;position:relative;animation:float 6s ease-in-out infinite,breathe 5s ease-in-out infinite}
 @keyframes breathe{0%,100%{filter:brightness(.9) drop-shadow(0 0 4px rgba(var(--brand-rgb),.12))}50%{filter:brightness(1.1) drop-shadow(0 0 22px rgba(var(--brand-rgb),.38))}}
 @keyframes float{50%{transform:translateY(-6px)}}
@@ -64,72 +71,82 @@ p strong{color:var(--text);font-weight:700}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 22px;border-radius:14px;
   font-weight:700;font-size:16px;text-decoration:none;border:0;cursor:pointer}
 .btn-p{background:var(--cyan);color:#041014;box-shadow:0 8px 30px -8px rgba(var(--brand-rgb),.6)}
-.btn-s{background:var(--card);color:var(--text);border:1px solid var(--line)}
+.btn-s{background:var(--card);color:var(--text);border:1px solid var(--edge)}
 .btn svg{width:18px;height:18px}
 
 /* stats */
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px;margin-bottom:8px}
-.stats div{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 10px;text-align:center}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:4px 0 12px}
+.stats div{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--brand);border-radius:16px;padding:16px 10px;text-align:center}
 .stats b{display:block;font-size:24px;font-weight:800;color:var(--text);letter-spacing:-.02em}
 .stats span{display:block;font-size:12px;color:var(--muted);line-height:1.3;margin-top:4px}
 
 /* problem */
-.cost{display:flex;align-items:baseline;gap:10px;margin:22px 0 8px}
-.cost{flex-wrap:wrap}.cost b{white-space:nowrap;font-size:40px;font-weight:800;letter-spacing:-.03em;color:var(--text)}
+.cost{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;margin:22px 0 14px;padding:16px 18px;border-radius:16px;
+  background:var(--card);border:1px solid var(--line);border-left:4px solid var(--brand)}
+.cost b{white-space:nowrap;font-size:38px;font-weight:800;letter-spacing:-.03em;color:var(--text)}
 .cost span{color:var(--muted);font-size:15px}
 .vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
 .vs div{border-radius:16px;padding:16px;border:1px solid var(--line);background:var(--card)}
-.vs div:last-child{border-color:rgba(69,227,247,.4);background:linear-gradient(180deg,rgba(69,227,247,.10),var(--card))}
+.vs div:first-child h3{color:var(--muted)}
+.vs div:last-child{border:1.5px solid var(--brand);background:linear-gradient(180deg,rgba(var(--brand-rgb),.14),var(--card));
+  box-shadow:0 10px 30px -14px rgba(var(--brand-rgb),.55)}
+.vs div:last-child h3{color:var(--brand)}
 .vs h3{font-size:14px;margin-bottom:8px}
 .vs ul{list-style:none;font-size:14px;color:var(--muted);display:grid;gap:6px}
+.vs div:last-child ul{color:var(--text)}
 
 /* features */
-.feat{background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden;margin-top:16px}
-.feat .media{background:#000;aspect-ratio:16/10;overflow:hidden}
+.feat{background:var(--card);border:1px solid var(--edge);border-radius:22px;overflow:hidden;margin-top:22px;
+  box-shadow:0 14px 34px -22px rgba(0,0,0,.9)}
+.band .feat,.band .steps div,.band .quote,.band .cost{background:var(--card2)}
+.feat .media{background:#000;aspect-ratio:16/10;overflow:hidden;border-bottom:1px solid var(--line)}
 .feat .media video,.feat .media img{width:100%;height:100%;object-fit:contain}
 .feat .media.contain img{object-fit:contain;padding:8px}
-.feat .txt{padding:18px 18px 20px}
+.feat .txt{padding:18px 18px 20px;position:relative}
+.feat .txt h3{display:flex;align-items:center;gap:10px}
+.feat .txt h3:before{content:"";flex:none;width:4px;height:18px;border-radius:2px;background:var(--brand)}
+.feat:nth-of-type(even) .txt h3:before{background:var(--brand2)}
 .feat .txt p{font-size:15px;margin-top:6px}
 
 /* list */
-.checks{list-style:none;display:grid;gap:12px;margin-top:18px}
-.checks li{display:flex;gap:12px;align-items:flex-start;font-weight:600}
-.checks li:before{content:"";flex:none;width:22px;height:22px;border-radius:50%;margin-top:1px;
-  background:rgba(69,227,247,.14) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2345e3f7' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E") center/13px no-repeat}
-.checks li span{display:block;font-weight:400;color:var(--muted);font-size:14px}
+.checks{list-style:none;display:grid;gap:10px;margin-top:18px}
+.checks li{display:flex;gap:12px;align-items:flex-start;font-weight:700;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+.checks li:before{content:"";flex:none;width:24px;height:24px;border-radius:50%;margin-top:1px;
+  background:var(--brand) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E") center/13px no-repeat}
+.checks li span{display:block;font-weight:400;color:var(--muted);font-size:14px;margin-top:2px}
 
 /* steps */
 .steps{counter-reset:s;display:grid;gap:12px;margin-top:20px}
-.steps div{counter-increment:s;display:flex;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
-.steps div:before{content:counter(s);flex:none;width:32px;height:32px;border-radius:10px;background:var(--cyan);color:#041014;
+.steps div{counter-increment:s;display:flex;gap:14px;background:var(--card);border:1px solid var(--edge);border-radius:16px;padding:16px}
+.steps div:before{content:counter(s);flex:none;width:34px;height:34px;border-radius:10px;background:var(--brand);color:var(--brand-ink);
   font-weight:800;display:grid;place-items:center}
 .steps p{font-size:14px;margin-top:2px}
 
 /* testimonials */
 .rail{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 20px 12px;margin:20px -20px 0;scrollbar-width:none}
 .rail::-webkit-scrollbar{display:none}
-.quote{flex:0 0 86%;scroll-snap-align:center;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px 20px;display:flex;flex-direction:column}
+.quote{flex:0 0 86%;scroll-snap-align:center;background:var(--card);border:1px solid var(--line);border-top:3px solid var(--brand);border-radius:20px;padding:22px 20px;display:flex;flex-direction:column}
 .stars{color:#ffc53d;letter-spacing:2px;font-size:15px}
 .quote blockquote{font-size:16px;line-height:1.55;color:var(--text);margin:12px 0 16px;flex:1}
-.quote cite{font-style:normal;font-weight:700;font-size:14px}
+.quote cite{font-style:normal;font-weight:700;font-size:14px;padding-top:12px;border-top:1px solid var(--line)}
 .quote cite span{display:block;font-weight:500;color:var(--muted);font-size:13px}
 .dots{display:flex;gap:6px;justify-content:center;margin-top:6px}
 .dots i{width:6px;height:6px;border-radius:50%;background:var(--line);transition:.2s}
-.dots i.on{background:var(--cyan);width:18px;border-radius:3px}
+.dots i.on{background:var(--brand);width:18px;border-radius:3px}
 
 /* ceo */
-.ceo{display:grid;grid-template-columns:110px 1fr;gap:16px;align-items:center;margin-top:18px}
-.ceo img{width:110px;height:140px;object-fit:cover;border-radius:16px;background:var(--card)}
-.ceo .big{font-size:32px;font-weight:800;color:var(--text);letter-spacing:-.02em;line-height:1}
-.ceo .big + span{font-size:13px;color:var(--muted)}
+.ceo{display:grid;grid-template-columns:110px 1fr;gap:16px;align-items:center;margin-top:18px;background:var(--card2);border:1px solid var(--edge);border-radius:18px;padding:14px}
+.ceo img{width:110px;height:140px;object-fit:cover;border-radius:12px;background:var(--card)}
+.ceo .big{font-size:32px;font-weight:800;color:var(--brand);letter-spacing:-.02em;line-height:1}
+.ceo .big + span{display:block;margin-top:6px;font-size:13px;color:var(--muted)}
 
 /* book */
-.book{background:linear-gradient(180deg,var(--bg2),var(--bg));border-top:1px solid var(--line)}
+.book{background:linear-gradient(180deg,rgba(var(--brand-rgb),.10),var(--bg) 45%);border-top:2px solid var(--brand)}
 .me{display:flex;gap:14px;align-items:center;margin:18px 0 18px}
-.me img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid var(--cyan);box-shadow:0 0 16px -2px rgba(var(--brand-rgb),.45)}
+.me img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid var(--brand);box-shadow:0 0 16px -2px rgba(var(--brand-rgb),.45)}
 .me b{display:block;font-size:17px}
 .me span{font-size:14px;color:var(--muted)}
-.cal{background:#fff;border-radius:18px;overflow:hidden;min-height:640px}
+.cal{background:#fff;border-radius:18px;overflow:hidden;min-height:640px;border:2px solid var(--edge)}
 .cal iframe{width:100%;height:700px;border:0;display:block}
 .alt{text-align:center;margin-top:16px;font-size:14px;color:var(--muted)}
 .alt a{color:var(--cyan);font-weight:700;text-decoration:none}
@@ -138,12 +155,11 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
 
 /* sticky bar */
 .bar{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:10px 14px calc(10px + env(safe-area-inset-bottom));
-  background:rgba(7,9,12,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);
+  background:rgba(7,9,12,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--edge);
   display:flex;gap:10px;justify-content:center;transform:translateY(110%);transition:transform .3s}
 .bar.show{transform:none}
 .bar .btn{height:50px;flex:1;max-width:260px}
 .bar .btn-s{flex:0 0 auto}
-
 .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s,transform .6s}
 .reveal.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.stat{animation:none}.reveal{opacity:1;transform:none;transition:none}}
@@ -176,7 +192,7 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
   </div>
 </div>
 
-<section class="wrap reveal">
+<section class="reveal"><div class="wrap">
   <div class="eyebrow">The problem</div>
   <h2>Stop paying to win back customers you already earned.</h2>
   <div class="cost"><b>$75–150</b><span>per lead, just to get a past customer back on the phone</span></div>
@@ -185,9 +201,9 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
     <div><h3>Without Nuve</h3><ul><li>Buy the lead again</li><li>Compete with other shops</li><li>Slow shoulder seasons</li></ul></div>
     <div><h3 class="hl">With Nuve</h3><ul><li>Customer taps your logo</li><li>Call comes to you</li><li>Alerts create the work</li></ul></div>
   </div>
-</section>
+</div></section>
 
-<section class="wrap" style="padding-top:8px">
+<section class="band"><div class="wrap">
   <div class="eyebrow">What your customers get</div>
   <h2>Your business, always within reach.</h2>
 
@@ -197,7 +213,7 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
   </div>
 
   <div class="feat reveal">
-    <div class="media"><video muted loop playsinline preload="none" poster="../assets/app.jpg" data-src="../assets/app.mp4"></video></div>
+    <div class="media"><video muted loop playsinline preload="none" poster="app.jpg" data-src="app.mp4"></video></div>
     <div class="txt"><h3>Your own branded app</h3><p>Customers download <strong>your</strong> app, not ours. Our design team builds it with your logo, so comfort, service and messaging all carry your name.</p></div>
   </div>
 
@@ -207,7 +223,7 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
   </div>
 
   <div class="feat reveal">
-    <div class="media"><video muted loop playsinline preload="none" poster="../assets/alerts.jpg" data-src="../assets/alerts.mp4"></video></div>
+    <div class="media"><video muted loop playsinline preload="none" poster="alerts.jpg" data-src="alerts.mp4"></video></div>
     <div class="txt"><h3>Alerts before the breakdown</h3><p>Real-time system alerts and maintenance reminders, sent to the homeowner and to you, so you're the first call, not the third quote.</p></div>
   </div>
 
@@ -220,9 +236,9 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
     <div class="media"><video muted loop playsinline preload="none" data-src="https://www.nuvehome.com/wp-content/uploads/2026/01/customizable-backlight.mp4"></video></div>
     <div class="txt"><h3>Custom backlight</h3><p>Match the glow to your brand colors. It's a small detail homeowners notice and show off.</p></div>
   </div>
-</section>
+</div></section>
 
-<section class="wrap reveal" style="padding-top:8px">
+<section class="reveal"><div class="wrap">
   <div class="eyebrow">What you get</div>
   <h2>Built to win the shoulder seasons.</h2>
   <p>Nuve keeps demand flowing when calls slow down.</p>
@@ -233,12 +249,12 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
     <li><div>Works with ServiceTitan<span>Service requests sync to your CRM by Job ID, so nothing is retyped.</span></div></li>
   </ul>
   <div class="feat" style="margin-top:22px">
-    <div class="media"><video muted loop playsinline preload="none" data-src="https://www.nuvehome.com/wp-content/uploads/2026/04/6945a72ccc75628b1b298582_69580ae1295868ae9aba1a9b_Nuve-Section-5-2_mp4-1.mp4"></video></div>
+    <div class="media"><video muted loop playsinline preload="none" poster="dashboard.jpg" data-src="dashboard.mp4"></video></div>
     <div class="txt"><h3>The Nuve dashboard</h3><p>Every install, alert and service request in one place, so your team decides how customers reach you and when.</p></div>
   </div>
-</section>
+</div></section>
 
-<section class="wrap reveal" style="padding-top:8px">
+<section class="band reveal"><div class="wrap">
   <div class="eyebrow">Getting started</div>
   <h2>Live with your logo, fast.</h2>
   <div class="steps">
@@ -246,9 +262,9 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
     <div><span><h3>Install on your jobs</h3><p>Your techs put Nuve on the wall during installs and service calls.</p></span></div>
     <div><span><h3>Customers tap you</h3><p>Repeat service, alerts and messages come straight to Bob&#x27;s Heating &amp; Air Conditioning.</p></span></div>
   </div>
-</section>
+</div></section>
 
-<section class="reveal" style="padding-top:8px">
+<section class="reveal">
   <div class="wrap">
     <div class="eyebrow">From contractors on Nuve</div>
     <h2>Don't take our word for it.</h2>
@@ -273,7 +289,7 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
   </div>
 </section>
 
-<section class="wrap reveal" style="padding-top:8px">
+<section class="band reveal"><div class="wrap">
   <div class="eyebrow">Built by a contractor</div>
   <h2>Meet our CEO, Ismael Valdez.</h2>
   <div class="ceo">
@@ -281,7 +297,7 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
     <div><div class="big">$100M+</div><span>exit after founding and scaling NexGen Air, one of Southern California’s largest HVAC companies</span></div>
   </div>
   <p style="margin-top:16px">Ismael built Nuve from decades of hands-on contractor experience. He knows what it costs to keep buying back your own customers, and he built the fix he wished he’d had.</p>
-</section>
+</div></section>
 
 <section class="book" id="book">
   <div class="wrap">
