@@ -62,14 +62,14 @@ p strong{color:var(--text);font-weight:700}
 /* hero */
 .hero{padding:28px 20px 44px;text-align:center;position:relative}
 .hero:before{content:"";position:absolute;inset:30px 0 auto;height:440px;
-  background:radial-gradient(closest-side,rgba(var(--brand-rgb),.20),rgba(69,227,247,.10) 55%,transparent 75%);pointer-events:none}
+  background:radial-gradient(closest-side,rgba(var(--brand-rgb),.20),rgba(var(--brand2-rgb),.08) 55%,transparent 75%);pointer-events:none}
 .stat{width:min(70vw,300px);height:auto;margin:6px auto 26px;position:relative;animation:float 6s ease-in-out infinite}
 @keyframes float{50%{transform:translateY(-6px)}}
 .hero p{max-width:420px;margin:14px auto 0}
 .ctas{display:flex;gap:10px;justify-content:center;margin-top:24px;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 22px;border-radius:14px;
   font-weight:700;font-size:16px;text-decoration:none;border:0;cursor:pointer}
-.btn-p{background:var(--cyan);color:#041014;box-shadow:0 8px 30px -8px rgba(69,227,247,.6)}
+.btn-p{background:var(--cyan);color:#041014;box-shadow:0 8px 30px -8px rgba(var(--brand-rgb),.6)}
 .btn-s{background:var(--card);color:var(--text);border:1px solid var(--edge)}
 .btn svg{width:18px;height:18px}
 

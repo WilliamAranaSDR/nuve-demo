@@ -189,13 +189,32 @@ def make_stat(logo, scale, nx, ny):
     return base
 
 
-def make_og(stat, accent):
+STAT_C, STAT_R = (266.0, 273.0), 243.0   # stat_base bezel center/radius (1x); the cyan halo sits outside it
+
+
+def tint_halo(stat, rgb):
+    """Recolor the baked-in cyan halo around the stat to the brand color (keeps its softness)."""
+    if tuple(rgb) == (69, 227, 247): return stat
+    k = stat.width / 532
+    a = np.array(stat).astype(float)
+    H, W = a.shape[:2]
+    yy, xx = np.mgrid[0:H, 0:W]
+    d = np.hypot(xx - STAT_C[0] * k, yy - STAT_C[1] * k) / k
+    ring = np.clip((d - STAT_R) / 4, 0, 1)
+    cyan = np.clip((a[..., 2] - a[..., 0]) / 150, 0, 1)
+    w = (ring * cyan)[..., None]
+    v = (np.maximum(a[..., 1], a[..., 2]) / 255)[..., None]
+    a[..., :3] = a[..., :3] * (1 - w) + np.array(rgb, float) * v * w
+    return Image.fromarray(a.round().clip(0, 255).astype(np.uint8), 'RGBA')
+
+
+def make_og(stat, accent, glow=(40, 190, 215)):
     W, H = 1200, 630
     yy, xx = np.mgrid[0:H, 0:W].astype(float)
-    # deep graphite with a soft cyan bloom behind the stat
+    # deep graphite with a soft bloom behind the stat (brand color)
     d = np.hypot((xx - W / 2) / W, (yy - H / 2) / H)
     bgc = np.array([8, 10, 14], float)
-    bloom = np.array([40, 190, 215], float)
+    bloom = np.array(glow, float) * 0.85
     t = np.clip(1 - d / 0.55, 0, 1) ** 2.2 * 0.38
     img = bgc + (bloom - bgc) * t[..., None]
     # faint diagonal sheen
@@ -244,8 +263,14 @@ def main():
         logo, accent = None, '#45e3f7'
         stat = Image.open(os.path.join(TOOLS, 'stat_base.png')).convert('RGBA')
         stat = stat.resize((stat.width * UP, stat.height * UP), Image.LANCZOS)
+    override = None
+    if args.color:
+        hx = args.color.lstrip('#'); override = tuple(int(hx[i:i + 2], 16) for i in (0, 2, 4))
+    theme = page_theme(prep_logo(args.logo, keep_dark=True) if args.logo else None, override)
+    glow = tuple(int(v) for v in theme['{{BRAND_RGB}}'].split(','))
+    stat = tint_halo(stat, glow)
     stat.resize((stat.width // 1, stat.height // 1)).save(os.path.join(out, 'stat.png'), optimize=True)
-    make_og(stat, accent).save(os.path.join(out, 'og.jpg'), quality=88)
+    make_og(stat, accent, glow if glow != (69, 227, 247) else (40, 190, 215)).save(os.path.join(out, 'og.jpg'), quality=88)
     x0, y0, x1, y1 = [v * UP for v in BOX]
     stat.crop((x0 - 120, y0 - 120, x1 + 120, y1 + 80)).save(os.path.join(out, '_check.png'))
 
@@ -265,10 +290,6 @@ def main():
     sms = urllib.parse.quote(f"Hi Will, it's {first + ' ' if first else ''}from {args.company}. I checked out the Nuve page, let's talk.")
     city_line = f' across {html.escape(args.city)}' if args.city else ''
     tpl = open(os.path.join(TOOLS, 'template.html'), encoding='utf-8').read()
-    override = None
-    if args.color:
-        hx = args.color.lstrip('#'); override = tuple(int(hx[i:i + 2], 16) for i in (0, 2, 4))
-    theme = page_theme(prep_logo(args.logo, keep_dark=True) if args.logo else None, override)
     rep = {
         **theme,
         '{{COMPANY}}': co,
