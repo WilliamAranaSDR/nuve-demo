@@ -30,7 +30,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{background:var(--bg);color:var(--text);font-family:Manrope,system-ui,-apple-system,sans-serif;line-height:1.5;
-  padding-bottom:calc(84px + env(safe-area-inset-bottom));overflow-x:hidden}
+  padding-bottom:env(safe-area-inset-bottom);overflow-x:hidden}
 img,video{display:block;max-width:100%}
 /* faint brand glow around the screen edges */
 body:after{content:"";position:fixed;inset:0;z-index:30;pointer-events:none;
@@ -187,8 +187,6 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
   <p>Steve, now you have a smart thermostat that's going to help you protect your customers' homes. Your logo on the wall, leak sensors watching the plumbing, and performance tests that tell you which systems need you next. Here's how Akian can market it.</p>
   <div class="ctas">
     <a class="btn btn-p" href="#playbook">See the launch plan</a>
-    <a class="btn btn-s" href="sms:+16578556126?&body=Hi%20Branden%2C%20it%27s%20Steve%20from%20Akian.%20Checked%20out%20the%20page%2C%20let%27s%20talk.">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Text Branden</a>
   </div>
 </header>
 
@@ -338,22 +336,12 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
     <h2>Let's get Akian on the wall.</h2>
     <div class="me">
       <img src="branden.jpg" alt="Branden Wilson">
-      <div><b>Branden Wilson</b><span>Account Executive, Nuve · (657) 855-6126<br>Call or text me anytime and we'll get your launch going.</span></div>
-    </div>
-    <div class="cta2">
-      <a class="btn btn-p" href="tel:+16578556126">Call Branden</a>
-      <a class="btn btn-s" href="sms:+16578556126?&body=Hi%20Branden%2C%20it%27s%20Steve%20from%20Akian.%20Checked%20out%20the%20page%2C%20let%27s%20talk.">Text</a>
+      <div><b>Branden Wilson</b><span>Account Executive, Nuve · (657) 855-6126</span></div>
     </div>
   </div>
 </section>
 
 <footer class="wrap">Branden Wilson · Nuve · <a href="tel:+16578556126">(657) 855-6126</a> · <a href="mailto:Brandenw@nuvehome.com">Brandenw@nuvehome.com</a><br>© 2026 Nuve Inc.</footer>
-
-<nav class="bar" id="bar">
-  <a class="btn btn-p" href="tel:+16578556126">Call Branden</a>
-  <a class="btn btn-s" href="sms:+16578556126?&body=Hi%20Branden%2C%20it%27s%20Steve%20from%20Akian.%20Checked%20out%20the%20page%2C%20let%27s%20talk." aria-label="Text Branden">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Text</a>
-</nav>
 
 <script>
 (function(){
@@ -376,13 +364,6 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
     vids.forEach(function(v){ v.src = v.dataset.src; v.autoplay = true; });
     document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
   }
-  // sticky bar after hero, hidden at booking section
-  var bar = document.getElementById('bar'), book = document.getElementById('book');
-  function onScroll(){
-    var y = window.scrollY, b = book.getBoundingClientRect().top;
-    bar.classList.toggle('show', y > 420 && b > window.innerHeight * 0.6);
-  }
-  window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
   // testimonial dots
   var rail = document.getElementById('rail'), dots = document.getElementById('dots'), n = rail.children.length;
   for (var i=0;i<n;i++) dots.appendChild(document.createElement('i'));
