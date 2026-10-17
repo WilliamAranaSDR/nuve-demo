@@ -1,0 +1,319 @@
+#!/usr/bin/env python3
+"""Brand the three feature clips with a contractor's logo.
+
+  app.mp4        "YOUR LOGO HERE" tiles  -> their logo on app-icon tiles
+  alerts.mp4     "nuve" on the stat face -> their logo (lit, like the hero stat)
+  dashboard.mp4  cyan theme + "nuve"     -> their brand color + their logo
+
+Called from make_page.py. Everything is measured from the base clips in assets/,
+so the only inputs are the logo and a brand color. Pure compute, no network.
+"""
+import os, subprocess
+import cv2
+import numpy as np
+from PIL import Image, ImageDraw
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ASSETS = os.path.join(ROOT, 'assets')
+CRF = '25'
+
+
+# ---------- io ----------
+def read(name):
+    cap = cv2.VideoCapture(os.path.join(ASSETS, name))
+    fps = cap.get(cv2.CAP_PROP_FPS) or 30
+    fr = []
+    while True:
+        ok, f = cap.read()
+        if not ok: break
+        fr.append(f)
+    return fr, fps
+
+
+def write(frames, fps, path, poster_idx, poster_path):
+    h, w = frames[0].shape[:2]
+    p = subprocess.Popen(['ffmpeg', '-v', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'bgr24',
+                          '-s', f'{w}x{h}', '-r', f'{fps:.5f}', '-i', '-', '-an', '-c:v', 'libx264',
+                          '-preset', 'medium', '-crf', CRF, '-pix_fmt', 'yuv420p', '-movflags', '+faststart', path],
+                         stdin=subprocess.PIPE)
+    for f in frames: p.stdin.write(np.ascontiguousarray(f).tobytes())
+    p.stdin.close(); p.wait()
+    if p.returncode: raise SystemExit(f'ffmpeg failed on {path}')
+    cv2.imwrite(poster_path, frames[poster_idx], [cv2.IMWRITE_JPEG_QUALITY, 85])
+
+
+# ---------- drawing helpers ----------
+def fit(logo, mw, mh, ss=4):
+    """Resize RGBA logo to fit mw x mh (float px), supersampled for crisp tiny output."""
+    k = min(mw / logo.width, mh / logo.height)
+    w, h = max(1, round(logo.width * k)), max(1, round(logo.height * k))
+    big = logo.resize((w * ss, h * ss), Image.LANCZOS)
+    return big.resize((w, h), Image.LANCZOS)
+
+
+def rgba_np(im):
+    a = np.array(im.convert('RGBA')).astype(np.float32)
+    return a[:, :, 2::-1], a[:, :, 3:] / 255.0   # BGR, alpha
+
+
+def paste(frame, im, x, y, opacity=1.0):
+    """Alpha-composite PIL RGBA onto BGR frame (in place) at integer x, y with clipping."""
+    bgr, al = rgba_np(im); al = al * opacity
+    H, W = frame.shape[:2]; h, w = al.shape[:2]
+    x0, y0 = max(0, x), max(0, y); x1, y1 = min(W, x + w), min(H, y + h)
+    if x1 <= x0 or y1 <= y0: return
+    sb = bgr[y0 - y:y1 - y, x0 - x:x1 - x]; sa = al[y0 - y:y1 - y, x0 - x:x1 - x]
+    roi = frame[y0:y1, x0:x1].astype(np.float32)
+    frame[y0:y1, x0:x1] = np.clip(roi * (1 - sa) + sb * sa, 0, 255).astype(np.uint8)
+
+
+def silhouette(logo, rgb):
+    a = logo.split()[3]
+    s = Image.new('RGBA', logo.size, tuple(rgb) + (255,)); s.putalpha(a)
+    return s
+
+
+def lum(rgb):
+    return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]
+
+
+def cyanness(f):
+    f = f.astype(np.int16)
+    return np.clip(np.minimum(f[:, :, 0], f[:, :, 1]) - f[:, :, 2], 0, 255).astype(np.float32)
+
+
+# ---------- app clip: tiles ----------
+APP_TILES = [(454, 166, 198, 198), (54, 364, 198, 198), (454, 470, 198, 198)]
+APP_REF = 70
+APP_PLATE = 32                          # phone settled, no tiles yet: clean background for the fade-out
+APP_GAIN_BOX = (150, 185, 140, 140)     # app icon: static, never covered, used to follow the global fade
+
+
+def logo_bg(path):
+    """The logo file's own solid background color (RGB), or None if it's transparent."""
+    a = np.array(Image.open(path).convert('RGBA'))
+    if (a[:, :, 3] < 20).mean() >= 0.02: return None
+    c = np.median(np.array([a[0, 0, :3], a[0, -1, :3], a[-1, 0, :3], a[-1, -1, :3]]), axis=0)
+    return tuple(int(v) for v in c)
+
+
+def app_tile(logo_color, bg, brand, size=198):
+    """App-icon tile with the logo in its own colors: on the logo's own background color if it came
+    with one, else white (or the brand color when the logo itself is mostly white)."""
+    ss = 4; S = size * ss
+    opaque = np.array(logo_color)[:, :, 3] > 200
+    mean_l = lum(np.array(logo_color)[:, :, :3][opaque].mean(0)) if opaque.any() else 0
+    if bg is not None: fill = tuple(bg)
+    else: fill = (255, 255, 255) if mean_l < 200 else tuple(brand)
+    t = Image.new('RGBA', (S, S), (0, 0, 0, 0))
+    ImageDraw.Draw(t).rounded_rectangle((0, 0, S - 1, S - 1), radius=int(S * 0.2), fill=fill + (255,))
+    L = fit(logo_color, S * 0.72, S * 0.58, ss=1)
+    t.alpha_composite(L, ((S - L.width) // 2, (S - L.height) // 2))
+    return t.resize((size, size), Image.LANCZOS)
+
+
+def brand_app(logo_color, bg, brand, out_dir):
+    fr, fps = read('app.mp4')
+    tile = app_tile(logo_color, bg, brand)
+    tile_bgr, tile_a = rgba_np(tile)
+    ref = fr[APP_REF]; refc = cyanness(ref)
+    refs = []
+    for (x, y, w, h) in APP_TILES:
+        rc = ref[y:y + h, x:x + w].astype(np.float32)
+        cm = refc[y:y + h, x:x + w] > 90                       # cyan (non-text) pixels of the tile
+        new_over_ref = rc * (1 - tile_a[:h, :w]) + tile_bgr[:h, :w] * tile_a[:h, :w]
+        refs.append((rc, cm, refc[y:y + h, x:x + w][cm].mean(), new_over_ref))
+    centers = [(x + w / 2, y + h / 2) for x, y, w, h in APP_TILES]
+    plate = cv2.GaussianBlur(fr[APP_PLATE], (0, 0), 3).astype(np.float32)   # frosted-glass look
+    gx, gy, gw, gh = APP_GAIN_BOX
+    plate_ref = float(fr[APP_PLATE][gy:gy + gh, gx:gx + gw].mean())
+    out = []
+    landed = [False] * len(APP_TILES)
+    for f in fr:
+        g = f.copy(); c = cyanness(f)
+        n, lab, st, cen = cv2.connectedComponentsWithStats((c > 60).astype(np.uint8))
+        comps = [st[i] for i in range(1, n) if st[i][4] > 8000]
+        used = {}
+        for s in comps:
+            cx, cy = s[0] + s[2] / 2, s[1] + s[3] / 2
+            k = int(np.argmin([(cx - a) ** 2 + (cy - b) ** 2 for a, b in centers]))
+            if k not in used or s[4] > used[k][4]: used[k] = s
+        for k, (x, y, w, h) in enumerate(APP_TILES):
+            rc, cm, rmean, nor = refs[k]
+            s = used.get(k)
+            off = s is not None and (abs(s[0] + s[2] / 2 - centers[k][0]) > 25 or abs(s[1] + s[3] / 2 - centers[k][1]) > 25)
+            if s is not None and not off and abs(s[2] - w) <= 8 and abs(s[3] - h) <= 8: landed[k] = True
+            if s is not None and not landed[k]:
+                # tile is moving (flying in / out): erase it back to the clean phone plate,
+                # then paint the new tile over its (possibly blurred / edge-clipped) box
+                bx, by, bw, bh = [int(v) for v in s[:4]]
+                comp = (c[by:by + bh, bx:bx + bw] > 12).astype(np.uint8)
+                comp = cv2.dilate(comp, np.ones((13, 13), np.uint8))
+                comp = cv2.GaussianBlur(comp.astype(np.float32), (0, 0), 1.5)[..., None]
+                gain = float(f[gy:gy + gh, gx:gx + gw].mean()) / max(1.0, plate_ref)
+                clean = fr[APP_PLATE][by:by + bh, bx:bx + bw].astype(np.float32) * gain
+                roi = g[by:by + bh, bx:bx + bw].astype(np.float32)
+                g[by:by + bh, bx:bx + bw] = np.clip(roi * (1 - comp) + clean * comp, 0, 255).astype(np.uint8)
+                a = float(np.clip(c[by:by + bh, bx:bx + bw].max() / refc.max(), 0, 1))
+                if bx == 0: bx, bw = bx + bw - max(bw, bh), max(bw, bh)
+                if bx + bw >= f.shape[1] - 1: bw = max(bw, bh)
+                paste(g, tile.resize((max(1, bw), max(1, bh)), Image.LANCZOS), bx, by, opacity=a)
+                continue
+            # landed or fading: tiles never move after landing, so work in the fixed box and
+            # estimate opacity from how cyan it still is
+            if not landed[k]: continue
+            rcm = refc[y:y + h, x:x + w]
+            bx, by, bw, bh = x, y, w, h
+            ref_r = cv2.resize(rc, (bw, bh), interpolation=cv2.INTER_AREA)
+            rcm_r = cv2.resize(rcm, (bw, bh), interpolation=cv2.INTER_AREA)
+            nor_r = cv2.resize(nor, (bw, bh), interpolation=cv2.INTER_AREA)
+            obs_c = c[by:by + bh, bx:bx + bw]
+            a = float(np.clip((obs_c * rcm_r).sum() / max(1, (rcm_r * rcm_r).sum()), 0, 1))
+            if a < 0.08: continue
+            roi = g[by:by + bh, bx:bx + bw].astype(np.float32)
+            if a >= 0.97:
+                g[by:by + bh, bx:bx + bw] = np.clip(roi + a * (nor_r - ref_r), 0, 255).astype(np.uint8)
+            else:
+                # fading out: the original turns to frosted glass with its own text ghosting through,
+                # so rebuild the tile area from the clean phone plate instead of unmixing
+                gain = float(f[gy:gy + gh, gx:gx + gw].mean()) / max(1.0, plate_ref)
+                bgp = plate[by:by + bh, bx:bx + bw] * gain
+                ta = cv2.resize(tile_a, (bw, bh), interpolation=cv2.INTER_AREA)[..., None]
+                tb = cv2.resize(tile_bgr, (bw, bh), interpolation=cv2.INTER_AREA)
+                inner = bgp * (1 - a) + tb * a
+                g[by:by + bh, bx:bx + bw] = np.clip(roi * (1 - ta) + inner * ta, 0, 255).astype(np.uint8)
+        out.append(g)
+    write(out, fps, os.path.join(out_dir, 'app.mp4'), 60, os.path.join(out_dir, 'app.jpg'))
+    return out
+
+
+# ---------- alerts clip: stat face ----------
+AL_REF = 65
+AL_WORD = (390, 301, 46, 12)          # "nuve" on the stat face at AL_REF
+AL_MAX = (80, 24)                      # logo box (stays clear of the menu/calendar icons)
+
+
+def brand_alerts(logo_light, out_dir):
+    fr, fps = read('alerts.mp4')
+    x, y, w, h = AL_WORD; P = 4
+    cref = cyanness(fr[AL_REF])
+    tpl = cref[y - P:y + h + P, x - P:x + w + P]
+    rpeak = cref[y:y + h, x:x + w].max()
+    # find the wordmark's x in each frame (the stat slides in horizontally, same scale)
+    xs, ks, good = [], [], []
+    for f in fr:
+        c = cyanness(f)
+        band = c[y - P - 6:y + h + P + 6, 250:]
+        r = cv2.matchTemplate(band, tpl, cv2.TM_CCOEFF_NORMED)
+        _, mv, _, ml = cv2.minMaxLoc(r)
+        fx = ml[0] + 250 + P
+        xs.append(fx); good.append(mv > 0.55 and abs(ml[1] - 6) <= 2)
+    gi = [i for i, ok in enumerate(good) if ok]
+    if not gi: raise SystemExit('alerts: could not track the wordmark')
+    X = np.array(xs, float)
+    # fill untracked frames: hold the nearest tracked x, extrapolate before the first using early velocity
+    first = gi[0]; v = (X[gi[min(3, len(gi) - 1)]] - X[first]) / max(1, gi[min(3, len(gi) - 1)] - first)
+    for i in range(len(fr)):
+        if good[i]: continue
+        if i < first: X[i] = X[first] + v * (i - first)
+        else: X[i] = X[max(j for j in gi if j < i)]
+    L = fit(logo_light, *AL_MAX)
+    out = []
+    for i, f in enumerate(fr):
+        g = f.copy(); fx = int(round(X[i]))
+        c = cyanness(f)
+        k = float(np.clip(c[y:y + h, fx:fx + w].max() / rpeak, 0, 1)) if 0 <= fx < f.shape[1] - w else 0
+        if k > 0.03:
+            # erase "nuve": fill with the dark screen color sampled around it
+            ex0, ey0, ex1, ey1 = fx - 3, y - 3, fx + w + 3, y + h + 3
+            ring = np.concatenate([g[ey0 - 4:ey0, ex0:ex1].reshape(-1, 3), g[ey1:ey1 + 4, ex0:ex1].reshape(-1, 3)])
+            g[ey0:ey1, ex0:ex1] = np.median(ring, 0).astype(np.uint8)
+            cx, cy = fx + w / 2, y + h / 2
+            paste(g, L, int(round(cx - L.width / 2)), int(round(cy - L.height / 2)), opacity=k)
+        out.append(g)
+    write(out, fps, os.path.join(out_dir, 'alerts.mp4'), 60, os.path.join(out_dir, 'alerts.jpg'))
+    return out
+
+
+# ---------- dashboard clip: theme + header logo ----------
+DB_CYAN = (84, 227, 253)              # header cyan (RGB)
+DB_HUE = 93                            # OpenCV hue of the cyan
+DB_WORD = (9, 7, 38, 10)               # "nuve" relative to the header's left/top (228, 181) when settled
+DB_TOP = 181
+DB_MAX = (54, 14)
+
+
+def to_lab(rgb):
+    px = np.uint8([[list(rgb)[::-1]]])
+    return cv2.cvtColor(px.astype(np.float32) / 255, cv2.COLOR_BGR2Lab)[0, 0]
+
+
+def brand_dashboard(logo_color, brand, out_dir):
+    fr, fps = read('dashboard.mp4')
+    ref = to_lab(DB_CYAN); tgt = to_lab(brand).copy()
+    tgt[0] = min(tgt[0], 62)              # keep the header dark enough for white nav text
+    delta = (tgt - ref).astype(np.float32)
+    ref_chroma = float(np.hypot(ref[1], ref[2]))
+    txt = (255, 255, 255)
+    # header left edge per frame (the laptop slides left as the modal comes in)
+    hx = []
+    for f in fr:
+        hsv = cv2.cvtColor(f, cv2.COLOR_BGR2HSV)
+        m = (np.abs(hsv[:, :, 0].astype(int) - DB_HUE) < 14) & (hsv[:, :, 1] > 20) & (hsv[:, :, 2] > 100)
+        n, lab, st, _ = cv2.connectedComponentsWithStats(m.astype(np.uint8))
+        cand = [st[i] for i in range(1, n) if st[i][4] > 5000 and abs(st[i][1] - DB_TOP) <= 3]
+        hx.append(min(s[0] for s in cand) if cand else None)
+    gi = [i for i, v in enumerate(hx) if v is not None]
+    if not gi: raise SystemExit('dashboard: could not find the header')
+    first = gi[0]; v = (hx[gi[1]] - hx[first]) if len(gi) > 1 else 0
+    # wordmark-style logos go in white like the original "nuve"; solid/blocky logos would turn into
+    # a white blob that way, so those sit on a small white chip in their own colors instead
+    al = np.array(logo_color)[:, :, 3] > 128
+    if al.mean() > 0.5:
+        ss = 4; Lc = fit(logo_color, (DB_MAX[0] - 4) * ss, (DB_MAX[1] - 4) * ss, ss=1)
+        chip = Image.new('RGBA', (Lc.width + 4 * ss, Lc.height + 4 * ss), (0, 0, 0, 0))
+        ImageDraw.Draw(chip).rounded_rectangle((0, 0, chip.width - 1, chip.height - 1), radius=3 * ss, fill=(255, 255, 255, 255))
+        chip.alpha_composite(Lc, (2 * ss, 2 * ss))
+        L = chip.resize((chip.width // ss, chip.height // ss), Image.LANCZOS)
+    else:
+        L = silhouette(fit(logo_color, *DB_MAX), txt)
+    out = []
+    for i, f in enumerate(fr):
+        # recolor every cyan pixel, weighted by how cyan it is (keeps gradients, fades and edges)
+        lab = cv2.cvtColor(f.astype(np.float32) / 255, cv2.COLOR_BGR2Lab)
+        hsv = cv2.cvtColor(f, cv2.COLOR_BGR2HSV)
+        dh = np.abs(hsv[:, :, 0].astype(np.float32) - DB_HUE)
+        hw = np.clip((14 - dh) / 8, 0, 1)
+        cw = np.clip(np.hypot(lab[:, :, 1], lab[:, :, 2]) / ref_chroma, 0, 1)
+        wgt = (hw * cw)[..., None]
+        if wgt.max() > 0.01:
+            lab = lab + wgt * delta
+            g = np.clip(cv2.cvtColor(lab, cv2.COLOR_Lab2BGR) * 255, 0, 255).astype(np.uint8)
+        else:
+            g = f.copy()
+        x = hx[i] if hx[i] is not None else (hx[first] + v * (i - first) if i < first else hx[max(j for j in gi if j < i)])
+        if i >= first - 4:
+            dx, dy, w, h = DB_WORD
+            wx, wy = int(x + dx), DB_TOP + dy
+            ex0, ey0, ex1, ey1 = wx - 2, wy - 2, wx + w + 3, wy + h + 2
+            if 2 <= ex0 and ex1 < g.shape[1] - 2:
+                left = g[ey0:ey1, ex0 - 2:ex0].astype(np.float32).mean(1)
+                right = g[ey0:ey1, ex1:ex1 + 2].astype(np.float32).mean(1)
+                t = np.linspace(0, 1, ex1 - ex0, dtype=np.float32)[None, :, None]
+                g[ey0:ey1, ex0:ex1] = (left[:, None] * (1 - t) + right[:, None] * t).astype(np.uint8)
+                op = float(wgt[wy + h // 2, ex0 - 2, 0]) if wy + h // 2 < g.shape[0] else 1
+                paste(g, L, wx, int(round(wy + h / 2 - L.height / 2)), opacity=min(1.0, op * 1.1))
+        out.append(g)
+    write(out, fps, os.path.join(out_dir, 'dashboard.mp4'), 89, os.path.join(out_dir, 'dashboard.jpg'))
+    return out
+
+
+def brand_all(logo_color, logo_light, brand, out_dir, bg=None):
+    a = brand_app(logo_color, bg, brand, out_dir)
+    b = brand_alerts(logo_light, out_dir)
+    c = brand_dashboard(logo_color, brand, out_dir)
+    # review sheet: one settled frame from each clip (gitignored)
+    tiles = [a[60], b[60], c[89]]
+    th = 300
+    tiles = [cv2.resize(t, (int(t.shape[1] * th / t.shape[0]), th)) for t in tiles]
+    cv2.imwrite(os.path.join(out_dir, '_check_videos.png'), np.hstack(tiles))

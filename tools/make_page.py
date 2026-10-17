@@ -8,11 +8,16 @@ Usage:
 
 Writes <repo>/<slug>/index.html, stat.png (hero), og.jpg (iMessage preview 1200x630)
 and _check.png (zoomed logo crop for review; not committed).
+With a logo it also brands the clips (tools/brand_videos.py): app.mp4/jpg (logo tiles),
+alerts.mp4/jpg (logo on the stat face) and dashboard.mp4/jpg (brand color + logo), plus
+_check_videos.png (one frame of each, for review; not committed). --color "#hex" overrides
+the dashboard color; --no-videos skips this and uses the stock clips.
 """
 import argparse, html, os, re, urllib.parse
 from collections import deque
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
+import brand_videos
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TOOLS = os.path.join(ROOT, 'tools')
@@ -78,6 +83,22 @@ def logo_color(logo):
     return '#%02x%02x%02x' % tuple(int(v) for v in sel)
 
 
+def brand_color(logo):
+    """Main brand color for the dashboard theme: the most common saturated color in the logo
+    (dark navies count). Black/white/gray logos get a charcoal theme."""
+    a = np.array(logo.convert('RGBA')).reshape(-1, 4).astype(float)
+    a = a[a[:, 3] > 200][:, :3]
+    if len(a):
+        mx, mn = a.max(1), a.min(1)
+        sat = (mx - mn) / np.maximum(mx, 1)
+        good = a[(sat > 0.35) & (mx > 45)]
+        if len(good) >= max(50, 0.04 * len(a)):
+            q = (good // 32).astype(int); key = q[:, 0] * 64 + q[:, 1] * 8 + q[:, 2]
+            keys, counts = np.unique(key, return_counts=True)
+            return tuple(int(v) for v in good[key == keys[counts.argmax()]].mean(0))
+    return (42, 47, 54)
+
+
 def make_stat(logo, scale, nx, ny):
     base = Image.open(os.path.join(TOOLS, 'stat_base.png')).convert('RGBA')
     base = base.resize((base.width * UP, base.height * UP), Image.LANCZOS)
@@ -140,6 +161,8 @@ def main():
     ap.add_argument('--scale', type=float, default=1.0)
     ap.add_argument('--nudge-x', type=float, default=0)
     ap.add_argument('--nudge-y', type=float, default=0)
+    ap.add_argument('--color', help='brand color for the dashboard theme, e.g. "#c8102e" (default: from logo)')
+    ap.add_argument('--no-videos', action='store_true', help='skip branding the app, stat and dashboard clips')
     args = ap.parse_args()
 
     slug = args.slug or slugify(args.company)
@@ -158,6 +181,16 @@ def main():
     x0, y0, x1, y1 = [v * UP for v in BOX]
     stat.crop((x0 - 120, y0 - 120, x1 + 120, y1 + 80)).save(os.path.join(out, '_check.png'))
 
+    vids = {k: f'../assets/{k}' for k in ('app.mp4', 'app.jpg', 'alerts.mp4', 'alerts.jpg', 'dashboard.mp4', 'dashboard.jpg')}
+    if logo is not None and not args.no_videos:
+        if args.color:
+            h = args.color.lstrip('#'); brand = tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+        else:
+            brand = brand_color(prep_logo(args.logo, keep_dark=True))
+        brand_videos.brand_all(prep_logo(args.logo, keep_dark=True), logo, brand, out, bg=brand_videos.logo_bg(args.logo))
+        vids = {k: k for k in vids}
+        print('videos branded, theme color #%02x%02x%02x' % brand)
+
     co = html.escape(args.company)
     first = args.first.strip()
     greet = f'{html.escape(first)}, here' if first else 'Here'
@@ -173,11 +206,15 @@ def main():
         '{{OG}}': f'{BASE_URL}/{slug}/og.jpg',
         '{{SMS}}': f'sms:{PHONE}?&body={sms}',
         '{{ACCENT}}': accent,
+        '{{APP_MP4}}': vids['app.mp4'], '{{APP_JPG}}': vids['app.jpg'],
+        '{{ALERTS_MP4}}': vids['alerts.mp4'], '{{ALERTS_JPG}}': vids['alerts.jpg'],
+        '{{DASH_MP4}}': vids['dashboard.mp4'], '{{DASH_JPG}}': vids['dashboard.jpg'],
     }
     for k, v in rep.items(): tpl = tpl.replace(k, v)
     open(os.path.join(out, 'index.html'), 'w', encoding='utf-8').write(tpl)
     print(f'built {slug}/  accent {accent}  logo {logo.size if logo else None}')
     print(f'{BASE_URL}/{slug}/')
+    print(f'review: {slug}/_check.png, {slug}/og.jpg' + (f', {slug}/_check_videos.png (app tiles, stat face, dashboard)' if os.path.exists(os.path.join(out, '_check_videos.png')) else ''))
 
 
 if __name__ == '__main__':
