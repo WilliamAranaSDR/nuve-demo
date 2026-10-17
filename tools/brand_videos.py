@@ -8,7 +8,7 @@
 Called from make_page.py. Everything is measured from the base clips in assets/,
 so the only inputs are the logo and a brand color. Pure compute, no network.
 """
-import os, subprocess
+import os, subprocess, colorsys
 import cv2
 import numpy as np
 from PIL import Image, ImageDraw
@@ -97,24 +97,39 @@ def logo_bg(path):
     return tuple(int(v) for v in c)
 
 
-def app_tile(logo_color, bg, brand, size=198):
-    """App-icon tile with the logo in its own colors: on the logo's own background color if it came
-    with one, else white (or the brand color when the logo itself is mostly white)."""
+def app_tile(logo_light, brand, size=198):
+    """App-icon tile: dark brand-tinted glass with a soft brand glow behind the logo and a thin
+    brand-colored rim, logo in its light (dark-screen) version, trimmed to its visible pixels and
+    centered so it reads big and balanced on every tile."""
     ss = 4; S = size * ss
-    opaque = np.array(logo_color)[:, :, 3] > 200
-    mean_l = lum(np.array(logo_color)[:, :, :3][opaque].mean(0)) if opaque.any() else 0
-    if bg is not None: fill = tuple(bg)
-    else: fill = (255, 255, 255) if mean_l < 200 else tuple(brand)
-    t = Image.new('RGBA', (S, S), (0, 0, 0, 0))
-    ImageDraw.Draw(t).rounded_rectangle((0, 0, S - 1, S - 1), radius=int(S * 0.2), fill=fill + (255,))
-    L = fit(logo_color, S * 0.72, S * 0.58, ss=1)
+    h, l, s_ = colorsys.rgb_to_hls(*[v / 255 for v in brand])
+    dark = tuple(int(v * 255) for v in colorsys.hls_to_rgb(h, 0.09, min(s_, 0.55)))
+    rim = tuple(int(v * 255) for v in colorsys.hls_to_rgb(h, 0.62, min(1.0, max(s_, 0.5))))
+    glow = tuple(int(v * 255) for v in colorsys.hls_to_rgb(h, 0.45, min(1.0, max(s_, 0.6))))
+    base = np.zeros((S, S, 3), np.float32); base[:] = dark
+    yy, xx = np.mgrid[0:S, 0:S].astype(np.float32)
+    r = np.sqrt(((xx - S / 2) / (S * 0.48)) ** 2 + ((yy - S / 2) / (S * 0.34)) ** 2)
+    g = np.clip(1 - r, 0, 1) ** 1.6 * 0.35
+    base = base * (1 - g[..., None]) + np.array(glow, np.float32) * g[..., None]
+    fill = Image.fromarray(np.clip(base, 0, 255).astype(np.uint8)).convert('RGBA')
+    mask = Image.new('L', (S, S), 0)
+    ImageDraw.Draw(mask).rounded_rectangle((0, 0, S - 1, S - 1), radius=int(S * 0.2), fill=255)
+    t = Image.new('RGBA', (S, S), (0, 0, 0, 0)); t.paste(fill, (0, 0), mask)
+    bw = int(S * 0.013)
+    ImageDraw.Draw(t).rounded_rectangle((bw // 2, bw // 2, S - 1 - bw // 2, S - 1 - bw // 2),
+                                        radius=int(S * 0.2), outline=rim + (255,), width=bw)
+    bbox = logo_light.split()[3].point(lambda v: 255 if v > 24 else 0).getbbox()
+    L = logo_light.crop(bbox) if bbox else logo_light
+    ar = L.width / L.height
+    mw, mh = (S * 0.82, S * 0.46) if ar > 2.2 else (S * 0.70, S * 0.62)   # wide wordmarks vs square marks
+    L = fit(L, mw, mh, ss=1)
     t.alpha_composite(L, ((S - L.width) // 2, (S - L.height) // 2))
     return t.resize((size, size), Image.LANCZOS)
 
 
-def brand_app(logo_color, bg, brand, out_dir):
+def brand_app(logo_light, brand, out_dir):
     fr, fps = read('app.mp4')
-    tile = app_tile(logo_color, bg, brand)
+    tile = app_tile(logo_light, brand)
     tile_bgr, tile_a = rgba_np(tile)
     ref = fr[APP_REF]; refc = cyanness(ref)
     refs = []
@@ -403,7 +418,7 @@ def brand_remote(logo_light, out_dir):
 
 
 def brand_all(logo_color, logo_light, brand, out_dir, bg=None):
-    a = brand_app(logo_color, bg, brand, out_dir)
+    a = brand_app(logo_light, brand, out_dir)
     b = brand_alerts(logo_light, out_dir)
     c = brand_dashboard(logo_color, brand, out_dir)
     t = brand_tap(logo_light, out_dir)
