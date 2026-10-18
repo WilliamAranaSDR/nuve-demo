@@ -97,6 +97,78 @@ def logo_bg(path):
     return tuple(int(v) for v in c)
 
 
+def _lab(rgb):
+    a = np.asarray(rgb, np.float32).reshape(-1, 1, 3) / 255.0
+    return cv2.cvtColor(a, cv2.COLOR_RGB2LAB).reshape(-1, 3)
+
+
+def tile_color(logos):
+    """Flat app-icon background that goes with the logo: a shade or tint of one of the logo's own
+    colors (an alt color, its second color when it has one), picked so the logo's outer edge stands
+    out on it. Enclosed parts (white text inside a red shape) don't count, since the logo's own
+    colors already frame them. `logos` is a list of candidate logo versions (RGBA); returns
+    (rgb, index of the logo version to draw)."""
+    pal = []
+    for L in logos:
+        a = np.array(L.convert('RGBA')).reshape(-1, 4).astype(float)
+        a = a[a[:, 3] > 200][:, :3]
+        if not len(a): continue
+        mx, mn = a.max(1), a.min(1)
+        good = a[((mx - mn) / np.maximum(mx, 1) > 0.35) & (mx > 45)]
+        if len(good) < 50: continue
+        q = (good // 32).astype(int); key = q[:, 0] * 64 + q[:, 1] * 8 + q[:, 2]
+        keys, counts = np.unique(key, return_counts=True)
+        for k in keys[np.argsort(-counts)][:6]:
+            if (key == k).sum() < 0.04 * len(good): break
+            c = good[key == k].mean(0) / 255
+            h = colorsys.rgb_to_hls(*c)[0]
+            if all(min(abs(h - o[0]), 1 - abs(h - o[0])) > 0.08 for o in pal):
+                pal.append((h, colorsys.rgb_to_hls(*c)[2]))
+    # Preference order: the logo's second (alt) color as a deep shade, then as a pale tint, then the
+    # main color the same way, then charcoal / white. First one the logo reads clearly on wins.
+    order = ([1, 0] if len(pal) > 1 else [0]) if pal else []
+    cands = []
+    for j in order:
+        h, s_ = pal[j]
+        for L_, ss in ((0.22, min(s_, 0.8)), (0.3, min(s_, 0.8)), (0.94, min(s_, 0.5)), (0.42, min(s_, 0.85))):
+            cands.append(tuple(int(v * 255) for v in colorsys.hls_to_rgb(h, L_, ss)))
+    cands += [(24, 26, 30), (255, 255, 255)]
+    labs = []
+    for L in logos:
+        al = np.array(L.split()[3]); m = (al > 128).astype(np.uint8)
+        k = max(3, int(min(al.shape) * 0.02)) | 1
+        edge = (m - cv2.erode(m, np.ones((k, k), np.uint8))) > 0     # outer silhouette band
+        px = np.array(L.convert('RGB'))[edge & (al > 200)]
+        if len(px) >= 30:
+            px = px[np.random.default_rng(0).choice(len(px), min(len(px), 6000), replace=False)]
+        labs.append(_lab(px) if len(px) >= 30 else None)
+    best = None
+    for rgb in cands:
+        c = _lab(rgb)[0]
+        for i, lab in enumerate(labs):
+            if lab is None: continue
+            d = np.linalg.norm(lab - c, axis=1)
+            p3, p10 = np.percentile(d, 3), np.percentile(d, 10)
+            if p3 >= 30 and p10 >= 34: return rgb, i
+            if best is None or p3 > best[0]: best = (p3, rgb, i)
+    return (best[1], best[2]) if best else ((18, 20, 24), 0)
+
+
+def app_tile_flat(logo, bg, size=198):
+    """App-icon tile: one flat color, rounded corners, logo trimmed and centered."""
+    ss = 4; S = size * ss
+    mask = Image.new('L', (S, S), 0)
+    ImageDraw.Draw(mask).rounded_rectangle((0, 0, S - 1, S - 1), radius=int(S * 0.2), fill=255)
+    t = Image.new('RGBA', (S, S), (0, 0, 0, 0)); t.paste(Image.new('RGBA', (S, S), tuple(bg) + (255,)), (0, 0), mask)
+    bbox = logo.split()[3].point(lambda v: 255 if v > 24 else 0).getbbox()
+    L = logo.crop(bbox) if bbox else logo
+    ar = L.width / L.height
+    mw, mh = (S * 0.80, S * 0.44) if ar > 2.2 else (S * 0.68, S * 0.60)
+    L = fit(L, mw, mh, ss=1)
+    t.alpha_composite(L, ((S - L.width) // 2, (S - L.height) // 2))
+    return t.resize((size, size), Image.LANCZOS)
+
+
 def app_tile(logo_light, brand, size=198):
     """App-icon tile: dark brand-tinted glass with a soft brand glow behind the logo and a thin
     brand-colored rim, logo in its light (dark-screen) version, trimmed to its visible pixels and
@@ -133,9 +205,26 @@ def app_tile(logo_light, brand, size=198):
     return t.resize((size, size), Image.LANCZOS)
 
 
-def brand_app(logo_light, brand, out_dir):
+def brand_app(logo_light, brand, out_dir, logo_color=None):
     fr, fps = read('app.mp4')
-    tile = app_tile(logo_light, brand)
+    # Default: flat tile in a color pulled from the logo (NUVE_TILE_COLOR="#hex" forces one).
+    # NUVE_TILE_STYLE=glass brings back the old dark glass tile with brand glow.
+    if os.environ.get('NUVE_TILE_STYLE') == 'glass' or os.environ.get('NUVE_TILE_BLACK'):
+        tile = app_tile(logo_light, brand)
+    else:
+        versions = [v for v in (logo_color, logo_light) if v is not None]
+        forced = os.environ.get('NUVE_TILE_COLOR', '').lstrip('#')
+        if forced:
+            bg = tuple(int(forced[i:i + 2], 16) for i in (0, 2, 4))
+            lab = _lab(bg)[0]
+            def contrast(L):
+                a = np.array(L.convert('RGBA')).reshape(-1, 4); px = a[a[:, 3] > 200][:, :3]
+                return np.percentile(np.linalg.norm(_lab(px) - lab, axis=1), 5) if len(px) else 0
+            idx = int(np.argmax([contrast(v) for v in versions]))
+        else:
+            bg, idx = tile_color(versions)
+        print('app tile color #%02x%02x%02x (%s logo)' % (tuple(bg) + ('original' if versions[idx] is logo_color else 'light',)))
+        tile = app_tile_flat(versions[idx], bg)
     tile_bgr, tile_a = rgba_np(tile)
     ref = fr[APP_REF]; refc = cyanness(ref)
     refs = []
@@ -424,7 +513,7 @@ def brand_remote(logo_light, out_dir):
 
 
 def brand_all(logo_color, logo_light, brand, out_dir, bg=None):
-    a = brand_app(logo_light, brand, out_dir)
+    a = brand_app(logo_light, brand, out_dir, logo_color=logo_color)
     b = brand_alerts(logo_light, out_dir)
     c = brand_dashboard(logo_color, brand, out_dir)
     t = brand_tap(logo_light, out_dir)

@@ -249,6 +249,7 @@ def main():
     ap.add_argument('--nudge-x', type=float, default=0)
     ap.add_argument('--nudge-y', type=float, default=0)
     ap.add_argument('--color', help='brand color for the dashboard theme, e.g. "#c8102e" (default: from logo)')
+    ap.add_argument('--tile-color', help='flat app-icon tile color, e.g. "#0b2a4a" (default: picked from the logo)')
     ap.add_argument('--no-videos', action='store_true', help='skip branding the app, stat and dashboard clips')
     args = ap.parse_args()
 
@@ -281,6 +282,7 @@ def main():
             h = args.color.lstrip('#'); brand = tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
         else:
             brand = brand_color(prep_logo(args.logo, keep_dark=True))
+        if args.tile_color: os.environ['NUVE_TILE_COLOR'] = args.tile_color
         brand_videos.brand_all(prep_logo(args.logo, keep_dark=True), logo, brand, out, bg=brand_videos.logo_bg(args.logo))
         vids = {k: k for k in vids}
         print('videos branded, theme color #%02x%02x%02x' % brand)
