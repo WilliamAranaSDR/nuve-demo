@@ -63,11 +63,14 @@ p strong{color:var(--text);font-weight:700}
 .hero{padding:28px 20px 44px;text-align:center;position:relative}
 .hero:before{content:"";position:absolute;inset:30px 0 auto;height:440px;
   background:radial-gradient(closest-side,rgba(var(--brand-rgb),.20),rgba(var(--brand2-rgb),.08) 55%,transparent 75%);pointer-events:none}
-.stat{width:min(70vw,300px);height:auto;margin:6px auto 26px;position:relative;animation:float 6s ease-in-out infinite,breathe 5s ease-in-out infinite}
-@keyframes breathe{0%,100%{filter:brightness(.9) drop-shadow(0 0 4px rgba(var(--brand-rgb),.12))}50%{filter:brightness(1.1) drop-shadow(0 0 22px rgba(var(--brand-rgb),.38))}}
-@keyframes float{50%{transform:translateY(-6px)}}
+.stat{width:min(70vw,300px);height:auto;margin:6px auto 26px;position:relative;animation:breathe 4.5s ease-in-out infinite}
+/* the stat stays still; only its brand glow brightens and dims */
+@keyframes breathe{0%,100%{filter:drop-shadow(0 0 6px rgba(var(--brand-rgb),.22))}50%{filter:drop-shadow(0 0 26px rgba(var(--brand-rgb),.55))}}
 .reveal-vid{width:min(88vw,380px);aspect-ratio:1;object-fit:cover;display:block;margin:0 auto 18px;animation:none;
   -webkit-mask-image:radial-gradient(circle at 50% 50%,#000 58%,transparent 71%);mask-image:radial-gradient(circle at 50% 50%,#000 58%,transparent 71%)}
+.flyer{border-radius:18px;overflow:hidden;border:1px solid var(--edge);margin-top:20px;background:#fff}
+.flyer img{width:100%;display:block}
+.fine{font-size:11px;color:#5d6873;text-align:center;margin-top:14px}
 .hero p{max-width:420px;margin:14px auto 0}
 .ctas{display:flex;gap:10px;justify-content:center;margin-top:24px;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 22px;border-radius:14px;
@@ -210,7 +213,7 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
   <h2>Your business, always within reach.</h2>
 
   <div class="feat reveal">
-    <div class="media contain"><img loading="lazy" src="https://www.nuvehome.com/wp-content/uploads/2026/03/FE1dl8G.png" alt="Contractor logo on the Nuve thermostat screen"></div>
+    <div class="media contain"><img loading="lazy" src="tap.jpg" alt="Southport logo on the Nuve thermostat screen"></div>
     <div class="txt"><h3>Tap your logo to book service</h3><p>Your logo sits front and center on the screen. One tap and the homeowner is requesting service from you, or calling your team directly.</p></div>
   </div>
 
@@ -220,7 +223,7 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
   </div>
 
   <div class="feat reveal">
-    <div class="media"><video muted loop playsinline preload="none" poster="../assets/phone.jpg" data-src="../assets/phone.mp4"></video></div>
+    <div class="media"><video muted loop playsinline preload="none" poster="phone.jpg" data-src="phone.mp4"></video></div>
     <div class="txt"><h3>Comfort control from anywhere</h3><p>Remote temperature, schedules and vacation mode from the phone. A premium experience that makes your install the best one they've had.</p></div>
   </div>
 
@@ -230,7 +233,7 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
   </div>
 
   <div class="feat reveal">
-    <div class="media"><video muted loop playsinline preload="none" data-src="https://www.nuvehome.com/wp-content/uploads/2026/01/remotediag.mp4"></video></div>
+    <div class="media"><video muted loop playsinline preload="none" poster="remotediag.jpg" data-src="remotediag.mp4"></video></div>
     <div class="txt"><h3>Remote diagnostics</h3><p>See system health and performance across your installed base. Spot aging equipment and replacement opportunities before the phone rings.</p></div>
   </div>
 
@@ -241,6 +244,18 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
 </div></section>
 
 <section class="reveal"><div class="wrap">
+  <div class="eyebrow">Whole-home protection</div>
+  <h2>Thermostats + water sensors.</h2>
+  <p>This is where Southport stands apart from HVAC-only shops. The newer Nuve thermostats pair with <strong>wireless water leak sensors</strong> for the drain pan, under sinks and by the water heater. If one picks up a leak, the thermostat tells the homeowner to call Southport and your team gets alerted at the same time.</p>
+  <div class="flyer"><img loading="lazy" src="protect.jpg" alt="Southport smarter protection flyer: thermostats plus water sensors"></div>
+  <ul class="checks">
+    <li><div>A plumbing call before the flood<span>Catch the leak while it's a repair, not a restoration job.</span></div></li>
+    <li><div>A reason to sell protection, not a gadget<span>"Southport watches your home 24/7" is an easy story for your techs to tell.</span></div></li>
+  </ul>
+  <p class="fine">Remote main valve shut-off coming soon.</p>
+</div></section>
+
+<section class="reveal" style="border-top:1px solid var(--line)"><div class="wrap">
   <div class="eyebrow">What you get</div>
   <h2>Built to win the shoulder seasons.</h2>
   <p>Nuve keeps demand flowing when calls slow down.</p>
@@ -258,7 +273,7 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
 
 <section class="band reveal"><div class="wrap">
   <div class="eyebrow">Getting started</div>
-  <h2>Live with your logo, fast.</h2>
+  <h2>LIVE with your logo, fast.</h2>
   <div class="steps">
     <div><span><h3>Send us your logo</h3><p>Our design team builds your branded thermostat screen and app.</p></span></div>
     <div><span><h3>Install on your jobs</h3><p>Your techs put Nuve on the wall during installs and service calls.</p></span></div>
