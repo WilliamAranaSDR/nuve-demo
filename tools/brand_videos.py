@@ -104,12 +104,16 @@ def app_tile(logo_light, brand, size=198):
     ss = 4; S = size * ss
     h, l, s_ = colorsys.rgb_to_hls(*[v / 255 for v in brand])
     dark = tuple(int(v * 255) for v in colorsys.hls_to_rgb(h, 0.09, min(s_, 0.55)))
-    rim = tuple(int(v * 255) for v in colorsys.hls_to_rgb(h, 0.62, min(1.0, max(s_, 0.5))))
-    glow = tuple(int(v * 255) for v in colorsys.hls_to_rgb(h, 0.45, min(1.0, max(s_, 0.6))))
+    # NUVE_TILE_GLOW < 1 softens the brand glow into a wider background wash and tones down the rim
+    # (for bright brand colors like yellow that compete with the logo). Default 1 = unchanged.
+    k = float(os.environ.get('NUVE_TILE_GLOW', '1'))
+    rim = tuple(int(v * 255) for v in colorsys.hls_to_rgb(h, 0.62 - 0.2 * (1 - k), min(1.0, max(s_, 0.5)) * (0.6 + 0.4 * k)))
+    glow = tuple(int(v * 255) for v in colorsys.hls_to_rgb(h, 0.45 - 0.1 * (1 - k), min(1.0, max(s_, 0.6))))
     base = np.zeros((S, S, 3), np.float32); base[:] = dark
     yy, xx = np.mgrid[0:S, 0:S].astype(np.float32)
-    r = np.sqrt(((xx - S / 2) / (S * 0.48)) ** 2 + ((yy - S / 2) / (S * 0.34)) ** 2)
-    g = np.clip(1 - r, 0, 1) ** 1.6 * 0.35
+    spread = 1 + 0.6 * (1 - k)
+    r = np.sqrt(((xx - S / 2) / (S * 0.48 * spread)) ** 2 + ((yy - S / 2) / (S * 0.34 * spread)) ** 2)
+    g = np.clip(1 - r, 0, 1) ** 1.6 * 0.35 * k
     base = base * (1 - g[..., None]) + np.array(glow, np.float32) * g[..., None]
     fill = Image.fromarray(np.clip(base, 0, 255).astype(np.uint8)).convert('RGBA')
     mask = Image.new('L', (S, S), 0)
