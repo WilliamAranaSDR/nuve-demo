@@ -66,6 +66,8 @@ p strong{color:var(--text);font-weight:700}
 .stat{width:min(70vw,300px);height:auto;margin:6px auto 26px;position:relative;animation:float 6s ease-in-out infinite,breathe 5s ease-in-out infinite}
 @keyframes breathe{0%,100%{filter:brightness(.9) drop-shadow(0 0 4px rgba(var(--brand-rgb),.12))}50%{filter:brightness(1.1) drop-shadow(0 0 22px rgba(var(--brand-rgb),.38))}}
 @keyframes float{50%{transform:translateY(-6px)}}
+.reveal-vid{width:min(88vw,380px);aspect-ratio:1;object-fit:cover;display:block;margin:0 auto 18px;animation:none;
+  -webkit-mask-image:radial-gradient(circle at 50% 50%,#000 58%,transparent 71%);mask-image:radial-gradient(circle at 50% 50%,#000 58%,transparent 71%)}
 .hero p{max-width:420px;margin:14px auto 0}
 .ctas{display:flex;gap:10px;justify-content:center;margin-top:24px;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 22px;border-radius:14px;
@@ -173,9 +175,9 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
 </div>
 
 <header class="hero wrap">
-  <img class="stat" src="stat.png" alt="Nuve smart thermostat with the Southport logo" width="532" height="543">
-  <div class="eyebrow">Built by contractors</div>
-  <h1 style="margin-top:10px">Your brand.<br><span class="hl">Inside every home.</span></h1>
+  <video class="stat reveal-vid" src="reveal.mp4" poster="reveal-end.jpg" muted autoplay playsinline preload="auto" width="720" height="720" aria-label="Nuve smart thermostat switching to the Southport logo"></video>
+  <div class="eyebrow" style="font-size:11px;letter-spacing:.08em;white-space:nowrap">Built by contractors, for contractors</div>
+  <h1 style="margin-top:10px">Your port.<br><span class="hl">Inside every home.</span></h1>
   <p>Josh, here's what Southport looks like on the wall. Your logo on the thermostat your customers touch every day, so repeat service comes straight to you instead of the next ad they click.</p>
   <div class="ctas">
     <a class="btn btn-p" href="#book">Book 15 min with Will</a>
@@ -354,6 +356,13 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
   function dot(){ var w = rail.children[0].offsetWidth + 12, k = Math.round(rail.scrollLeft / w);
     [].forEach.call(dots.children, function(d,j){ d.classList.toggle('on', j===Math.min(k,n-1)); }); }
   rail.addEventListener('scroll', dot, {passive:true}); dot();
+})();
+</script>
+<script>
+(function(){var v=document.querySelector('.reveal-vid');if(!v)return;
+ if(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches){v.removeAttribute('autoplay');v.pause();return;}
+ v.addEventListener('ended',function(){try{v.currentTime=v.duration-0.05;}catch(e){}v.pause();});
+ var p=v.play&&v.play();if(p&&p.catch)p.catch(function(){});
 })();
 </script>
 </body>
