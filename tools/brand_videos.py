@@ -109,6 +109,8 @@ def app_tile(logo_light, brand, size=198):
     k = float(os.environ.get('NUVE_TILE_GLOW', '1'))
     rim = tuple(int(v * 255) for v in colorsys.hls_to_rgb(h, 0.62 - 0.2 * (1 - k), min(1.0, max(s_, 0.5)) * (0.6 + 0.4 * k)))
     glow = tuple(int(v * 255) for v in colorsys.hls_to_rgb(h, 0.45 - 0.1 * (1 - k), min(1.0, max(s_, 0.6))))
+    if os.environ.get('NUVE_TILE_BLACK'):   # plain black tile behind the logo
+        dark = (0, 0, 0)
     base = np.zeros((S, S, 3), np.float32); base[:] = dark
     yy, xx = np.mgrid[0:S, 0:S].astype(np.float32)
     spread = 1 + 0.6 * (1 - k)
