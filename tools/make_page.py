@@ -28,7 +28,7 @@ PHONE = '+17144744974'
 BOX = (196, 413, 337, 492)        # erase area (box + its glow)
 BOX_C = (266, 452)                # logo center
 LOGO_MAX = (150, 62)              # max logo w, h on the screen
-SCREEN = (19, 19, 20)
+SCREEN = (0, 0, 0)
 UP = 2                            # work at 2x for crisp output
 
 
