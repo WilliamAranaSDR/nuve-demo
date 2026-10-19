@@ -55,13 +55,30 @@ def prep_logo(path, keep_dark=False):
                 if 0 <= ny < h and 0 <= nx < w and close[ny, nx] and not seen[ny, nx]:
                     seen[ny, nx] = True; q.append((ny, nx))
         a[seen, 3] = 0
-    if not keep_dark:
+    if not keep_dark and not dark_ready(a):
         a = lift_dark(a)
     out = Image.fromarray(a.astype(np.uint8))
     bb = out.getbbox()
     if not bb:
         raise SystemExit('Logo is empty after background removal; try --keep-dark.')
     return out.crop(bb)
+
+
+def dark_ready(a):
+    """True when the logo is already made for dark backgrounds: its dark linework sits inside a
+    light outline (sticker style) instead of touching the transparent edge. Lifting those dark
+    lines to white would wash the logo out, so they're kept as-is."""
+    from scipy import ndimage as nd
+    rgb = a[:, :, :3].astype(float) / 255
+    lum = rgb[:, :, 0] * .2126 + rgb[:, :, 1] * .7152 + rgb[:, :, 2] * .0722
+    vis = a[:, :, 3] > 128
+    dark = vis & (lum < 0.25)
+    if dark.sum() < 0.01 * max(1, vis.sum()): return False
+    edge = nd.binary_dilation(a[:, :, 3] < 20, iterations=3)
+    touching = (dark & edge).sum() / dark.sum()
+    ready = touching < 0.08
+    if ready: print('logo has a light outline, keeping its dark linework (dark on edge %.0f%%)' % (touching * 100))
+    return ready
 
 
 def lift_dark(a):
@@ -366,6 +383,14 @@ def main():
         extra.append(SERVICETITAN_HTML.replace('{{SHORT}}', short))
     rep['{{EXTRA_SECTIONS}}'] = ''.join(extra)
     for k, v in rep.items(): tpl = tpl.replace(k, v)
+    # cache-bust this page's own files so a rebuild shows up right away (same file names every build)
+    import hashlib, re
+    def bust(m):
+        name = m.group(2); fp = os.path.join(out, name)
+        if not os.path.isfile(fp): return m.group(0)
+        v = hashlib.md5(open(fp, 'rb').read()).hexdigest()[:8]
+        return f'{m.group(1)}{name}?v={v}"'
+    tpl = re.sub(r'((?:src|href|poster|data-src|content)="(?:https://[^"]*/' + re.escape(slug) + r'/)?)([\w.-]+\.(?:png|jpg|mp4))"', bust, tpl)
     open(os.path.join(out, 'index.html'), 'w', encoding='utf-8').write(tpl)
     print(f'built {slug}/  accent {accent}  logo {logo.size if logo else None}')
     print(f'{BASE_URL}/{slug}/')
