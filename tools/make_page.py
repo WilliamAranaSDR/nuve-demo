@@ -281,6 +281,7 @@ PLUMBING_HTML = """<section class="reveal"><div class="wrap">
 """
 
 SERVICETITAN_HTML = """<section class="band reveal"><div class="wrap">
+  <img class="st-logo" src="../assets/servicetitan.png" width="480" height="315" alt="ServiceTitan">
   <div class="eyebrow">Works with ServiceTitan</div>
   <h2>Plugs into the system you already run.</h2>
   <p>{{SHORT}} runs on ServiceTitan, and Nuve connects to it, so your team doesn't learn a new process.</p>
