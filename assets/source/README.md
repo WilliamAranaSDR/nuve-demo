@@ -7,7 +7,7 @@ The page generator does NOT read these; it brands the smaller working copies in 
 |---|---|---|
 | `alerts.mp4` | Alerts / maintenance stat clip, 1920x1080 | `alerts.mp4` (720x406) |
 | `app_icon_switching.mp4` | App icon switching ("YOUR LOGO HERE" tiles), 1024x1024 | `app.mp4` (720x720) |
-| `custom_backlight.mp4` | Custom backlight clip, 1920x1080 | none (pages load it from nuvehome.com) |
+| `custom_backlight.mp4` | Custom backlight clip, 1920x1080 | `backlight.mp4` (720x406, used as-is, no logo) |
 | `phone.mp4` | Phone app "comfort control from anywhere", 1920x1080 | `phone.mp4` (720x406) |
 | `remote_diag.mp4` | Remote diagnostics clip, 1920x1080 | `remotediag.mp4` (1280x720) |
 | `stat_on_wall.png` | Tech installing the stat on the wall, 844x667 | `tap.jpg` |
