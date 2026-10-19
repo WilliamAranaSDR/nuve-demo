@@ -163,7 +163,8 @@ def app_tile_flat(logo, bg, size=198):
     bbox = logo.split()[3].point(lambda v: 255 if v > 24 else 0).getbbox()
     L = logo.crop(bbox) if bbox else logo
     ar = L.width / L.height
-    mw, mh = (S * 0.80, S * 0.44) if ar > 2.2 else (S * 0.68, S * 0.60)
+    # logo fills most of the tile: wide wordmarks run nearly edge to edge, square marks stay balanced
+    mw, mh = (S * 0.88, S * 0.50) if ar > 1.6 else (S * 0.80, S * 0.72)
     L = fit(L, mw, mh, ss=1)
     t.alpha_composite(L, ((S - L.width) // 2, (S - L.height) // 2))
     return t.resize((size, size), Image.LANCZOS)
@@ -283,6 +284,20 @@ def brand_app(logo_light, brand, out_dir, logo_color=None):
             roi = g[by:by + bh, bx:bx + bw].astype(np.float32)
             if a >= 0.97:
                 g[by:by + bh, bx:bx + bw] = np.clip(roi + a * (nor_r - ref_r), 0, 255).astype(np.uint8)
+                # the original icon's corners/edges can poke 1-2 px past our rounded tile: wipe any
+                # leftover cyan around and under the tile corners back to the clean phone plate
+                P = 6
+                y0, y1, x0, x1 = max(0, by - P), min(g.shape[0], by + bh + P), max(0, bx - P), min(g.shape[1], bx + bw + P)
+                ta_full = np.zeros((y1 - y0, x1 - x0), np.float32)
+                ta_full[by - y0:by - y0 + bh, bx - x0:bx - x0 + bw] = cv2.resize(tile_a, (bw, bh), interpolation=cv2.INTER_AREA)
+                left = cyanness(g[y0:y1, x0:x1]) > 18
+                left &= ta_full < 0.6
+                m = cv2.dilate(left.astype(np.uint8), np.ones((3, 3), np.uint8)).astype(np.float32)
+                m = cv2.GaussianBlur(m, (0, 0), 0.8) * (1 - ta_full)
+                gain = float(f[gy:gy + gh, gx:gx + gw].mean()) / max(1.0, plate_ref)
+                clean = fr[APP_PLATE][y0:y1, x0:x1].astype(np.float32) * gain
+                cur = g[y0:y1, x0:x1].astype(np.float32)
+                g[y0:y1, x0:x1] = np.clip(cur * (1 - m[..., None]) + clean * m[..., None], 0, 255).astype(np.uint8)
             else:
                 # fading out: the original turns to frosted glass with its own text ghosting through,
                 # so rebuild the tile area from the clean phone plate instead of unmixing
