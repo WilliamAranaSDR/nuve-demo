@@ -237,6 +237,46 @@ def slugify(s):
     return re.sub(r'[^a-z0-9]+', '-', s).strip('-')[:40]
 
 
+FLYER_C = (575, 782)              # logo center on assets/protect_base.jpg (stat face)
+FLYER_MAX = (128, 48)
+
+
+def make_flyer(logo):
+    """Smarter Protection flyer (v2 stat) with the contractor logo on the stat face."""
+    base = Image.open(os.path.join(ROOT, 'assets', 'protect_base.jpg')).convert('RGB')
+    k = min(FLYER_MAX[0] / logo.width, FLYER_MAX[1] / logo.height)
+    L = logo.resize((max(1, round(logo.width * k)), max(1, round(logo.height * k))), Image.LANCZOS)
+    base.paste(L, (FLYER_C[0] - L.width // 2, FLYER_C[1] - L.height // 2), L)
+    return base
+
+
+PLUMBING_HTML = """<section class="reveal"><div class="wrap">
+  <div class="eyebrow">Whole-home protection</div>
+  <h2>Thermostats + water sensors.</h2>
+  <p>This is where {{SHORT}} stands apart from HVAC-only shops. The newer Nuve thermostats pair with <strong>wireless water leak sensors</strong> for the drain pan, under sinks and by the water heater. If one picks up a leak, the thermostat tells the homeowner to call {{SHORT}} and your team gets alerted at the same time.</p>
+  <div class="flyer"><img loading="lazy" src="{{FLYER}}" alt="{{SHORT}} smarter protection flyer: thermostats plus water sensors"></div>
+  <ul class="checks">
+    <li><div>A plumbing call before the flood<span>Catch the leak while it's a repair, not a restoration job.</span></div></li>
+    <li><div>A reason to sell protection, not a gadget<span>"{{SHORT}} watches your home 24/7" is an easy story for your techs to tell.</span></div></li>
+  </ul>
+</div></section>
+
+"""
+
+SERVICETITAN_HTML = """<section class="band reveal"><div class="wrap">
+  <div class="eyebrow">Works with ServiceTitan</div>
+  <h2>Plugs into the system you already run.</h2>
+  <p>{{SHORT}} runs on ServiceTitan, and Nuve connects to it, so your team doesn't learn a new process.</p>
+  <div class="st">
+    <div><b>Job sync</b><p>Enter the ServiceTitan job number and the customer's info fills into your Nuve dashboard automatically.</p></div>
+    <div><b>Memberships</b><p>Each membership is linked to the thermostat in that home, so maintenance reminders go out on their own.</p></div>
+    <div><b>Booking</b><p>Customers schedule service right from the thermostat or your branded app instead of searching Google.</p></div>
+  </div>
+</div></section>
+
+"""
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--company', required=True)
@@ -251,6 +291,9 @@ def main():
     ap.add_argument('--color', help='brand color for the dashboard theme, e.g. "#c8102e" (default: from logo)')
     ap.add_argument('--tile-color', help='flat app-icon tile color, e.g. "#0b2a4a" (default: picked from the logo)')
     ap.add_argument('--no-videos', action='store_true', help='skip branding the app, stat and dashboard clips')
+    ap.add_argument('--plumbing', action='store_true', help='add the water-sensor section with a branded "Smarter Protection" flyer')
+    ap.add_argument('--servicetitan', action='store_true', help='add the "Works with ServiceTitan" section (they run on ServiceTitan)')
+    ap.add_argument('--short', help='short company name for section copy, e.g. "Apex" (default: --company)')
     args = ap.parse_args()
 
     slug = args.slug or slugify(args.company)
@@ -310,6 +353,18 @@ def main():
         '{{PHONE_MP4}}': vids['phone.mp4'], '{{PHONE_JPG}}': vids['phone.jpg'],
         '{{RD_MP4}}': vids['remotediag.mp4'], '{{RD_JPG}}': vids['remotediag.jpg'],
     }
+    short = html.escape(args.short or args.company)
+    extra = []
+    if args.plumbing:
+        if logo is not None:
+            make_flyer(logo).save(os.path.join(out, 'protect.jpg'), quality=92)
+            fly = 'protect.jpg'
+        else:
+            fly = '../assets/protect_base.jpg'
+        extra.append(PLUMBING_HTML.replace('{{SHORT}}', short).replace('{{FLYER}}', fly))
+    if args.servicetitan:
+        extra.append(SERVICETITAN_HTML.replace('{{SHORT}}', short))
+    rep['{{EXTRA_SECTIONS}}'] = ''.join(extra)
     for k, v in rep.items(): tpl = tpl.replace(k, v)
     open(os.path.join(out, 'index.html'), 'w', encoding='utf-8').write(tpl)
     print(f'built {slug}/  accent {accent}  logo {logo.size if logo else None}')

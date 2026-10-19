@@ -63,9 +63,9 @@ p strong{color:var(--text);font-weight:700}
 .hero{padding:28px 20px 44px;text-align:center;position:relative}
 .hero:before{content:"";position:absolute;inset:30px 0 auto;height:440px;
   background:radial-gradient(closest-side,rgba(var(--brand-rgb),.20),rgba(var(--brand2-rgb),.08) 55%,transparent 75%);pointer-events:none}
-.stat{width:min(70vw,300px);height:auto;margin:6px auto 26px;position:relative;animation:float 6s ease-in-out infinite,breathe 5s ease-in-out infinite}
-@keyframes breathe{0%,100%{filter:brightness(.9) drop-shadow(0 0 4px rgba(var(--brand-rgb),.12))}50%{filter:brightness(1.1) drop-shadow(0 0 22px rgba(var(--brand-rgb),.38))}}
-@keyframes float{50%{transform:translateY(-6px)}}
+.stat{width:min(70vw,300px);height:auto;margin:6px auto 26px;position:relative;animation:breathe 4.5s ease-in-out infinite}
+/* the stat stays still; only its brand glow brightens and dims */
+@keyframes breathe{0%,100%{filter:drop-shadow(0 0 6px rgba(var(--brand-rgb),.22))}50%{filter:drop-shadow(0 0 26px rgba(var(--brand-rgb),.55))}}
 .hero p{max-width:420px;margin:14px auto 0}
 .ctas{display:flex;gap:10px;justify-content:center;margin-top:24px;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 22px;border-radius:14px;
@@ -152,6 +152,14 @@ p strong{color:var(--text);font-weight:700}
 .alt a{color:var(--cyan);font-weight:700;text-decoration:none}
 
 footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
+footer .guides{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 16px;margin-bottom:14px;font-size:13px}
+footer a{color:#8b97a3}
+.flyer{border-radius:18px;overflow:hidden;border:1px solid var(--edge);margin-top:20px;background:#fff}
+.flyer img{width:100%;display:block}
+.st{display:grid;gap:12px;margin-top:20px}
+.st div{background:var(--card2);border:1px solid var(--edge);border-radius:16px;padding:16px 16px 16px 18px;border-left:4px solid var(--brand)}
+.st b{display:block;font-size:16px;margin-bottom:4px}
+.st p{font-size:14px}
 
 /* sticky bar */
 .bar{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:10px 14px calc(10px + env(safe-area-inset-bottom));
@@ -176,7 +184,7 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
   <img class="stat" src="stat.png" alt="Nuve smart thermostat with the Apex Plumbing Solutions logo" width="532" height="543">
   <div class="eyebrow" style="font-size:11px;letter-spacing:.08em;white-space:nowrap">Built by contractors, for contractors</div>
   <h1 style="margin-top:10px">Your brand.<br><span class="hl">Inside every home.</span></h1>
-  <p>Zach, here's what Apex Plumbing Solutions looks like on the wall. Your logo on the thermostat your customers touch every day, so repeat service comes straight to you instead of the next ad they click.</p>
+  <p>Zach, here's what Apex Plumbing Solutions looks like on the wall. Your logo on the thermostat your customers touch every day, so repeat service comes straight to you across Danville instead of the next ad they click.</p>
   <div class="ctas">
     <a class="btn btn-p" href="#book">Book 15 min with Will</a>
     <a class="btn btn-s" href="sms:+17144744974?&body=Hi%20Will%2C%20it%27s%20Zach%20from%20Apex%20Plumbing%20Solutions.%20I%20checked%20out%20the%20Nuve%20page%2C%20let%27s%20talk.">
@@ -208,7 +216,7 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
   <h2>Your business, always within reach.</h2>
 
   <div class="feat reveal">
-    <div class="media contain"><img loading="lazy" src="https://www.nuvehome.com/wp-content/uploads/2026/03/FE1dl8G.png" alt="Contractor logo on the Nuve thermostat screen"></div>
+    <div class="media contain"><img loading="lazy" src="tap.jpg" alt="Apex Plumbing Solutions logo on the Nuve thermostat screen"></div>
     <div class="txt"><h3>Tap your logo to book service</h3><p>Your logo sits front and center on the screen. One tap and the homeowner is requesting service from you, or calling your team directly.</p></div>
   </div>
 
@@ -218,7 +226,7 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
   </div>
 
   <div class="feat reveal">
-    <div class="media"><video muted loop playsinline preload="none" poster="../assets/phone.jpg" data-src="../assets/phone.mp4"></video></div>
+    <div class="media"><video muted loop playsinline preload="none" poster="phone.jpg" data-src="phone.mp4"></video></div>
     <div class="txt"><h3>Comfort control from anywhere</h3><p>Remote temperature, schedules and vacation mode from the phone. A premium experience that makes your install the best one they've had.</p></div>
   </div>
 
@@ -228,13 +236,35 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
   </div>
 
   <div class="feat reveal">
-    <div class="media"><video muted loop playsinline preload="none" data-src="https://www.nuvehome.com/wp-content/uploads/2026/01/remotediag.mp4"></video></div>
+    <div class="media"><video muted loop playsinline preload="none" poster="remotediag.jpg" data-src="remotediag.mp4"></video></div>
     <div class="txt"><h3>Remote diagnostics</h3><p>See system health and performance across your installed base. Spot aging equipment and replacement opportunities before the phone rings.</p></div>
   </div>
 
   <div class="feat reveal">
     <div class="media"><video muted loop playsinline preload="none" data-src="https://www.nuvehome.com/wp-content/uploads/2026/01/customizable-backlight.mp4"></video></div>
     <div class="txt"><h3>Custom backlight</h3><p>Match the glow to your brand colors. It's a small detail homeowners notice and show off.</p></div>
+  </div>
+</div></section>
+
+<section class="reveal"><div class="wrap">
+  <div class="eyebrow">Whole-home protection</div>
+  <h2>Thermostats + water sensors.</h2>
+  <p>This is where Apex stands apart from HVAC-only shops. The newer Nuve thermostats pair with <strong>wireless water leak sensors</strong> for the drain pan, under sinks and by the water heater. If one picks up a leak, the thermostat tells the homeowner to call Apex and your team gets alerted at the same time.</p>
+  <div class="flyer"><img loading="lazy" src="protect.jpg" alt="Apex smarter protection flyer: thermostats plus water sensors"></div>
+  <ul class="checks">
+    <li><div>A plumbing call before the flood<span>Catch the leak while it's a repair, not a restoration job.</span></div></li>
+    <li><div>A reason to sell protection, not a gadget<span>"Apex watches your home 24/7" is an easy story for your techs to tell.</span></div></li>
+  </ul>
+</div></section>
+
+<section class="band reveal"><div class="wrap">
+  <div class="eyebrow">Works with ServiceTitan</div>
+  <h2>Plugs into the system you already run.</h2>
+  <p>Apex runs on ServiceTitan, and Nuve connects to it, so your team doesn't learn a new process.</p>
+  <div class="st">
+    <div><b>Job sync</b><p>Enter the ServiceTitan job number and the customer's info fills into your Nuve dashboard automatically.</p></div>
+    <div><b>Memberships</b><p>Each membership is linked to the thermostat in that home, so maintenance reminders go out on their own.</p></div>
+    <div><b>Booking</b><p>Customers schedule service right from the thermostat or your branded app instead of searching Google.</p></div>
   </div>
 </div></section>
 
@@ -312,7 +342,7 @@ footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
   </div>
 </section>
 
-<footer class="wrap">Will Arana · Nuve · <a href="tel:+17144744974">(714) 474-4974</a> · <a href="mailto:william@nuvehome.com">william@nuvehome.com</a><br>© 2026 Nuve Inc.</footer>
+<footer class="wrap"><div class="guides"><a href="https://www.nuvehome.com/user_guide/" target="_blank" rel="noopener">User guide</a><a href="https://howto.nuvehome.com/" target="_blank" rel="noopener">How-to videos</a><a href="https://www.nuvehome.com/wp-content/uploads/2024/07/Nuve-Thermostat-Installation-Guide-06252024.pdf" target="_blank" rel="noopener">Installation guide (PDF)</a><a href="https://www.nuvehome.com/installation-process/" target="_blank" rel="noopener">Installation process</a></div>Will Arana · Nuve · <a href="tel:+17144744974">(714) 474-4974</a> · <a href="mailto:william@nuvehome.com">william@nuvehome.com</a><br>© 2026 Nuve Inc.</footer>
 
 <nav class="bar" id="bar">
   <a class="btn btn-p" href="#book">Book a time</a>
