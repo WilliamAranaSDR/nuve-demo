@@ -271,7 +271,7 @@ PLUMBING_HTML = """<section class="reveal"><div class="wrap">
   <div class="eyebrow">Whole-home protection</div>
   <h2>Thermostats + water sensors.</h2>
   <p>This is where {{SHORT}} stands apart from HVAC-only shops. The newer Nuve thermostats pair with <strong>wireless water leak sensors</strong> for the drain pan, under sinks and by the water heater. If one picks up a leak, the thermostat tells the homeowner to call {{SHORT}} and your team gets alerted at the same time.</p>
-  <div class="flyer"><img loading="lazy" src="{{FLYER}}" alt="{{SHORT}} smarter protection flyer: thermostats plus water sensors"></div>
+  <div class="flyer"><img loading="lazy" src="{{FLYER}}" alt="{{SHORT}} smarter protection flyer: thermostats plus water sensors"></div>{{FLYER_NOTE}}
   <ul class="checks">
     <li><div>A plumbing call before the flood<span>Catch the leak while it's a repair, not a restoration job.</span></div></li>
     <li><div>A reason to sell protection, not a gadget<span>"{{SHORT}} watches your home 24/7" is an easy story for your techs to tell.</span></div></li>
@@ -284,7 +284,7 @@ SERVICETITAN_HTML = """<section class="band reveal"><div class="wrap">
   <img class="st-logo" src="../assets/servicetitan.png" width="480" height="315" alt="ServiceTitan">
   <div class="eyebrow">Works with ServiceTitan</div>
   <h2>Plugs into the system you already run.</h2>
-  <p>{{SHORT}} runs on ServiceTitan, and Nuve connects to it, so your team doesn't learn a new process.</p>
+  <p>{{ST_LINE}}</p>
   <div class="st">
     <div><b>Job sync</b><p>Enter the ServiceTitan job number and the customer's info fills into your Nuve dashboard automatically.</p></div>
     <div><b>Memberships</b><p>Each membership is linked to the thermostat in that home, so maintenance reminders go out on their own.</p></div>
@@ -311,6 +311,9 @@ def main():
     ap.add_argument('--no-videos', action='store_true', help='skip branding the app, stat and dashboard clips')
     ap.add_argument('--plumbing', action='store_true', help='add the water-sensor section with a branded "Smarter Protection" flyer')
     ap.add_argument('--servicetitan', action='store_true', help='add the "Works with ServiceTitan" section (they run on ServiceTitan)')
+    ap.add_argument('--flyer-note', help='fine print under the water-sensor flyer, e.g. "Remote main valve shut-off coming soon."')
+    ap.add_argument('--st-unconfirmed', action='store_true', help='ServiceTitan section copy says "if you run on ServiceTitan" instead of stating they do')
+    ap.add_argument('--section', help='per-prospect HTML snippet file (e.g. <slug>/section.html) inserted before the other extra sections; {{SHORT}} and {{COMPANY}} are filled in')
     ap.add_argument('--short', help='short company name for section copy, e.g. "Apex" (default: --company)')
     args = ap.parse_args()
 
@@ -373,15 +376,20 @@ def main():
     }
     short = html.escape(args.short or args.company)
     extra = []
+    if args.section:
+        extra.append(open(args.section, encoding='utf-8').read().replace('{{SHORT}}', short).replace('{{COMPANY}}', html.escape(args.company)) + '\n')
     if args.plumbing:
         if logo is not None:
             make_flyer(logo).save(os.path.join(out, 'protect.jpg'), quality=92)
             fly = 'protect.jpg'
         else:
             fly = '../assets/protect_base.jpg'
-        extra.append(PLUMBING_HTML.replace('{{SHORT}}', short).replace('{{FLYER}}', fly))
+        note = f'\n  <p class="fine">{html.escape(args.flyer_note)}</p>' if args.flyer_note else ''
+        extra.append(PLUMBING_HTML.replace('{{FLYER_NOTE}}', note).replace('{{SHORT}}', short).replace('{{FLYER}}', fly))
     if args.servicetitan:
-        extra.append(SERVICETITAN_HTML.replace('{{SHORT}}', short))
+        st_line = ("If {{SHORT}} runs on ServiceTitan, Nuve connects to it, so your team doesn't learn a new process."
+                   if args.st_unconfirmed else "{{SHORT}} runs on ServiceTitan, and Nuve connects to it, so your team doesn't learn a new process.")
+        extra.append(SERVICETITAN_HTML.replace('{{ST_LINE}}', st_line).replace('{{SHORT}}', short))
     rep['{{EXTRA_SECTIONS}}'] = ''.join(extra)
     for k, v in rep.items(): tpl = tpl.replace(k, v)
     # cache-bust this page's own files so a rebuild shows up right away (same file names every build)
