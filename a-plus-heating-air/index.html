@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nuve for A Plus Heating &amp; Air</title>
+<meta name="description" content="Your logo on a smart thermostat inside every home you service. Built for A Plus Heating &amp; Air.">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Built for A Plus Heating &amp; Air | Nuve">
+<meta property="og:description" content="Your brand inside every home you service. Repeat jobs without rebuying leads.">
+<meta property="og:url" content="https://williamaranasdr.github.io/nuve-demo/a-plus-heating-air/">
+<meta property="og:image" content="https://williamaranasdr.github.io/nuve-demo/a-plus-heating-air/og.jpg?v=736daf49">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://williamaranasdr.github.io/nuve-demo/a-plus-heating-air/og.jpg?v=736daf49">
+<meta name="theme-color" content="#07090c">
+<link rel="apple-touch-icon" href="stat.png?v=b36b3a7e">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07090c; --band:#131b26; --card:#141a22; --card2:#1d2733; --line:#283342;
+  --text:#eef3f6; --muted:#9aa7b3; --cyan:#45e3f7; --cyan-d:#1fb8cc;
+  --brand:#e44b44; --brand-rgb:228,75,68; --brand2:#45aae2; --brand2-rgb:69,170,226; --brand-ink:#ffffff;
+  --edge:rgba(var(--brand-rgb),.32);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--text);font-family:Manrope,system-ui,-apple-system,sans-serif;line-height:1.5;
+  padding-bottom:calc(84px + env(safe-area-inset-bottom));overflow-x:hidden}
+img,video{display:block;max-width:100%}
+/* faint brand glow around the screen edges */
+body:after{content:"";position:fixed;inset:0;z-index:30;pointer-events:none;
+  box-shadow:inset 0 0 60px -14px rgba(var(--brand-rgb),.09),inset 0 0 14px -8px rgba(var(--brand-rgb),.06)}
+a{color:inherit}
+.wrap{max-width:520px;margin:0 auto;padding:0 20px}
+section{padding:60px 0;position:relative}
+/* alternating bands so each section reads as its own block */
+.band{background:linear-gradient(180deg,var(--band),#0f1620);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.band:before{content:"";position:absolute;left:0;right:0;top:-1px;height:2px;
+  background:linear-gradient(90deg,transparent,var(--brand) 30%,var(--brand2) 70%,transparent);opacity:.75}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--brand)}
+.eyebrow:before{content:"";width:18px;height:3px;border-radius:2px;background:var(--brand)}
+h1{font-size:clamp(32px,9vw,44px);line-height:1.05;font-weight:800;letter-spacing:-.025em}
+h2{font-size:clamp(26px,7.2vw,34px);line-height:1.1;font-weight:800;letter-spacing:-.02em;margin:10px 0 14px}
+h3{font-size:18px;font-weight:700;letter-spacing:-.01em}
+p{color:var(--muted);font-size:16px}
+p strong{color:var(--text);font-weight:700}
+.hl{color:var(--cyan)}
+.lead{font-size:17px;color:#c3ccd4}
+
+/* top */
+.top{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 0;max-width:520px;margin:0 auto}
+.nuve{display:block;height:26px;width:auto;flex:none}
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--text);
+  background:var(--card);border:1px solid var(--edge);border-radius:99px;padding:6px 12px;max-width:74%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pill i{width:8px;height:8px;border-radius:50%;background:var(--brand);flex:none;box-shadow:0 0 10px var(--brand)}
+
+/* hero */
+.hero{padding:28px 20px 44px;text-align:center;position:relative}
+.hero:before{content:"";position:absolute;inset:30px 0 auto;height:440px;
+  background:radial-gradient(closest-side,rgba(var(--brand-rgb),.20),rgba(var(--brand2-rgb),.08) 55%,transparent 75%);pointer-events:none}
+.stat{width:min(70vw,300px);height:auto;margin:6px auto 26px;position:relative;animation:breathe 4.5s ease-in-out infinite}
+/* the stat stays still; only its brand glow brightens and dims */
+@keyframes breathe{0%,100%{filter:drop-shadow(0 0 6px rgba(var(--brand-rgb),.22))}50%{filter:drop-shadow(0 0 26px rgba(var(--brand-rgb),.55))}}
+.hero p{max-width:420px;margin:14px auto 0}
+.ctas{display:flex;gap:10px;justify-content:center;margin-top:24px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 22px;border-radius:14px;
+  font-weight:700;font-size:16px;text-decoration:none;border:0;cursor:pointer}
+.btn-p{background:var(--cyan);color:#041014;box-shadow:0 8px 30px -8px rgba(var(--brand-rgb),.6)}
+.btn-s{background:var(--card);color:var(--text);border:1px solid var(--edge)}
+.btn svg{width:18px;height:18px}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:4px 0 12px}
+.stats div{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--brand);border-radius:16px;padding:16px 10px;text-align:center}
+.stats b{display:block;font-size:24px;font-weight:800;color:var(--text);letter-spacing:-.02em}
+.stats span{display:block;font-size:12px;color:var(--muted);line-height:1.3;margin-top:4px}
+
+/* problem */
+.cost{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;margin:22px 0 14px;padding:16px 18px;border-radius:16px;
+  background:var(--card);border:1px solid var(--line);border-left:4px solid var(--brand)}
+.cost b{white-space:nowrap;font-size:38px;font-weight:800;letter-spacing:-.03em;color:var(--text)}
+.cost span{color:var(--muted);font-size:15px}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+.vs div{border-radius:16px;padding:16px;border:1px solid var(--line);background:var(--card)}
+.vs div:first-child h3{color:var(--muted)}
+.vs div:last-child{border:1.5px solid var(--brand);background:linear-gradient(180deg,rgba(var(--brand-rgb),.14),var(--card));
+  box-shadow:0 10px 30px -14px rgba(var(--brand-rgb),.55)}
+.vs div:last-child h3{color:var(--brand)}
+.vs h3{font-size:14px;margin-bottom:8px}
+.vs ul{list-style:none;font-size:14px;color:var(--muted);display:grid;gap:6px}
+.vs div:last-child ul{color:var(--text)}
+
+/* features */
+.feat{background:var(--card);border:1px solid var(--edge);border-radius:22px;overflow:hidden;margin-top:22px;
+  box-shadow:0 14px 34px -22px rgba(0,0,0,.9)}
+.band .feat,.band .steps div,.band .quote,.band .cost{background:var(--card2)}
+.feat .media{background:#000;aspect-ratio:16/10;overflow:hidden;border-bottom:1px solid var(--line)}
+.feat .media video,.feat .media img{width:100%;height:100%;object-fit:contain}
+.feat .media.contain img{object-fit:contain;padding:8px}
+.feat .txt{padding:18px 18px 20px;position:relative}
+.feat .txt h3{display:flex;align-items:center;gap:10px}
+.feat .txt h3:before{content:"";flex:none;width:4px;height:18px;border-radius:2px;background:var(--brand)}
+.feat:nth-of-type(even) .txt h3:before{background:var(--brand2)}
+.feat .txt p{font-size:15px;margin-top:6px}
+
+/* list */
+.checks{list-style:none;display:grid;gap:10px;margin-top:18px}
+.checks li{display:flex;gap:12px;align-items:flex-start;font-weight:700;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+.checks li:before{content:"";flex:none;width:24px;height:24px;border-radius:50%;margin-top:1px;
+  background:var(--brand) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E") center/13px no-repeat}
+.checks li span{display:block;font-weight:400;color:var(--muted);font-size:14px;margin-top:2px}
+
+/* steps */
+.steps{counter-reset:s;display:grid;gap:12px;margin-top:20px}
+.steps div{counter-increment:s;display:flex;gap:14px;background:var(--card);border:1px solid var(--edge);border-radius:16px;padding:16px}
+.steps div:before{content:counter(s);flex:none;width:34px;height:34px;border-radius:10px;background:var(--brand);color:var(--brand-ink);
+  font-weight:800;display:grid;place-items:center}
+.steps p{font-size:14px;margin-top:2px}
+
+/* testimonials */
+.rail{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 20px 12px;margin:20px -20px 0;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.quote{flex:0 0 86%;scroll-snap-align:center;background:var(--card);border:1px solid var(--line);border-top:3px solid var(--brand);border-radius:20px;padding:22px 20px;display:flex;flex-direction:column}
+.stars{color:#ffc53d;letter-spacing:2px;font-size:15px}
+.quote blockquote{font-size:16px;line-height:1.55;color:var(--text);margin:12px 0 16px;flex:1}
+.quote cite{font-style:normal;font-weight:700;font-size:14px;padding-top:12px;border-top:1px solid var(--line)}
+.quote cite span{display:block;font-weight:500;color:var(--muted);font-size:13px}
+.dots{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.dots i{width:6px;height:6px;border-radius:50%;background:var(--line);transition:.2s}
+.dots i.on{background:var(--brand);width:18px;border-radius:3px}
+
+/* ceo */
+.ceo{display:grid;grid-template-columns:110px 1fr;gap:16px;align-items:center;margin-top:18px;background:var(--card2);border:1px solid var(--edge);border-radius:18px;padding:14px}
+.ceo img{width:110px;height:140px;object-fit:cover;border-radius:12px;background:var(--card)}
+.ceo .big{font-size:32px;font-weight:800;color:var(--brand);letter-spacing:-.02em;line-height:1}
+.ceo .big + span{display:block;margin-top:6px;font-size:13px;color:var(--muted)}
+
+/* book */
+.book{background:linear-gradient(180deg,rgba(var(--brand-rgb),.10),var(--bg) 45%);border-top:2px solid var(--brand)}
+.me{display:flex;gap:14px;align-items:center;margin:18px 0 18px}
+.me img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid var(--brand);box-shadow:0 0 16px -2px rgba(var(--brand-rgb),.45)}
+.me b{display:block;font-size:17px}
+.me span{font-size:14px;color:var(--muted)}
+.cal{background:#fff;border-radius:18px;overflow:hidden;min-height:640px;border:2px solid var(--edge)}
+.cal iframe{width:100%;height:700px;border:0;display:block}
+.alt{text-align:center;margin-top:16px;font-size:14px;color:var(--muted)}
+.alt a{color:var(--cyan);font-weight:700;text-decoration:none}
+
+footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#5d6873}
+footer .guides{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 16px;margin-bottom:14px;font-size:13px}
+footer a{color:#8b97a3}
+.flyer{border-radius:18px;overflow:hidden;border:1px solid var(--edge);margin-top:20px;background:#fff}
+.flyer img{width:100%;display:block}
+.st-logo{display:block;width:118px;height:auto;margin:0 0 18px;opacity:.94}
+.st{display:grid;gap:12px;margin-top:20px}
+.st div{background:var(--card2);border:1px solid var(--edge);border-radius:16px;padding:16px 16px 16px 18px;border-left:4px solid var(--brand)}
+.st b{display:block;font-size:16px;margin-bottom:4px}
+.st p{font-size:14px}
+
+/* sticky bar */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+  background:rgba(7,9,12,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--edge);
+  display:flex;gap:10px;justify-content:center;transform:translateY(110%);transition:transform .3s}
+.bar.show{transform:none}
+.bar .btn{height:50px;flex:1;max-width:260px}
+.bar .btn-s{flex:0 0 auto}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s,transform .6s}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.stat{animation:none}.reveal{opacity:1;transform:none;transition:none}}
+
+/* ---- A Plus custom sections ---- */
+.mock{border-radius:20px;overflow:hidden;border:1px solid var(--edge);margin-top:20px;box-shadow:0 18px 40px -22px rgba(var(--brand-rgb),.6)}
+.mock img{width:100%;height:auto;display:block}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.chips span{font-size:13px;font-weight:700;padding:7px 11px;border-radius:99px;background:var(--card2);border:1px solid var(--line);color:var(--text)}
+.note{margin-top:18px;padding:14px 16px;border-radius:14px;background:var(--card2);border:1px solid var(--edge);border-left:4px solid var(--cyan);font-size:15px;color:#c3ccd4}
+.note b{color:var(--text)}
+details.all{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px 16px}
+details.all summary{cursor:pointer;font-weight:700;padding:12px 0;list-style:none;display:flex;justify-content:space-between;align-items:center}
+details.all summary::-webkit-details-marker{display:none}
+details.all summary:after{content:"+";font-size:22px;color:var(--brand);line-height:1}
+details.all[open] summary:after{content:"–"}
+details.all ul{columns:2;column-gap:16px;list-style:none;padding:0 0 14px;font-size:13.5px;color:#c3ccd4}
+details.all li{break-inside:avoid;padding:4px 0 4px 16px;position:relative}
+details.all li:before{content:"";position:absolute;left:0;top:11px;width:7px;height:7px;border-radius:50%;background:var(--cyan)}
+.svc{display:grid;gap:12px;margin-top:20px}
+.svc div{background:var(--card2);border:1px solid var(--edge);border-radius:18px;padding:18px}
+.svc .tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--brand-ink);background:var(--brand);border-radius:6px;padding:3px 8px;margin-bottom:10px}
+.svc div:nth-child(even) .tag{background:var(--brand2);color:#fff}
+.svc h3{margin-bottom:6px}
+.svc p{font-size:14.5px}
+.svc ul{list-style:none;margin-top:10px;display:grid;gap:6px;font-size:14px;color:var(--text)}
+.svc li{padding-left:18px;position:relative}
+.svc li:before{content:"→";position:absolute;left:0;color:var(--cyan)}
+.flyers{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 20px 12px;margin:18px -20px 0;scrollbar-width:none}
+.flyers::-webkit-scrollbar{display:none}
+.flyers figure{flex:0 0 78%;scroll-snap-align:center;border-radius:16px;overflow:hidden;border:1px solid var(--edge);background:#fff}
+.flyers figcaption{background:var(--card2);color:var(--muted);font-size:12.5px;padding:8px 12px}
+.flyers img{width:100%;height:auto;display:block}
+.hint{font-size:12.5px;color:var(--muted);text-align:center;margin-top:4px}
+/* pricing */
+.plan{border-radius:22px;padding:20px 18px;margin-top:20px;border:1.5px solid var(--brand);
+  background:linear-gradient(180deg,rgba(var(--brand-rgb),.16),var(--card2));box-shadow:0 14px 36px -18px rgba(var(--brand-rgb),.6)}
+.plan .ribbon{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;background:var(--cyan);color:#041014;padding:4px 9px;border-radius:6px}
+.plan .price{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:12px 0 4px}
+.plan .price b{font-size:44px;font-weight:800;letter-spacing:-.03em}
+.plan .price s{color:var(--muted);font-size:18px}
+.plan .price span{color:var(--muted);font-size:15px}
+.feats{list-style:none;margin-top:14px;display:grid;gap:8px}
+.feats li{display:grid;grid-template-columns:1fr auto;gap:2px 12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.feats li b{font-size:15px}
+.feats li em{font-style:normal;font-weight:800;color:var(--text);font-size:15px;white-space:nowrap}
+.feats li span{grid-column:1/-1;font-size:13.5px;color:var(--muted);line-height:1.45}
+.feats li.req{border-color:var(--edge)}
+.feats li.req b:after{content:"Required";margin-left:8px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--cyan);vertical-align:2px}
+.hw{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.hw div{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;text-align:center}
+.hw div.on{border:1.5px solid var(--cyan);background:linear-gradient(180deg,rgba(69,227,247,.10),var(--card))}
+.hw small{display:block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.hw b{display:block;font-size:30px;font-weight:800;letter-spacing:-.02em;margin:4px 0 2px}
+.hw span{font-size:12.5px;color:var(--muted)}
+.terms{list-style:none;display:grid;gap:8px;margin-top:16px;font-size:14px;color:#c3ccd4}
+.terms li{padding-left:24px;position:relative}
+.terms li:before{content:"✓";position:absolute;left:2px;color:var(--cyan);font-weight:800}
+.extras{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.extras div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+.extras b{display:block;font-size:14px}
+.extras span{font-size:12.5px;color:var(--muted);line-height:1.4;display:block;margin-top:3px}
+/* roi */
+.roi{background:var(--card2);border:1px solid var(--edge);border-radius:22px;padding:18px;margin-top:20px}
+.roi .row{margin-bottom:16px}
+.roi label{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:14px;font-weight:700}
+.roi label output{font-weight:800;color:var(--cyan);white-space:nowrap;font-variant-numeric:tabular-nums}
+.roi label small{display:block;font-weight:500;color:var(--muted);font-size:12px}
+.roi input[type=range]{width:100%;margin-top:8px;accent-color:var(--cyan);height:28px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.seg button{height:44px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit;font-size:13px;font-weight:700;cursor:pointer;line-height:1.15}
+.seg button small{display:block;font-size:11px;font-weight:600;color:var(--muted)}
+.seg button.on{border-color:var(--cyan);background:rgba(69,227,247,.12)}
+.grp{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:22px 0 12px;padding-top:16px;border-top:1px solid var(--line)}
+.grp:first-child{margin-top:0;padding-top:0;border:0}
+.out{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.out div{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
+.out div.big{grid-column:1/-1;border:1.5px solid var(--cyan);background:linear-gradient(180deg,rgba(69,227,247,.10),var(--card))}
+.out small{display:block;font-size:12px;color:var(--muted);line-height:1.3}
+.out b{display:block;font-size:26px;font-weight:800;letter-spacing:-.02em;margin-top:4px;font-variant-numeric:tabular-nums}
+.out div.big b{font-size:30px}
+.out em{font-style:normal;font-size:12.5px;color:var(--muted)}
+.chart{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 12px 8px;position:relative}
+.chart h4{font-size:13px;font-weight:700;margin:0 4px 8px}
+.chart svg{width:100%;height:auto;display:block;overflow:visible}
+.tip{position:absolute;pointer-events:none;background:#0b0f14;border:1px solid var(--line);border-radius:10px;padding:7px 10px;font-size:12px;color:var(--text);white-space:nowrap;opacity:0;transition:opacity .12s;z-index:2}
+.tip b{display:block}
+.mix{display:grid;gap:6px;margin-top:12px;font-size:13.5px}
+.mix div{display:flex;justify-content:space-between;gap:10px;color:var(--muted)}
+.mix div b{color:var(--text);font-variant-numeric:tabular-nums}
+.fine{font-size:12px;color:#6f7b87;margin-top:12px;line-height:1.5}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <img class="nuve" src="../assets/nuve-logo.png" alt="Nuve" width="110" height="26">
+  <span class="pill"><i></i>Prepared for A Plus Heating &amp; Air</span>
+</div>
+
+<header class="hero wrap">
+  <img class="stat" src="stat.png?v=b36b3a7e" alt="Nuve smart thermostat with the A Plus Heating &amp; Air logo" width="532" height="543">
+  <div class="eyebrow" style="font-size:11px;letter-spacing:.08em;white-space:nowrap">Built by contractors, for contractors</div>
+  <h1 style="margin-top:10px">Your brand.<br><span class="hl">Inside every home.</span></h1>
+  <p>Kirill, here's what A Plus Heating &amp; Air looks like on the wall. Your logo on the thermostat your customers touch every day, so repeat service comes straight to you across Sacramento instead of the next ad they click.</p>
+  <div class="ctas">
+    <a class="btn btn-p" href="#book">Book 15 min with Will</a>
+    <a class="btn btn-s" href="sms:+17144744974?&body=Hi%20Will%2C%20it%27s%20Kirill%20from%20A%20Plus%20Heating%20%26%20Air.%20I%20checked%20out%20the%20Nuve%20page%2C%20let%27s%20talk.">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Text me</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="stats reveal">
+    <div><b>1,000+</b><span>contractors on Nuve</span></div>
+    <div><b>3x</b><span>repeat service revenue per customer</span></div>
+    <div><b>40%</b><span>less reliance on paid leads</span></div>
+  </div>
+</div>
+
+<section class="band reveal" id="v2"><div class="wrap">
+  <div class="eyebrow">New for A Plus</div>
+  <h2>Your team told us V1 wasn't it. <span class="hl">Meet V2.</span></h2>
+  <p>Kirill, your service team gave us honest feedback on the V1 samples, and we listened. Sofia AI V2 is smaller, round and a lot nicer looking, the kind of stat your techs will be proud to put on the wall, with your logo front and center.</p>
+  <div class="mock"><img src="mockup.jpg" alt="A Plus Heating &amp; Air logo on the Nuve Sofia AI V2 thermostat, branded app and remote sensors" width="1200" height="1000"></div>
+  <p class="hint">Your A Plus logo on the V2 stat, your app, plus water leak and air/humidity sensors.</p>
+  <div class="chips">
+    <span>Round display</span><span>Built-in IAQ</span><span>CO detection</span><span>Radar sensor</span><span>Mics &amp; speaker</span><span>Wire detection</span><span>Fast install</span><span>Two-wire comms</span><span>Custom backlight</span><span>AI powered</span><span>Works with Alexa &amp; Google Home</span><span>ENERGY STAR</span>
+  </div>
+  <div class="note"><b>Backed for 5 years.</b> No-questions-asked hardware warranty, plus a $149 labor credit per service trip if a unit ever needs replacing.</div>
+  <details class="all">
+    <summary>See every V2 feature</summary>
+    <ul>
+      <li>Indoor Air Quality (IAQ) monitoring</li><li>Customizable backlight</li><li>Accessory terminals</li><li>CWA compatibility</li><li>Round display</li><li>Wire detection</li><li>Radar sensor</li><li>Carbon monoxide (CO) detection</li><li>Built-in microphones</li><li>Built-in speaker</li><li>Two-wire communication</li><li>G1 / G2 / G3 support</li><li>2.4GHz connectivity</li><li>Smart HVAC control</li><li>Remote temperature control</li><li>7-day weather forecast</li><li>Custom scheduling</li><li>Vacation mode</li><li>Humidity monitoring &amp; control</li><li>System efficiency monitoring</li><li>Automated system alerts</li><li>Temperature &amp; humidity alerts</li><li>Air quality alerts</li><li>Carbon monoxide alerts</li><li>Auxiliary heat alerts</li><li>Contractor messaging</li><li>Contractor branding</li><li>Direct contractor contact</li><li>QR code to your website &amp; service</li><li>Direct service requests</li><li>Appointment scheduling access</li><li>Mobile app connectivity</li><li>Remote system access</li><li>HVAC diagnostics &amp; troubleshooting</li><li>Device log sharing for troubleshooting</li><li>Software updates</li><li>Thermostat lock / PIN protection</li><li>Night mode</li>
+    </ul>
+  </details>
+</div></section>
+
+<section class="reveal"><div class="wrap">
+  <div class="eyebrow">The problem</div>
+  <h2>Stop paying to win back customers you already earned.</h2>
+  <div class="cost"><b>$75–150</b><span>per lead, just to get a past customer back on the phone</span></div>
+  <p>Once the install is done, your customer forgets your name and Googles "AC repair near me" next time. Nuve keeps <strong>A Plus Heating &amp; Air</strong> one tap away, every day of the year.</p>
+  <div class="vs">
+    <div><h3>Without Nuve</h3><ul><li>Buy the lead again</li><li>Compete with other shops</li><li>Slow shoulder seasons</li></ul></div>
+    <div><h3 class="hl">With Nuve</h3><ul><li>Customer taps your logo</li><li>Call comes to you</li><li>Alerts create the work</li></ul></div>
+  </div>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <div class="eyebrow">What your customers get</div>
+  <h2>Your business, always within reach.</h2>
+
+  <div class="feat reveal">
+    <div class="media contain"><img loading="lazy" src="tap.jpg?v=063c9e5c" alt="A Plus Heating &amp; Air logo on the Nuve thermostat screen"></div>
+    <div class="txt"><h3>Tap your logo to book service</h3><p>Your logo sits front and center on the screen. One tap and the homeowner is requesting service from you, or calling your team directly.</p></div>
+  </div>
+
+  <div class="feat reveal">
+    <div class="media"><video muted loop playsinline preload="none" poster="app.jpg?v=51b514de" data-src="app.mp4?v=c3eeb915"></video></div>
+    <div class="txt"><h3>Your own branded app</h3><p>Customers download <strong>your</strong> app, not ours. Our design team builds it with your logo, so comfort, service and messaging all carry your name.</p></div>
+  </div>
+
+  <div class="feat reveal">
+    <div class="media"><video muted loop playsinline preload="none" poster="phone.jpg?v=c64c2701" data-src="phone.mp4?v=5a09f116"></video></div>
+    <div class="txt"><h3>Comfort control from anywhere</h3><p>Remote temperature, schedules and vacation mode from the phone. A premium experience that makes your install the best one they've had.</p></div>
+  </div>
+
+  <div class="feat reveal">
+    <div class="media"><video muted loop playsinline preload="none" poster="alerts.jpg?v=fd0ac4d4" data-src="alerts.mp4?v=76205a8b"></video></div>
+    <div class="txt"><h3>Alerts before the breakdown</h3><p>Real-time system alerts and maintenance reminders, sent to the homeowner and to you, so you're the first call, not the third quote.</p></div>
+  </div>
+
+  <div class="feat reveal">
+    <div class="media"><video muted loop playsinline preload="none" poster="remotediag.jpg?v=d80e094c" data-src="remotediag.mp4?v=0f645a3e"></video></div>
+    <div class="txt"><h3>Remote diagnostics</h3><p>See system health and performance across your installed base. Spot aging equipment and replacement opportunities before the phone rings.</p></div>
+  </div>
+
+  <div class="feat reveal">
+    <div class="media"><video muted loop playsinline preload="none" data-src="../assets/backlight.mp4"></video></div>
+    <div class="txt"><h3>Custom backlight</h3><p>Match the glow to your brand colors. It's a small detail homeowners notice and show off.</p></div>
+  </div>
+</div></section>
+
+<section class="reveal"><div class="wrap">
+  <div class="eyebrow">Built around A Plus</div>
+  <h2>Six services. One stat that sells four of them.</h2>
+  <p>You already run heating &amp; cooling, IAQ, electrical, home audits, commercial and the A Plus Club under one licensed team. Nuve puts that whole menu on the wall of every home you've installed, so the next ticket comes to <strong>A Plus</strong>, not the next ad.</p>
+  <div class="svc">
+    <div><span class="tag">Heating &amp; Cooling</span><h3>First call, not the third quote</h3>
+      <p>Your 1,639+ installed systems become a base you can actually see.</p>
+      <ul><li>Alerts on temp, humidity and aux heat go to the homeowner and to you</li><li>Virtual performance tests flag efficiency drops before the breakdown</li><li>Remote diagnostics cut wasted truck rolls</li><li>AI reports surface aging systems ready for a replacement conversation</li></ul></div>
+    <div><span class="tag">Indoor Air Quality</span><h3>Show them the air, then fix it</h3>
+      <p>V2 measures IAQ, humidity and CO in the home every day.</p>
+      <ul><li>Air quality alerts open the door to purification, UV and ERV jobs</li><li>Air/humidity sensors in bedrooms back up the recommendation with real numbers</li><li>Duct cleaning and sealing pitches land better with data on the screen</li></ul></div>
+    <div><span class="tag">Electrical</span><h3>One ticket, multiple trades. Now on the wall.</h3>
+      <p>You license both trades. Messaging lets every stat home know it.</p>
+      <ul><li>Promote panel upgrades, EV chargers and surge protection right on the screen and in your app</li><li>Target by zip code, system age (15+ years) or membership status</li><li>Schedule seasonal campaigns once and let them run</li></ul></div>
+    <div><span class="tag">A Plus Club</span><h3>Make membership an easy yes</h3>
+      <p>A device in the home makes Bronze, Gold and Hero easier to sell and easier to keep.</p>
+      <ul><li>Bundle monitoring and alerts as a member perk</li><li>Automatic reminders for the 2 (or 4) tune-ups a year</li><li>Members see your logo every day, so renewals stop being a cold call</li><li>Member-only offers pushed straight to the screen</li></ul></div>
+  </div>
+</div></section>
+
+<section class="band reveal"><div class="wrap">
+  <div class="eyebrow">How partners package it</div>
+  <h2>Partners are building Nuve into their memberships.</h2>
+  <p>Real plans from contractors on Nuve. Monitoring, alerts and a smart stat become the reason a homeowner picks the higher tier.</p>
+  <div class="flyers">
+    <figure><img loading="lazy" src="partner-allred.jpg" alt="Allred membership program flyer with smart monitoring thermostat" width="760" height="983"><figcaption>Allred: smart monitoring in every membership</figcaption></figure>
+    <figure><img loading="lazy" src="partner-pds.jpg" alt="PDS Plumbing &amp; Air protection plan flyer with live monitoring" width="760" height="1350"><figcaption>PDS: $29 protection plan led by live monitoring</figcaption></figure>
+    <figure><img loading="lazy" src="partner-mh.jpg" alt="Membership plans flyer with free smart thermostat installation in the top tier" width="760" height="983"><figcaption>Free smart stat as the top-tier hook</figcaption></figure>
+  </div>
+  <p class="hint">Swipe →</p>
+</div></section>
+
+<section class="reveal" id="pricing"><div class="wrap">
+  <div class="eyebrow">Stats &amp; software</div>
+  <h2>Build your plan, or get everything.</h2>
+  <p>Logo hosting is the only required piece. Add what fits A Plus, or go Always On and get every feature for less than the sum of the parts.</p>
+
+  <div class="plan">
+    <span class="ribbon">Always On · current special</span>
+    <div class="price"><b>$1,487</b><span>/ month</span><s>$2,112</s></div>
+    <p style="font-size:14.5px">All eight features below, unlimited stats, plus the lowest hardware price on V2.</p>
+  </div>
+
+  <ul class="feats">
+    <li class="req"><b>Unlimited Logo Hosting</b><em>$389/mo</em><span>The A Plus logo on every stat you install, with tap-to-call, service requests and a QR code to your site. Change it any time in minutes.</span></li>
+    <li><b>Unlimited Custom App</b><em>$389/mo</em><span>Your own branded app on the App Store and Google Play. Comfort, service requests and messages all carry your name.</span></li>
+    <li><b>Messaging</b><em>$289/mo</em><span>Send now or schedule messages to stat screens and your app. Filter by zip code, system age or membership. Set recurring filter reminders.</span></li>
+    <li><b>Performance Test</b><em>$289/mo</em><span>Virtual performance testing that flags efficiency drops early, so you show up with the answer instead of a diagnostic fee.</span></li>
+    <li><b>Dashboard Access</b><em>$189/mo</em><span>Every install, alert and service request across your base in one place.</span></li>
+    <li><b>AI Reporting</b><em>$189/mo</em><span>System intelligence reports on equipment age and health, so you know which homes need a replacement conversation.</span></li>
+    <li><b>Alerts</b><em>$189/mo</em><span>Automated alerts for temperature, humidity, air quality, CO and aux heat, sent to the homeowner and to you.</span></li>
+    <li><b>Sensor Monitoring</b><em>$189/mo</em><span>Live data from water leak and temperature/humidity remote sensors placed around the home.</span></li>
+  </ul>
+
+  <div class="hw">
+    <div class="on"><small>Sofia AI V2 · Always On</small><b>$299</b><span>per unit</span></div>
+    <div><small>Sofia AI V2 · à la carte</small><b>$319</b><span>per unit</span></div>
+    <div><small>Water leak sensor</small><b>$29</b><span>per unit</span></div>
+    <div><small>Temp / humidity sensor</small><b>$29</b><span>per unit</span></div>
+  </div>
+
+  <ul class="terms">
+    <li>Software price is locked whether you have 50 stats on the wall or 1,000</li>
+    <li>12-month agreement with no cancellation fee</li>
+    <li>Your logo stays on every stat even if you ever cancel software</li>
+    <li>5-year hardware warranty with a $149 labor credit per service trip</li>
+  </ul>
+
+  <h3 style="margin-top:26px">Included with every partnership</h3>
+  <div class="extras">
+    <div><b>Custom branding</b><span>Name your stat, like AURA, OPAL or VALO. Our design team builds it.</span></div>
+    <div><b>Marketing center</b><span>Ready-made flyers, web pages and social assets in your brand.</span></div>
+    <div><b>Monthly mentorship</b><span>Calls with industry experts on marketing, leadership and maintenance planning.</span></div>
+    <div><b>Contractors University</b><span>On-demand training videos built by other trade leaders.</span></div>
+  </div>
+</div></section>
+
+<section class="band reveal" id="roi"><div class="wrap">
+  <div class="eyebrow">Does it pay for itself?</div>
+  <h2>Run the numbers for A Plus.</h2>
+  <p>Every stat on the wall is a home that calls you first. Move the sliders to match A Plus and see how fast the repeat business from those homes outgrows the subscription.</p>
+
+  <div class="roi" id="calc">
+    <div class="grp">Your plan</div>
+    <div class="row"><label>Software</label>
+      <div class="seg" data-k="plan">
+        <button data-v="389">Logo only<small>$389/mo</small></button>
+        <button data-v="1067">Starter<small>$1,067/mo</small></button>
+        <button data-v="1487" class="on">Always On<small>$1,487/mo</small></button>
+      </div>
+      <p class="fine" style="margin-top:8px">Starter = Logo Hosting + Custom App + Messaging.</p>
+    </div>
+    <div class="row"><label><span>V2 stats installed per month<small>new installs, change-outs and service upgrades</small></span><output id="o-n"></output></label><input type="range" id="n" min="2" max="60" step="1" value="15"></div>
+
+    <div class="grp">A Plus Club</div>
+    <div class="row"><label><span>Stat homes that join or upgrade the Club</span><output id="o-club"></output></label><input type="range" id="club" min="0" max="80" step="5" value="25"></div>
+    <div class="row"><label>Tier they pick</label>
+      <div class="seg" data-k="tier">
+        <button data-v="150">Bronze<small>$150/yr</small></button>
+        <button data-v="270" class="on">Gold<small>$270/yr</small></button>
+        <button data-v="350">Hero<small>$350/yr</small></button>
+      </div></div>
+
+    <div class="grp">Repeat work from stat homes, per year</div>
+    <div class="row"><label><span>Extra repair calls per home<small>from alerts and tap-to-call</small></span><output id="o-rep"></output></label><input type="range" id="rep" min="0" max="1.5" step="0.1" value="0.3"></div>
+    <div class="row"><label><span>Avg repair ticket</span><output id="o-rept"></output></label><input type="range" id="rept" min="150" max="1200" step="25" value="400"></div>
+    <div class="row"><label><span>Homes that buy an IAQ upgrade<small>purification, UV, ERV, duct work</small></span><output id="o-iaq"></output></label><input type="range" id="iaq" min="0" max="20" step="1" value="4"></div>
+    <div class="row"><label><span>Avg IAQ ticket</span><output id="o-iaqt"></output></label><input type="range" id="iaqt" min="500" max="8000" step="100" value="2500"></div>
+    <div class="row"><label><span>Homes that buy electrical work<small>panel, EV charger, surge protection</small></span><output id="o-ele"></output></label><input type="range" id="ele" min="0" max="15" step="1" value="2"></div>
+    <div class="row"><label><span>Avg electrical ticket</span><output id="o-elet"></output></label><input type="range" id="elet" min="500" max="8000" step="100" value="2500"></div>
+
+    <div class="grp">After 12 months</div>
+    <div class="out">
+      <div class="big"><small>Monthly revenue from your stat homes vs. software</small><b id="r-ratio"></b><em id="r-ratio-sub"></em></div>
+      <div><small>Homes with your logo</small><b id="r-homes"></b></div>
+      <div><small>Stats needed to cover the plan</small><b id="r-be"></b><em id="r-be-sub"></em></div>
+      <div><small>Revenue from stat homes, year 1</small><b id="r-y1"></b></div>
+      <div><small>Software cost, year 1</small><b id="r-cost"></b></div>
+    </div>
+    <div class="mix" id="mix"></div>
+
+    <div class="chart" id="chart"><h4>Monthly revenue from stat homes · line = software cost</h4><div class="tip" id="tip"></div><svg id="svg" viewBox="0 0 340 170" role="img" aria-label="Monthly revenue from stat homes over 12 months compared with monthly software cost"></svg></div>
+    <p class="fine">Your inputs, not a guarantee. Revenue counts new repeat work and Club fees from homes with an A Plus stat, built up as you install. Hardware is left out because you set your own install price. Club fees are spread monthly.</p>
+  </div>
+</div></section>
+
+<section class="reveal"><div class="wrap">
+  <div class="eyebrow">What you get</div>
+  <h2>Built to win the shoulder seasons.</h2>
+  <p>Nuve keeps demand flowing when calls slow down.</p>
+  <ul class="checks">
+    <li><div>Remote monitoring &amp; alerts<span>Know about problems across your customer base in real time.</span></div></li>
+    <li><div>Predictive maintenance opportunities<span>Turn system data into booked tune-ups and repairs.</span></div></li>
+    <li><div>Easier membership upsells<span>A device in the home makes service agreements an easy yes.</span></div></li>
+    <li><div>Works with ServiceTitan<span>Service requests sync to your CRM by Job ID, so nothing is retyped.</span></div></li>
+  </ul>
+  <div class="feat" style="margin-top:22px">
+    <div class="media"><video muted loop playsinline preload="none" poster="dashboard.jpg?v=7d479271" data-src="dashboard.mp4?v=ffb51ae1"></video></div>
+    <div class="txt"><h3>The Nuve dashboard</h3><p>Every install, alert and service request in one place, so your team decides how customers reach you and when.</p></div>
+  </div>
+</div></section>
+
+<section class="band reveal"><div class="wrap">
+  <div class="eyebrow">Getting started</div>
+  <h2>LIVE with your logo, fast.</h2>
+  <div class="steps">
+    <div><span><h3>Send us your logo</h3><p>Our design team builds your branded thermostat screen and app.</p></span></div>
+    <div><span><h3>Install on your jobs</h3><p>Your techs put Nuve on the wall during installs and service calls.</p></span></div>
+    <div><span><h3>Customers tap you</h3><p>Repeat service, alerts and messages come straight to A Plus Heating &amp; Air.</p></span></div>
+  </div>
+</div></section>
+
+<section class="reveal">
+  <div class="wrap">
+    <div class="eyebrow">From contractors on Nuve</div>
+    <h2>Don't take our word for it.</h2>
+    <div class="rail" id="rail">
+      <figure class="quote"><div class="stars">★★★★★</div>
+        <blockquote>“If you’re doing your due diligence — this is it. This company is the one. I’ve been in the trades for over 20 years, and I’ve never experienced anything like Nuve. … The onboarding process was seamless, and the integration with our existing database and systems was handled with precision, care, and real follow-through.”</blockquote>
+        <cite>PROVAC Heating &amp; Cooling<span>HVAC contractor</span></cite></figure>
+      <figure class="quote"><div class="stars">★★★★★</div>
+        <blockquote>“We absolutely love our Polaris Smartstats!! Our customers love them, we continue to be present in our customer’s home all year around, and that is truly amazing!!!”</blockquote>
+        <cite>Clemente Luna<span>Luna Heating &amp; Cooling · branded theirs “Polaris Smartstat”</span></cite></figure>
+      <figure class="quote"><div class="stars">★★★★★</div>
+        <blockquote>“I have been purchasing the Nuve thermostat for about six months … and have been extremely pleased. The support on the back end has been nothing short of amazing. We now have an app for the Nuve thermostat that is called the True Pros app and it allows us to continue to stay in the forefront of customers’ minds.”</blockquote>
+        <cite>Kathryne Higgins<span>True Pros · Google review</span></cite></figure>
+      <figure class="quote"><div class="stars">★★★★★</div>
+        <blockquote>“Most innovative product out there HANDS DOWN! Absolutely love this product and the company. The customer service is amazing. … Contractors, if you are looking to revolutionize your company… look no further.”</blockquote>
+        <cite>Owner<span>Garrett Mechanical</span></cite></figure>
+      <figure class="quote"><div class="stars">★★★★★</div>
+        <blockquote>“Nuve has made it simple for me to stay connected with my clients, deliver added value, and deliver an extra ‘wow’ moment on every job. … [The team] has been super helpful and responsive in helping me get set up to offer this awesome product that further differentiates me from my competitors.”</blockquote>
+        <cite>Keith Saunders<span>HVAC contractor · Google review</span></cite></figure>
+    </div>
+    <div class="dots" id="dots"></div>
+  </div>
+</section>
+
+<section class="band reveal"><div class="wrap">
+  <div class="eyebrow">Built by a contractor</div>
+  <h2>Meet our CEO, Ismael Valdez.</h2>
+  <div class="ceo">
+    <img loading="lazy" src="https://ncutour.com/wp-content/uploads/2026/01/DSC09367-683x1024.jpg" alt="Ismael Valdez">
+    <div><div class="big">$100M+</div><span>exit after founding and scaling NexGen Air, one of Southern California’s largest HVAC companies</span></div>
+  </div>
+  <p style="margin-top:16px">Ismael built Nuve from decades of hands-on contractor experience. He knows what it costs to keep buying back your own customers, and he built the fix he wished he’d had.</p>
+</div></section>
+
+<section class="book" id="book">
+  <div class="wrap">
+    <div class="eyebrow">Next step</div>
+    <h2>Let’s see if Nuve fits A Plus Heating &amp; Air.</h2>
+    <div class="me">
+      <img src="../assets/will.jpg" alt="Will Arana">
+      <div><b>Will Arana</b><span>Nuve · 15 minutes, no pressure. I’ll show you your branded stat and app live.</span></div>
+    </div>
+    <div class="cal"><iframe loading="lazy" title="Book a time with Will" src="https://meetings.hubspot.com/william-arana?embed=true"></iframe></div>
+    <p class="alt">Calendar not loading? <a href="https://meetings.hubspot.com/william-arana">Open it here</a> or <a href="sms:+17144744974?&body=Hi%20Will%2C%20it%27s%20Kirill%20from%20A%20Plus%20Heating%20%26%20Air.%20I%20checked%20out%20the%20Nuve%20page%2C%20let%27s%20talk.">text me</a>.</p>
+  </div>
+</section>
+
+<footer class="wrap"><div class="guides"><a href="https://www.nuvehome.com/user_guide/" target="_blank" rel="noopener">User guide</a><a href="https://howto.nuvehome.com/" target="_blank" rel="noopener">How-to videos</a><a href="https://www.nuvehome.com/wp-content/uploads/2024/07/Nuve-Thermostat-Installation-Guide-06252024.pdf" target="_blank" rel="noopener">Installation guide (PDF)</a><a href="https://www.nuvehome.com/installation-process/" target="_blank" rel="noopener">Installation process</a></div>Will Arana · Nuve · <a href="tel:+17144744974">(714) 474-4974</a> · <a href="mailto:william@nuvehome.com">william@nuvehome.com</a><br>© 2026 Nuve Inc.</footer>
+
+<nav class="bar" id="bar">
+  <a class="btn btn-p" href="#book">Book a time</a>
+  <a class="btn btn-s" href="sms:+17144744974?&body=Hi%20Will%2C%20it%27s%20Kirill%20from%20A%20Plus%20Heating%20%26%20Air.%20I%20checked%20out%20the%20Nuve%20page%2C%20let%27s%20talk." aria-label="Text Will">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Text</a>
+</nav>
+
+<script>
+(function(){
+  document.querySelectorAll('.feat img, .feat video, .ceo img').forEach(function(m){
+    m.addEventListener('error', function(){ var c = m.closest('.feat'); if (c) c.remove(); else m.remove(); });
+  });
+  var io = 'IntersectionObserver' in window;
+  // lazy play videos only while on screen
+  var vids = document.querySelectorAll('video[data-src]');
+  if (io) {
+    var vo = new IntersectionObserver(function(es){ es.forEach(function(e){
+      var v = e.target;
+      if (e.isIntersecting) { if (!v.src) v.src = v.dataset.src; var p = v.play(); if (p) p.catch(function(){}); }
+      else if (v.src) v.pause();
+    }); }, {rootMargin:'120px'});
+    vids.forEach(function(v){ vo.observe(v); });
+    var ro = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('in'); ro.unobserve(e.target);} }); }, {threshold:.12});
+    document.querySelectorAll('.reveal').forEach(function(el){ ro.observe(el); });
+  } else {
+    vids.forEach(function(v){ v.src = v.dataset.src; v.autoplay = true; });
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+  // sticky bar after hero, hidden at booking section
+  var bar = document.getElementById('bar'), book = document.getElementById('book');
+  function onScroll(){
+    var y = window.scrollY, b = book.getBoundingClientRect().top;
+    bar.classList.toggle('show', y > 420 && b > window.innerHeight * 0.6);
+  }
+  window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  // testimonial dots
+  var rail = document.getElementById('rail'), dots = document.getElementById('dots'), n = rail.children.length;
+  for (var i=0;i<n;i++) dots.appendChild(document.createElement('i'));
+  function dot(){ var w = rail.children[0].offsetWidth + 12, k = Math.round(rail.scrollLeft / w);
+    [].forEach.call(dots.children, function(d,j){ d.classList.toggle('on', j===Math.min(k,n-1)); }); }
+  rail.addEventListener('scroll', dot, {passive:true}); dot();
+})();
+</script>
+<script>
+// ---- A Plus ROI calculator ----
+(function(){
+  var c = document.getElementById('calc'); if (!c) return;
+  var st = {plan:1487, tier:270};
+  var $ = function(id){ return document.getElementById(id); };
+  var money = function(v){ return '$' + Math.round(v).toLocaleString('en-US'); };
+  c.querySelectorAll('.seg').forEach(function(g){
+    g.addEventListener('click', function(e){
+      var b = e.target.closest('button'); if (!b) return;
+      g.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x===b); });
+      st[g.dataset.k] = +b.dataset.v; calc();
+    });
+  });
+  ['n','club','rep','rept','iaq','iaqt','ele','elet'].forEach(function(id){ $(id).addEventListener('input', calc); });
+  var svg = $('svg'), tip = $('tip'), chart = $('chart');
+
+  function calc(){
+    var n=+$('n').value, club=+$('club').value/100, rep=+$('rep').value, rept=+$('rept').value,
+        iaq=+$('iaq').value/100, iaqt=+$('iaqt').value, ele=+$('ele').value/100, elet=+$('elet').value, plan=st.plan;
+    $('o-n').textContent = n; $('o-club').textContent = Math.round(club*100)+'%';
+    $('o-rep').textContent = rep.toFixed(1); $('o-rept').textContent = money(rept);
+    $('o-iaq').textContent = Math.round(iaq*100)+'%'; $('o-iaqt').textContent = money(iaqt);
+    $('o-ele').textContent = Math.round(ele*100)+'%'; $('o-elet').textContent = money(elet);
+    var parts = {club: club*st.tier/12, rep: rep*rept/12, iaq: iaq*iaqt/12, ele: ele*elet/12};
+    var r = parts.club + parts.rep + parts.iaq + parts.ele;          // revenue per stat home per month
+    var homes = n*12, run = homes*r, ratio = run/plan;
+    $('r-homes').textContent = homes.toLocaleString('en-US');
+    $('r-ratio').textContent = money(run) + ' vs ' + money(plan);
+    $('r-ratio-sub').textContent = r > 0 ? (ratio >= 1 ? ratio.toFixed(1)+'x the monthly plan, per month' : 'Not covering the plan yet at these inputs') : '';
+    var be = r > 0 ? Math.ceil(plan/r) : 0;
+    $('r-be').textContent = r > 0 ? be.toLocaleString('en-US') : '–';
+    $('r-be-sub').textContent = r > 0 ? 'about ' + Math.max(1, Math.ceil(be/n)) + ' month' + (Math.ceil(be/n) > 1 ? 's' : '') + ' of installs' : '';
+    var months = [], y1 = 0;
+    for (var m=1;m<=12;m++){ var v = n*(m-0.5)*r; months.push(v); y1 += v; }
+    $('r-y1').textContent = money(y1); $('r-cost').textContent = money(plan*12);
+    $('mix').innerHTML = [['A Plus Club fees',parts.club],['Repair calls',parts.rep],['IAQ upgrades',parts.iaq],['Electrical work',parts.ele]]
+      .map(function(p){ return '<div><span>'+p[0]+'</span><b>'+money(p[1]*homes)+'/mo</b></div>'; }).join('') +
+      '<div style="border-top:1px solid var(--line);padding-top:6px"><span>Per stat home</span><b>'+money(r)+'/mo</b></div>';
+    draw(months, plan);
+  }
+
+  function draw(vals, plan){
+    var W=340,H=170,L=40,R=8,T=10,B=22, max = Math.max(plan*1.15, Math.max.apply(null, vals)*1.08);
+    var step = niceStep(max/4), top = Math.ceil(max/step)*step, y = function(v){ return T + (H-T-B)*(1 - v/top); };
+    var bw = (W-L-R)/12, s = '';
+    for (var g=0; g<=top+1e-6; g+=step){
+      s += '<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(g)+'" y2="'+y(g)+'" stroke="#283342" stroke-width="1"/>' +
+           '<text x="'+(L-6)+'" y="'+(y(g)+3.5)+'" text-anchor="end" font-size="9" fill="#9aa7b3">'+short(g)+'</text>';
+    }
+    vals.forEach(function(v,i){
+      var x = L + i*bw + 2, w = bw-4, h = Math.max(0, y(0)-y(v)), yy = y(v), r = Math.min(4, w/2, h);
+      s += '<path d="M'+x+','+y(0)+' V'+(yy+r)+' Q'+x+','+yy+' '+(x+r)+','+yy+' H'+(x+w-r)+' Q'+(x+w)+','+yy+' '+(x+w)+','+(yy+r)+' V'+y(0)+' Z" fill="'+(v>=plan?'var(--brand)':'rgba(var(--brand-rgb),.45)')+'"/>' +
+           '<rect class="hit" data-i="'+i+'" x="'+(L+i*bw)+'" y="'+T+'" width="'+bw+'" height="'+(H-T-B)+'" fill="transparent"/>';
+      if (i%2===0 || i===11) s += '<text x="'+(L+i*bw+bw/2)+'" y="'+(H-8)+'" text-anchor="middle" font-size="9" fill="#9aa7b3">M'+(i+1)+'</text>';
+    });
+    s += '<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(plan)+'" y2="'+y(plan)+'" stroke="#45e3f7" stroke-width="2" stroke-dasharray="5 4"/>' +
+         '<text x="'+(L+4)+'" y="'+(y(plan)-5)+'" font-size="9.5" font-weight="700" fill="#eef3f6">Software '+money(plan)+'/mo</text>';
+    svg.innerHTML = s;
+    svg.querySelectorAll('.hit').forEach(function(h){
+      function show(){ var i=+h.dataset.i, v=vals[i];
+        tip.innerHTML = '<b>Month '+(i+1)+'</b>'+money(v)+' from stat homes<br>'+(v>=plan?'Covers the plan '+(v/plan).toFixed(1)+'x':'Below the plan');
+        var bb = h.getBoundingClientRect(), cb = chart.getBoundingClientRect();
+        tip.style.left = Math.min(cb.width-150, Math.max(4, bb.left-cb.left-50))+'px'; tip.style.top = '30px'; tip.style.opacity = 1; }
+      h.addEventListener('mouseenter', show); h.addEventListener('touchstart', show, {passive:true});
+      h.addEventListener('mouseleave', function(){ tip.style.opacity = 0; });
+    });
+  }
+  function niceStep(x){ var p = Math.pow(10, Math.floor(Math.log10(x))), f = x/p; return (f<=1?1:f<=2?2:f<=2.5?2.5:f<=5?5:10)*p; }
+  function short(v){ return v>=1000 ? '$'+(v/1000).toFixed(v%1000?1:0)+'k' : '$'+Math.round(v); }
+  calc();
+})();
+</script>
+</body>
+</html>
