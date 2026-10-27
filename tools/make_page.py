@@ -167,6 +167,20 @@ def on_dark(rgb):
     return tuple(int(round(v * 255)) for v in (r, g, b))
 
 
+def on_light(rgb, target=4.6):
+    """Same hue, dark enough to read as text on the light page (WCAG contrast vs white)."""
+    import colorsys
+    def lum(c):
+        c = [v / 255 for v in c]; c = [v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4 for v in c]
+        return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
+    h, l, s = colorsys.rgb_to_hls(*(np.array(rgb) / 255))
+    while l > 0.05:
+        c = tuple(int(round(v * 255)) for v in colorsys.hls_to_rgb(h, l, s))
+        if 1.05 / (lum(c) + 0.05) >= target: return c
+        l -= 0.02
+    return (19, 47, 87)
+
+
 def page_theme(logo, override=None):
     """CSS colors for the page: their brand for outlines, accents and numbers; Nuve cyan stays on
     the Nuve wordmark, highlights and buttons. Black/white logos keep the all-Nuve look."""
@@ -176,10 +190,12 @@ def page_theme(logo, override=None):
     else:
         b1 = on_dark(cols[0]); b2 = on_dark(cols[1]) if len(cols) > 1 else b1
     hexc = lambda c: '#%02x%02x%02x' % c
+    bt = on_light(cols[0]) if cols else (19, 47, 87)
     ink = '#06090c' if (0.2126 * b1[0] + 0.7152 * b1[1] + 0.0722 * b1[2]) > 150 else '#ffffff'
     return {
         '{{BRAND}}': hexc(b1), '{{BRAND_RGB}}': '%d,%d,%d' % b1,
         '{{BRAND2}}': hexc(b2), '{{BRAND2_RGB}}': '%d,%d,%d' % b2,
+        '{{BRAND_TEXT}}': hexc(bt),
         '{{BRAND_INK}}': ink, '{{CHECK_INK}}': ink.replace('#', '%23'),
     }
 
@@ -280,7 +296,7 @@ PLUMBING_HTML = """<section class="reveal"><div class="wrap">
 
 """
 
-SERVICETITAN_HTML = """<section class="band reveal"><div class="wrap">
+SERVICETITAN_HTML = """<section class="band st-band reveal"><div class="wrap">
   <img class="st-logo" src="../assets/servicetitan.png" width="480" height="315" alt="ServiceTitan">
   <div class="eyebrow">Works with ServiceTitan</div>
   <h2>Plugs into the system you already run.</h2>
@@ -314,6 +330,7 @@ def main():
     ap.add_argument('--flyer-note', help='fine print under the water-sensor flyer, e.g. "Remote main valve shut-off coming soon."')
     ap.add_argument('--st-unconfirmed', action='store_true', help='ServiceTitan section copy says "if you run on ServiceTitan" instead of stating they do')
     ap.add_argument('--section', help='per-prospect HTML snippet file (e.g. <slug>/section.html) inserted before the other extra sections; {{SHORT}} and {{COMPANY}} are filled in')
+    ap.add_argument('--feat-style', default='fa', choices=['fa', 'fb', 'fcx'], help='feature cards: fa = title front/clip back, fb = clip front/details back, fcx = clip tiles that open a sheet')
     ap.add_argument('--short', help='short company name for section copy, e.g. "Apex" (default: --company)')
     args = ap.parse_args()
 
@@ -354,7 +371,7 @@ def main():
     co = html.escape(args.company)
     first = args.first.strip()
     greet = f'{html.escape(first)}, here' if first else 'Here'
-    sms = urllib.parse.quote(f"Hi Will, it's {first + ' ' if first else ''}from {args.company}. I checked out the Nuve page, let's talk.")
+    sms = urllib.parse.quote(f"Hi Will, it's {first + ' ' if first else ''}from {args.company}. I checked out the Nuve page...")
     city_line = f' across {html.escape(args.city)}' if args.city else ''
     tpl = open(os.path.join(TOOLS, 'template.html'), encoding='utf-8').read()
     rep = {
@@ -367,6 +384,7 @@ def main():
         '{{OG}}': f'{BASE_URL}/{slug}/og.jpg',
         '{{SMS}}': f'sms:{PHONE}?&body={sms}',
         '{{ACCENT}}': accent,
+        '{{FEAT_CLASS}}': args.feat_style,
         '{{APP_MP4}}': vids['app.mp4'], '{{APP_JPG}}': vids['app.jpg'],
         '{{ALERTS_MP4}}': vids['alerts.mp4'], '{{ALERTS_JPG}}': vids['alerts.jpg'],
         '{{DASH_MP4}}': vids['dashboard.mp4'], '{{DASH_JPG}}': vids['dashboard.jpg'],
