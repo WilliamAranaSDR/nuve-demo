@@ -1,0 +1,108 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:P;src:url(Poppins-Medium.ttf);font-weight:500}
+@font-face{font-family:P;src:url(Poppins-SemiBold.ttf);font-weight:600}
+@font-face{font-family:P;src:url(Poppins-Bold.ttf);font-weight:700}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#ccc;font-family:P,sans-serif;color:#132f57}
+.c{width:1200px;height:700px;position:relative;overflow:hidden;margin-bottom:20px;
+  background:linear-gradient(180deg,#d9fbff 0%,#eef4ff 55%,#f5f7fa 100%)}
+.logo{position:absolute;top:40px;left:56px;height:38px}
+.eb{font-size:17px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#0f7f93;display:flex;align-items:center;gap:12px}
+.eb:before{content:"";width:28px;height:4px;border-radius:2px;background:#42e8ff}
+h1{font-size:62px;line-height:1.06;font-weight:700;letter-spacing:-.02em;margin-top:16px}
+h1 .hl{background:linear-gradient(transparent 60%,#82eeff 60%,#82eeff 92%,transparent 92%)}
+p{font-size:24px;color:#5b6b80;line-height:1.45;margin-top:18px;font-weight:500}
+.btn{display:inline-flex;align-items:center;gap:12px;height:68px;padding:0 34px;border-radius:14px;background:#42e8ff;color:#132f57;font-size:25px;font-weight:600;box-shadow:0 12px 30px -12px rgba(20,170,200,.8)}
+.l{position:absolute;left:56px;top:120px;width:600px}
+.l .btn{margin-top:34px}
+.card{background:#fff;border:1px solid #e3e8ef;border-radius:18px;box-shadow:0 16px 40px -24px rgba(19,47,87,.45)}
+/* 1 */
+.stat{position:absolute;right:40px;top:70px;width:520px;filter:drop-shadow(0 18px 26px rgba(19,47,87,.25)) drop-shadow(0 0 30px rgba(66,232,255,.6))}
+/* 2 */
+.cost{display:inline-flex;align-items:baseline;gap:16px;margin-top:26px;padding:20px 26px;border-left:6px solid #42e8ff}
+.cost b{white-space:nowrap;font-size:60px;font-weight:700;letter-spacing:-.02em}
+.cost span{font-size:20px;color:#5b6b80;max-width:230px;line-height:1.3}
+.vs{position:absolute;right:56px;top:150px;width:440px;display:grid;gap:18px}
+.vs .card{padding:26px 28px}
+.vs h3{font-size:22px;margin-bottom:10px}
+.vs ul{list-style:none;font-size:21px;color:#5b6b80;display:grid;gap:8px;font-weight:500}
+.vs .on{border:2px solid #42e8ff;background:linear-gradient(180deg,#e3fbff,#fff 70%)}
+.vs .on ul{color:#132f57}
+.vs .off{background:#eef1f5}
+.vs li:before{content:"✕  ";color:#a0aec0}.vs .on li:before{content:"✓  ";color:#0bb3cc;font-weight:700}
+/* 3 */
+.top3{position:absolute;left:56px;top:110px;right:56px}
+.top3 h1{font-size:46px}
+.grid{position:absolute;left:56px;right:56px;top:262px;display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.t{height:300px;border-radius:16px;overflow:hidden;position:relative;background:#000;box-shadow:0 14px 30px -18px rgba(19,47,87,.6)}
+.t img{width:100%;height:100%;object-fit:cover}
+.t .cap{position:absolute;left:0;right:0;bottom:0;padding:40px 12px 12px;background:linear-gradient(transparent,rgba(0,0,0,.85));color:#fff;font-size:17px;font-weight:600;line-height:1.2}
+.t .chip{position:absolute;top:10px;right:10px;background:#bbfdff;color:#132f57;font-size:12px;font-weight:600;border-radius:99px;padding:4px 10px}
+.b3{position:absolute;left:56px;bottom:30px}
+/* 4 */
+.g{display:inline-flex;align-items:center;gap:12px;background:#fff;border:1px solid #e3e8ef;border-radius:99px;padding:10px 22px;font-size:22px;font-weight:600;margin-top:22px}
+.st{color:#f5b301;letter-spacing:3px}
+.q{position:absolute;right:56px;top:110px;width:520px;padding:34px 34px 28px;border-top:5px solid #42e8ff}
+.q blockquote{font-size:27px;line-height:1.45;color:#2d3748;font-weight:500}
+.q cite{display:block;margin-top:22px;padding-top:16px;border-top:1px solid #e3e8ef;font-style:normal;font-size:20px;font-weight:600}
+.q cite span{display:block;font-size:17px;color:#5b6b80;font-weight:500}
+.ceo{position:absolute;right:56px;bottom:44px;width:520px;display:flex;gap:20px;align-items:center;padding:16px}
+.ceo img{width:92px;height:116px;object-fit:cover;border-radius:12px}
+.ceo b{font-size:40px;color:#0f7f93;display:block;line-height:1}
+.ceo span{font-size:18px;color:#5b6b80;font-weight:500}
+/* 5 */
+.steps{position:absolute;right:56px;top:120px;width:500px;display:grid;gap:16px;counter-reset:s}
+.steps .card{display:flex;gap:18px;padding:22px;counter-increment:s;align-items:center}
+.steps .card:before{content:counter(s);flex:none;width:52px;height:52px;border-radius:12px;background:#42e8ff;display:grid;place-items:center;font-size:26px;font-weight:700}
+.steps h3{font-size:24px}.steps p{font-size:19px;margin-top:2px}
+.me{display:flex;gap:18px;align-items:center;margin-top:30px}
+.me img{width:84px;height:84px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 0 0 3px #42e8ff}
+.me b{font-size:24px;display:block}.me span{font-size:19px;color:#5b6b80;font-weight:500}
+</style></head><body>
+
+<div class="c" id="e1"><img class="logo" src="nuve-logo.png">
+ <div class="l" style="top:150px"><div class="eb">Built for your company</div>
+  <h1>Your logo.<br><span class="hl">On every wall</span><br>you service.</h1>
+  <p>I put together a page showing yours on the stat.</p>
+  <div class="btn">See your page →</div></div>
+ <img class="stat" src="stat2x.png"></div>
+
+<div class="c" id="e2"><img class="logo" src="nuve-logo.png">
+ <div class="l"><div class="eb">The problem</div>
+  <h1 style="font-size:54px">Stop paying to win back <span class="hl">your own</span> customers.</h1>
+  <div class="cost card" style="margin-top:22px"><b>$75–150</b><span>per lead to get a past customer back on the phone</span></div><br>
+  <div class="btn" style="margin-top:22px">See the fix on your page →</div></div>
+ <div class="vs"><div class="card off"><h3 style="color:#5b6b80">Without Nuve</h3><ul><li>Customer Googles "AC repair"</li><li>Buy the lead again</li><li>Slow shoulder seasons</li></ul></div>
+  <div class="card on"><h3 style="color:#0f7f93">With Nuve</h3><ul><li>Customer taps your logo</li><li>The call comes to you</li><li>Alerts create the work</li></ul></div></div></div>
+
+<div class="c" id="e3"><img class="logo" src="nuve-logo.png">
+ <div class="top3"><div class="eb">What your customers get</div><h1>Your business, <span class="hl">always within reach.</span></h1></div>
+ <div class="grid">
+  <div class="t"><img src="tap.jpg" style="object-position:8% 40%"><span class="chip">↻ Tap to flip</span><div class="cap">Logo Hosting</div></div>
+  <div class="t"><img src="app.jpg" style="object-position:20% 50%"><span class="chip">↻ Tap to flip</span><div class="cap">Custom App</div></div>
+  <div class="t"><img src="phone.jpg"><span class="chip">↻ Tap to flip</span><div class="cap">Custom Scheduling</div></div>
+  <div class="t"><img src="alerts_f.jpg" style="object-position:57% 50%"><span class="chip">↻ Tap to flip</span><div class="cap">Alerts</div></div>
+  <div class="t"><img src="rd_f.jpg" style="object-position:40% 50%"><span class="chip">↻ Tap to flip</span><div class="cap">Remote Diagnostics</div></div>
+  <div class="t"><img src="bl.jpg" style="object-position:50% 50%"><span class="chip">↻ Tap to flip</span><div class="cap">Custom Backlight</div></div>
+ </div>
+ <div class="b3"><div class="btn" style="height:58px;font-size:22px">Tap through yours →</div></div></div>
+
+<div class="c" id="e4"><img class="logo" src="nuve-logo.png">
+ <div class="l" style="width:520px"><div class="eb">From contractors on Nuve</div>
+  <h1>Don't take <span class="hl">our word</span> for it.</h1>
+  <div class="g"><span class="st">★★★★★</span>5.0 on Google</div><br>
+  <div class="btn" style="margin-top:30px">Read more on your page →</div></div>
+ <div class="q card"><div class="st" style="font-size:22px">★★★★★</div>
+  <blockquote style="margin-top:12px">“We absolutely love our Polaris Smartstats!! Our customers love them, we continue to be present in our customer’s home all year around.”</blockquote>
+  <cite>Clemente Luna<span>Luna Heating &amp; Cooling · Google review</span></cite></div>
+ <div class="ceo card"><img src="ismael.jpg"><div><b>$100M+</b><span>Our CEO built Nuve for his own HVAC company first</span></div></div></div>
+
+<div class="c" id="e5"><img class="logo" src="nuve-logo.png">
+ <div class="l" style="width:560px"><div class="eb">Getting started</div>
+  <h1><span class="hl">LIVE</span> with your logo, fast.</h1>
+  <div class="me"><img src="will.jpg"><div><b>Will Arana</b><span>20 minutes, no pressure.</span></div></div>
+  <div class="btn">Book 20 min on your page →</div></div>
+ <div class="steps"><div class="card"><div><h3>Send us your logo</h3><p>We build your stat screen and app.</p></div></div>
+  <div class="card"><div><h3>Install on your jobs</h3><p>Nuve goes up during installs and service.</p></div></div>
+  <div class="card"><div><h3>Customers tap you</h3><p>Repeat service comes straight to you.</p></div></div></div></div>
+</body></html>
