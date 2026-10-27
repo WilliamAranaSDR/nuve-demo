@@ -300,12 +300,12 @@ footer a{color:#5b6b80}
         <span class="fc-f"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></span><span class="m"></span><span class="cap"><h3>Custom Scheduling</h3></span><span class="flip"></span></span>
         <span class="fc-b"><span class="m"></span><span class="t"><h3>Custom Scheduling</h3><p>Schedules, vacation mode and temperature from the phone, anywhere. A premium experience that makes your install the best one they've had.</p></span><span class="flip"></span></span>
       </span></button>
-    <button class="fc" type="button" data-src="alerts.mp4?v=acdbb7ae" data-poster="alerts.jpg?v=6c11b062" data-pos="80% 50%" data-zoom=".8">
+    <button class="fc" type="button" data-src="alerts.mp4?v=acdbb7ae" data-poster="alerts.jpg?v=6c11b062" data-pos="50% 50%" data-fit="contain" data-tf="translate(1.8%,0) scale(1.8)">
       <span class="fc-in">
         <span class="fc-f"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg></span><span class="m"></span><span class="cap"><h3>Alerts</h3></span><span class="flip"></span></span>
         <span class="fc-b"><span class="m"></span><span class="t"><h3>Alerts</h3><p>Real-time system alerts and maintenance reminders, sent to the homeowner and to you, so you're the first call, not the third quote.</p></span><span class="flip"></span></span>
       </span></button>
-    <button class="fc" type="button" data-src="remotediag.mp4?v=3007f3d8" data-poster="remotediag.jpg?v=f2fee1d1" data-pos="33% 50%" data-zoom=".74" data-soft="1">
+    <button class="fc" type="button" data-src="remotediag.mp4?v=3007f3d8" data-poster="remotediag.jpg?v=f2fee1d1" data-pos="33% 50%" data-zoom=".74">
       <span class="fc-in">
         <span class="fc-f"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2.5-6 5 12 2.5-6h4"/></svg></span><span class="m"></span><span class="cap"><h3>Remote Diagnostics</h3></span><span class="flip"></span></span>
         <span class="fc-b"><span class="m"></span><span class="t"><h3>Remote Diagnostics</h3><p>See system health and performance across your installed base. Spot aging equipment and replacement work before the phone rings.</p></span><span class="flip"></span></span>
@@ -441,7 +441,8 @@ footer a{color:#5b6b80}
     if (d.soft) {  // soften the clip's edges so its non-black glow fades into the card
       var mk = 'radial-gradient(farthest-side, #000 70%, transparent 100%)';
       el.style.webkitMaskImage = mk; el.style.maskImage = mk; }
-    if (d.zoom) el.style.transform = (d.zoom < 1 ? 'translateY(-' + Math.round((1 - d.zoom) * 30) + '%) ' : 'translateY(-6%) ') + 'scale(' + d.zoom + ')';
+    if (d.tf) el.style.transform = d.tf;  // exact framing, e.g. the alerts clip's last frame centered
+    else if (d.zoom) el.style.transform = (d.zoom < 1 ? 'translateY(-' + Math.round((1 - d.zoom) * 30) + '%) ' : 'translateY(-6%) ') + 'scale(' + d.zoom + ')';
     return el;
   }
   function play(v){ if (!v || v.tagName !== 'VIDEO') return; if (!v.src) v.src = v.dataset.src; var p = v.play(); if (p) p.catch(function(){}); }
