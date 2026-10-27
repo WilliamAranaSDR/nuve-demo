@@ -416,6 +416,43 @@ footer a{color:#5b6b80}
 .res span{font-size:12px;color:#8fb0c1;line-height:1.35}
 .res em{font-style:normal;margin-top:auto;font:600 12px Inter,sans-serif;color:#42e8ff}
 footer .guides{display:none}
+/* no booking on this page: Will sends his link by email */
+#book,#bar,.hero .ctas .btn-p{display:none!important}
+body{padding-bottom:0}
+.stbox{margin-top:18px;padding:14px;border-radius:12px;border:1px dashed rgba(66,232,255,.45);background:rgba(66,232,255,.04)}
+.sttag{display:inline-block;font:600 10.5px Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#06141f;background:#82eeff;border-radius:999px;padding:4px 10px}
+.stbox p{font-size:13.5px;margin-top:8px}
+.stbox .vid{margin-top:12px}
+/* wider layout for presenting on a big screen */
+@media (min-width:900px){
+  .wrap{max-width:1040px;padding:0 40px}
+  section{padding:80px 0}
+  .hero p{max-width:640px;font-size:18px}
+  .hero h1{font-size:54px}
+  .stat{width:min(34vw,380px)}
+  .stats{max-width:1040px}
+  h2{font-size:38px}
+  .dk h2{font-size:64px}
+  .fgrid{grid-template-columns:repeat(3,1fr);gap:18px}
+  .agenda{gap:14px}.agenda b{font-size:34px}.agenda span{font-size:13px}
+  .pane{padding:30px 34px}.pane .dh{font-size:44px}
+  .pane ul{grid-template-columns:1fr 1fr;gap:16px 28px}
+  .pane li{font-size:16px}
+  .stbox{display:grid;grid-template-columns:1fr 200px;gap:28px;align-items:center;padding:20px 24px}
+  .stbox p{font-size:16px}.stbox .vid{margin:0;max-width:200px}
+  .spec-hero b{font-size:40px}.spec-hero span{font-size:14px}
+  .cmp{font-size:16px}.cmp th{font-size:13px}.cmp td{padding:13px 8px}
+  .v2clip{grid-template-columns:160px 1fr}.v2clip video{width:160px}.v2clip p{font-size:16px}
+  .chips span{font-size:14px}
+  .compat{grid-template-columns:1fr 1fr}
+  .wtr{grid-template-columns:200px 1fr;gap:32px}.wtr video{width:200px}.wtr li{font-size:16px}
+  .tv{justify-content:center;overflow:visible;margin:28px 0 0;padding:0}
+  .tv figure{flex:0 0 320px}
+  .res{grid-template-columns:repeat(3,1fr);gap:16px}
+  .res a{min-height:150px}
+  .quote{flex:0 0 46%}
+  .feat{gap:28px}
+}
 .agenda{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:18px}
 .agenda button{padding:10px 3px;text-align:center;cursor:pointer;color:inherit;font:inherit;transition:background .2s,border-color .2s}
 .agenda button.on{background:#42e8ff;border-color:#42e8ff;box-shadow:0 0 20px -2px rgba(66,232,255,.7)}
@@ -461,7 +498,6 @@ footer .guides{display:none}
       <li><b>Messages with a 100% open rate.</b> Tune-up reminders, membership renewals and seasonal offers go straight to the thermostat. Target by zip code, system age or membership, or put them on repeat.</li>
       <li><b>Performance Test.</b> Run a remote check on any system, twice a year in shoulder season. If it can't move the temperature 2°F in 15 minutes, you get an alert, not a surprise in July.</li>
     </ul>
-    <div class="shot"><img loading="lazy" src="messaging.jpg?v=3046e632" alt="Nuve message on the thermostat and phone: Issue detected, heating system" width="1000" height="563"></div>
   </div>
 
   <div class="pane glow" id="p-csr">
@@ -473,7 +509,11 @@ footer .guides{display:none}
       <li><b>Fill the board in the slow weeks.</b> A message to past customers books tune-ups without buying ads.</li>
       <li><b>Warm calls, not cold ones.</b> Alerts tell your team what's wrong before the customer even calls.</li>
     </ul>
-    <div class="vid shot"><video muted loop playsinline preload="none" poster="sched.jpg?v=45351798" data-lazy="sched.mp4" aria-label="Homeowner booking service from the thermostat"></video></div>
+    <div class="stbox">
+      <div class="sttxt"><div class="sttag">ServiceTitan users only</div>
+      <p>If Aire Serv runs on ServiceTitan, homeowners can book straight into your schedule from the thermostat. No phone tag, no call center.</p></div>
+      <div class="vid shot"><video muted loop playsinline preload="none" poster="sched.jpg?v=45351798" data-lazy="sched.mp4" aria-label="ServiceTitan users: homeowner booking service from the thermostat"></video></div>
+    </div>
   </div>
 
   <div class="pane glow" id="p-tech">
