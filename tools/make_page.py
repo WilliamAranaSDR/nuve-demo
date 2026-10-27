@@ -327,6 +327,7 @@ def main():
     ap.add_argument('--no-videos', action='store_true', help='skip branding the app, stat and dashboard clips')
     ap.add_argument('--plumbing', action='store_true', help='add the water-sensor section with a branded "Smarter Protection" flyer')
     ap.add_argument('--servicetitan', action='store_true', help='add the "Works with ServiceTitan" section (they run on ServiceTitan)')
+    ap.add_argument('--flyer', help='ready-made water-sensor flyer image for this prospect (used as-is instead of the generated one)')
     ap.add_argument('--flyer-note', help='fine print under the water-sensor flyer, e.g. "Remote main valve shut-off coming soon."')
     ap.add_argument('--st-unconfirmed', action='store_true', help='ServiceTitan section copy says "if you run on ServiceTitan" instead of stating they do')
     ap.add_argument('--section', help='per-prospect HTML snippet file (e.g. <slug>/section.html) inserted before the other extra sections; {{SHORT}} and {{COMPANY}} are filled in')
@@ -397,7 +398,10 @@ def main():
     if args.section:
         extra.append(open(args.section, encoding='utf-8').read().replace('{{SHORT}}', short).replace('{{COMPANY}}', html.escape(args.company)) + '\n')
     if args.plumbing:
-        if logo is not None:
+        if args.flyer:
+            Image.open(args.flyer).convert('RGB').save(os.path.join(out, 'protect.jpg'), quality=92)
+            fly = 'protect.jpg'
+        elif logo is not None:
             make_flyer(logo).save(os.path.join(out, 'protect.jpg'), quality=92)
             fly = 'protect.jpg'
         else:
