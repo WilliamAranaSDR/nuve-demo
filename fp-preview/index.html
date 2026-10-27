@@ -64,7 +64,7 @@ p strong{color:var(--text);font-weight:600}
 .hero:before{content:"";position:absolute;inset:24px 0 auto;height:420px;
   background:radial-gradient(closest-side,rgba(var(--brand-rgb),.16),rgba(var(--brand2-rgb),.06) 55%,transparent 75%);pointer-events:none}
 .stat{width:min(70vw,300px);height:auto;margin:6px auto 24px;position:relative;animation:breathe 4.5s ease-in-out infinite}
-@keyframes breathe{0%,100%{filter:drop-shadow(0 8px 14px rgba(19,47,87,.18)) drop-shadow(0 0 6px rgba(var(--brand-rgb),.2))}50%{filter:drop-shadow(0 8px 14px rgba(19,47,87,.18)) drop-shadow(0 0 24px rgba(var(--brand-rgb),.5))}}
+@keyframes breathe{0%,100%{filter:drop-shadow(0 8px 14px rgba(19,47,87,.18)) drop-shadow(0 0 9px rgba(var(--brand-rgb),.32))}50%{filter:drop-shadow(0 8px 14px rgba(19,47,87,.18)) drop-shadow(0 0 30px rgba(var(--brand-rgb),.68))}}
 .hero p{max-width:420px;margin:14px auto 0}
 .ctas{display:flex;gap:10px;justify-content:center;margin-top:24px;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 22px;border-radius:11px;
@@ -134,7 +134,7 @@ p strong{color:var(--text);font-weight:600}
 .fa .fc-b .t p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 /* B: clip up front, details on the back */
 .fb .fc-f{background:#000;border-color:#0b1220}
-.fb .fc-f .m{position:absolute;inset:0}
+.fb .fc-f .m{position:absolute;inset:0;background:#000}
 .fb .fc-f .cap{position:absolute;left:0;right:0;bottom:0;padding:34px 12px 12px;background:linear-gradient(transparent,rgba(0,0,0,.82))}
 .fb .fc-f .cap h3{color:#fff}
 .fb .fc-f .flip{position:absolute;top:10px;right:10px}
@@ -195,7 +195,7 @@ p strong{color:var(--text);font-weight:600}
 
 /* ceo */
 .ceo{display:grid;grid-template-columns:110px 1fr;gap:16px;align-items:center;margin-top:18px;background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:14px}
-.ceo img{width:110px;height:140px;object-fit:cover;object-position:50% 20%;border-radius:10px;background:#000}
+.ceo img{width:110px;height:140px;object-fit:cover;object-position:50% 50%;border-radius:10px;background:#dff6fd}
 .ceo .big{font-family:Poppins,Inter,sans-serif;font-size:32px;font-weight:700;color:var(--brand-text);letter-spacing:-.02em;line-height:1}
 .ceo .big + span{display:block;margin-top:6px;font-size:13px;color:var(--muted)}
 
@@ -284,13 +284,13 @@ footer a{color:#5b6b80}
 <section class="band" id="feats"><div class="wrap">
   <div class="eyebrow">What your customers get</div>
   <h2>Your business, always within reach.</h2>
-  <div class="fgrid fa" id="fgrid">
+  <div class="fgrid fb" id="fgrid">
     <button class="fc" type="button" data-src="tap.jpg?v=2b9fa8c8" data-img="1" data-pos="8% 40%">
       <span class="fc-in">
         <span class="fc-f"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.3 2.3 4.7-5"/></svg></span><span class="m"></span><span class="cap"><h3>Logo Hosting</h3></span><span class="flip"></span></span>
         <span class="fc-b"><span class="m"></span><span class="t"><h3>Logo Hosting</h3><p>Your logo sits front and center on the thermostat. One tap and the homeowner is requesting service from you, or calling your team directly.</p></span><span class="flip"></span></span>
       </span></button>
-    <button class="fc" type="button" data-src="app.mp4?v=d9bb89e5" data-poster="app.jpg?v=bbb49213" data-pos="50% 50%">
+    <button class="fc" type="button" data-src="app.mp4?v=d9bb89e5" data-poster="app.jpg?v=bbb49213" data-pos="50% 50%" data-zoom=".88">
       <span class="fc-in">
         <span class="fc-f"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg></span><span class="m"></span><span class="cap"><h3>Custom App</h3></span><span class="flip"></span></span>
         <span class="fc-b"><span class="m"></span><span class="t"><h3>Custom App</h3><p>Customers download <strong>your</strong> app, not ours. Our design team builds it with your logo, so comfort, service and messaging all carry your name.</p></span><span class="flip"></span></span>
@@ -300,17 +300,17 @@ footer a{color:#5b6b80}
         <span class="fc-f"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></span><span class="m"></span><span class="cap"><h3>Custom Scheduling</h3></span><span class="flip"></span></span>
         <span class="fc-b"><span class="m"></span><span class="t"><h3>Custom Scheduling</h3><p>Schedules, vacation mode and temperature from the phone, anywhere. A premium experience that makes your install the best one they've had.</p></span><span class="flip"></span></span>
       </span></button>
-    <button class="fc" type="button" data-src="alerts.mp4?v=acdbb7ae" data-poster="alerts.jpg?v=6c11b062" data-pos="62% 50%">
+    <button class="fc" type="button" data-src="alerts.mp4?v=acdbb7ae" data-poster="alerts.jpg?v=6c11b062" data-pos="80% 50%" data-zoom=".8">
       <span class="fc-in">
         <span class="fc-f"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg></span><span class="m"></span><span class="cap"><h3>Alerts</h3></span><span class="flip"></span></span>
         <span class="fc-b"><span class="m"></span><span class="t"><h3>Alerts</h3><p>Real-time system alerts and maintenance reminders, sent to the homeowner and to you, so you're the first call, not the third quote.</p></span><span class="flip"></span></span>
       </span></button>
-    <button class="fc" type="button" data-src="remotediag.mp4?v=3007f3d8" data-poster="remotediag.jpg?v=f2fee1d1" data-pos="30% 50%">
+    <button class="fc" type="button" data-src="remotediag.mp4?v=3007f3d8" data-poster="remotediag.jpg?v=f2fee1d1" data-pos="33% 50%" data-zoom=".74" data-soft="1">
       <span class="fc-in">
         <span class="fc-f"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2.5-6 5 12 2.5-6h4"/></svg></span><span class="m"></span><span class="cap"><h3>Remote Diagnostics</h3></span><span class="flip"></span></span>
         <span class="fc-b"><span class="m"></span><span class="t"><h3>Remote Diagnostics</h3><p>See system health and performance across your installed base. Spot aging equipment and replacement work before the phone rings.</p></span><span class="flip"></span></span>
       </span></button>
-    <button class="fc" type="button" data-src="../assets/backlight.mp4" data-pos="50% 50%">
+    <button class="fc" type="button" data-src="../assets/backlight.mp4" data-pos="50% 50%" data-fit="contain" data-zoom="1.5">
       <span class="fc-in">
         <span class="fc-f"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M2 12h2.5M19.5 12H22M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg></span><span class="m"></span><span class="cap"><h3>Custom Backlight</h3></span><span class="flip"></span></span>
         <span class="fc-b"><span class="m"></span><span class="t"><h3>Custom Backlight</h3><p>Match the glow to your brand colors. It's a small detail homeowners notice and show off.</p></span><span class="flip"></span></span>
@@ -436,6 +436,12 @@ footer a{color:#5b6b80}
     else { el = document.createElement('video'); el.muted = true; el.loop = true; el.setAttribute('playsinline',''); el.preload = 'none';
       if (d.poster) el.poster = d.poster; el.dataset.src = d.src; }
     el.style.objectPosition = d.pos || '50% 50%';
+    // card clips: the black backgrounds blend, so a zoom below 1 shrinks the clip inside the card (lifted a bit above the title)
+    if (d.fit) el.style.objectFit = d.fit;
+    if (d.soft) {  // soften the clip's edges so its non-black glow fades into the card
+      var mk = 'radial-gradient(farthest-side, #000 70%, transparent 100%)';
+      el.style.webkitMaskImage = mk; el.style.maskImage = mk; }
+    if (d.zoom) el.style.transform = (d.zoom < 1 ? 'translateY(-' + Math.round((1 - d.zoom) * 30) + '%) ' : 'translateY(-6%) ') + 'scale(' + d.zoom + ')';
     return el;
   }
   function play(v){ if (!v || v.tagName !== 'VIDEO') return; if (!v.src) v.src = v.dataset.src; var p = v.play(); if (p) p.catch(function(){}); }
@@ -457,7 +463,7 @@ footer a{color:#5b6b80}
     var c = e.target.closest('.fc'); if (!c) return;
     grid.classList.remove('wiggle');
     if (mode === 'c') {
-      sm.innerHTML = ''; var el = media(c); el.style.objectPosition = '50% 50%'; sm.appendChild(el);
+      sm.innerHTML = ''; var el = media(c); el.style.objectPosition = '50% 50%'; el.style.transform = ''; el.style.objectFit = ''; el.style.webkitMaskImage = el.style.maskImage = ''; sm.appendChild(el);
       sheet.querySelector('h3').textContent = c.querySelector('.fc-b h3').textContent;
       sheet.querySelector('p').innerHTML = c.querySelector('.fc-b p').innerHTML;
       sheet.classList.add('open'); sheet.setAttribute('aria-hidden','false'); play(el); return;

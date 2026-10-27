@@ -330,7 +330,7 @@ def main():
     ap.add_argument('--flyer-note', help='fine print under the water-sensor flyer, e.g. "Remote main valve shut-off coming soon."')
     ap.add_argument('--st-unconfirmed', action='store_true', help='ServiceTitan section copy says "if you run on ServiceTitan" instead of stating they do')
     ap.add_argument('--section', help='per-prospect HTML snippet file (e.g. <slug>/section.html) inserted before the other extra sections; {{SHORT}} and {{COMPANY}} are filled in')
-    ap.add_argument('--feat-style', default='fa', choices=['fa', 'fb', 'fcx'], help='feature cards: fa = title front/clip back, fb = clip front/details back, fcx = clip tiles that open a sheet')
+    ap.add_argument('--feat-style', default='fb', choices=['fa', 'fb', 'fcx'], help='feature cards: fa = title front/clip back, fb = clip front/details back, fcx = clip tiles that open a sheet')
     ap.add_argument('--short', help='short company name for section copy, e.g. "Apex" (default: --company)')
     args = ap.parse_args()
 
