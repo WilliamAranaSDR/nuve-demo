@@ -305,7 +305,7 @@ footer a{color:#5b6b80}
         <span class="fc-f"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg></span><span class="m"></span><span class="cap"><h3>Alerts</h3></span><span class="flip"></span></span>
         <span class="fc-b"><span class="m"></span><span class="t"><h3>Alerts</h3><p>Real-time system alerts and maintenance reminders, sent to the homeowner and to you, so you're the first call, not the third quote.</p></span><span class="flip"></span></span>
       </span></button>
-    <button class="fc" type="button" data-src="{{RD_MP4}}" data-poster="{{RD_JPG}}" data-pos="50% 50%" data-fit="contain" data-tf="translate(2.8%,-11.8%) scale(1.6)">
+    <button class="fc" type="button" data-src="{{RD_MP4}}" data-poster="{{RD_JPG}}" data-pos="50% 50%" data-fit="contain" data-tf="translate(2.8%,-7.8%) scale(1.6)" data-clip="24.8%">
       <span class="fc-in">
         <span class="fc-f"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2.5-6 5 12 2.5-6h4"/></svg></span><span class="m"></span><span class="cap"><h3>Remote Diagnostics</h3></span><span class="flip"></span></span>
         <span class="fc-b"><span class="m"></span><span class="t"><h3>Remote Diagnostics</h3><p>See system health and performance across your installed base. Spot aging equipment and replacement work before the phone rings.</p></span><span class="flip"></span></span>
@@ -441,6 +441,7 @@ footer a{color:#5b6b80}
   cards.forEach(function(c){
     var f = c.querySelector('.fc-f'), b = c.querySelector('.fc-b');
     var fm = f.querySelector('.m'), bm = b.querySelector('.m');
+    if (c.dataset.clip) fm.style.clipPath = 'inset(0 0 ' + c.dataset.clip + ' 0)';  // straight cut just above the title
     if (mode === 'a') { fm.remove(); bm.appendChild(media(c)); }
     else { f.querySelector('.ic').remove(); fm.appendChild(media(c)); bm.remove(); }
     f.querySelector('.flip').innerHTML = mode === 'c' ? PLAY + 'Watch' : FLIP + 'Tap to flip';
