@@ -49,6 +49,20 @@ h1{font-family:Poppins,Inter,sans-serif;font-size:26px;font-weight:700;letter-sp
 .links{display:grid;gap:10px;margin-top:10px}
 .foot{margin-top:20px;font-size:13px;color:var(--muted)}
 .foot a{color:var(--muted)}
+.sheet{position:fixed;inset:0;z-index:40;display:none}
+.sheet.open{display:block}
+.sheet .bg{position:absolute;inset:0;background:rgba(19,47,87,.45);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.sheet .pn{position:absolute;left:0;right:0;bottom:0;max-width:560px;max-height:92vh;max-height:92dvh;margin:0 auto;background:#fff;border-radius:18px 18px 0 0;
+  padding:14px 16px calc(16px + env(safe-area-inset-bottom));display:flex;flex-direction:column;animation:up .28s ease-out}
+@keyframes up{from{transform:translateY(100%)}to{transform:none}}
+.sheet .bar2{width:40px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 10px;flex:none}
+.sheet h3{font-family:Poppins,Inter,sans-serif;font-size:18px;font-weight:600;text-align:center;flex:none;margin-bottom:10px}
+.sheet .x{position:absolute;top:12px;right:14px;width:32px;height:32px;border-radius:50%;border:0;background:var(--bg);color:var(--navy);font-size:18px;line-height:1;cursor:pointer}
+.cal{flex:1;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px}
+.cal iframe{width:100%;height:700px;border:0;display:block}
+.alt{text-align:center;margin-top:10px;font-size:13px;color:var(--muted);flex:none}
+.alt a{color:var(--navy);font-weight:600}
+body.locked{overflow:hidden}
 </style>
 </head>
 <body>
@@ -58,7 +72,7 @@ h1{font-family:Poppins,Inter,sans-serif;font-size:26px;font-weight:700;letter-sp
   <h1>William Arana</h1>
   <p class="role">Sales Development Representative, Nuve</p>
 
-  <a class="btn book" href="https://meetings.hubspot.com/william-arana" target="_blank" rel="noopener">
+  <a class="btn book" id="bookBtn" href="https://meetings.hubspot.com/william-arana" target="_blank" rel="noopener">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
     Book 20 min with William
   </a>
@@ -87,5 +101,25 @@ h1{font-family:Poppins,Inter,sans-serif;font-size:26px;font-weight:700;letter-sp
 
   <p class="foot"><a href="mailto:william@nuvehome.com">william@nuvehome.com</a> · (714) 474-4974</p>
 </main>
+
+<div class="sheet" id="sheet" aria-hidden="true"><div class="bg"></div><div class="pn" role="dialog" aria-modal="true" aria-label="Book a time with William">
+  <div class="bar2"></div><button class="x" aria-label="Close">&times;</button>
+  <h3>Book 20 min with William</h3>
+  <div class="cal"><iframe id="calFrame" title="Book a time with William" data-src="https://meetings.hubspot.com/william-arana?embed=true"></iframe></div>
+  <p class="alt">Calendar not loading? <a href="https://meetings.hubspot.com/william-arana" target="_blank" rel="noopener">Open it here</a> or <a href="sms:+17144744974">text me</a>.</p>
+</div></div>
+
+<script>
+(function(){
+  var sheet=document.getElementById('sheet'), f=document.getElementById('calFrame');
+  function open(e){ if(e) e.preventDefault(); if(!f.src) f.src=f.dataset.src;
+    sheet.classList.add('open'); sheet.setAttribute('aria-hidden','false'); document.body.classList.add('locked'); }
+  function close(){ sheet.classList.remove('open'); sheet.setAttribute('aria-hidden','true'); document.body.classList.remove('locked'); }
+  document.getElementById('bookBtn').addEventListener('click',open);
+  sheet.querySelector('.bg').onclick=close; sheet.querySelector('.x').onclick=close;
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+  if(location.hash==='#book') open();
+})();
+</script>
 </body>
 </html>
