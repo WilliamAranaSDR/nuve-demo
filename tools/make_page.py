@@ -364,7 +364,7 @@ def main():
         else:
             brand = brand_color(prep_logo(args.logo, keep_dark=True))
         if args.tile_color: os.environ['NUVE_TILE_COLOR'] = args.tile_color
-        brand_videos.brand_all(prep_logo(args.logo, keep_dark=True), logo, brand, out, bg=brand_videos.logo_bg(args.logo))
+        brand_videos.brand_all(prep_logo(args.logo, keep_dark=True), logo, brand, out, bg=brand_videos.logo_bg(args.logo), stat=stat)
         vids = {k: k for k in vids}
         print('videos branded, theme color #%02x%02x%02x' % brand)
 

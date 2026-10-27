@@ -512,6 +512,118 @@ def brand_phone(logo_light, out_dir):
     return out
 
 
+
+# ---------- V2 stat face swap (the clips were shot with the V1 face) ----------
+V2_C, V2_R = (532.0, 546.0), 486.0       # bezel center/radius in the page's 2x stat.png
+AL_DISC = (13.5, 248.5, 117.5)           # alerts: disc center = (wordmark x + 13.5, 248.5), outer radius
+
+
+def v2_disc(stat, r_out, ss=4):
+    """The prospect's V2 stat (logo already on it) cut to its bezel, sized to outer radius r_out (float px).
+    Returns (PIL RGBA image, offset) so the disc center lands on (x + r_out_px, y + r_out_px)."""
+    cx, cy = V2_C; R = V2_R + 2
+    crop = stat.crop((int(cx - R), int(cy - R), int(cx + R), int(cy + R))).convert('RGBA')
+    n = crop.width
+    yy, xx = np.mgrid[:n, :n]; d = np.hypot(xx - n / 2 + .5, yy - n / 2 + .5)
+    a = np.clip(V2_R + .5 - d, 0, 1) * 255
+    arr = np.array(crop); arr[:, :, 3] = (arr[:, :, 3].astype(float) * a / 255).astype(np.uint8)
+    disc = Image.fromarray(arr)
+    size = max(2, int(round(2 * r_out * R / V2_R)))
+    return disc.resize((size * ss, size * ss), Image.LANCZOS).resize((size, size), Image.LANCZOS)
+
+
+def card_box(f, cx, cy, r):
+    """Bounding box of the grey alert card drawn over the stat face, or None."""
+    x0, y0 = int(max(0, cx - r)), int(max(0, cy - r)); x1, y1 = int(min(f.shape[1], cx + r)), int(min(f.shape[0], cy + r))
+    sub = f[y0:y1, x0:x1].astype(np.int16)
+    g = sub.mean(2); neutral = (np.abs(sub[:, :, 0] - sub[:, :, 2]) < 14) & (g > 45) & (g < 130)
+    # erode so small grey V1 elements (pills, buttons) that touch the card don't widen its box
+    E = 7
+    core = cv2.erode(cv2.morphologyEx(neutral.astype(np.uint8), cv2.MORPH_CLOSE, np.ones((5, 5), np.uint8)), np.ones((2 * E + 1, 2 * E + 1), np.uint8))
+    n, lab, st, _ = cv2.connectedComponentsWithStats(core)
+    best = None
+    for k in range(1, n):
+        x, y, w, h, area = st[k]
+        if w > 0.25 * r and h > 0.15 * r and area > 0.5 * w * h and (best is None or area > best[4]): best = st[k]
+    if best is None: return None
+    x, y, w, h, _ = best
+    bx0, by0, bx1, by1 = max(0, x - E - 2), max(0, y - E - 2), x + w + E + 2, y + h + E + 2
+    # trim edge rows/cols that aren't mostly card grey (stray V1 pixels next to the card)
+    m = neutral[by0:by1, bx0:bx1]
+    rows = np.where(m.mean(1) > 0.45)[0]; cols = np.where(m.mean(0) > 0.45)[0]
+    if len(rows) and len(cols):
+        by0, by1, bx0, bx1 = by0 + rows[0], by0 + rows[-1] + 1, bx0 + cols[0], bx0 + cols[-1] + 1
+    return x0 + bx0, y0 + by0, x0 + bx1, y0 + by1
+
+
+def brand_alerts_v2(stat, out_dir):
+    fr, fps = read('alerts.mp4')
+    x, y, w, h = AL_WORD; P = 4
+    cref = cyanness(fr[AL_REF]); tpl = cref[y - P:y + h + P, x - P:x + w + P]; rpeak = cref[y:y + h, x:x + w].max()
+    xs, good = [], []
+    for f in fr:
+        c = cyanness(f); band = c[y - P - 6:y + h + P + 6, 250:]
+        _, mv, _, ml = cv2.minMaxLoc(cv2.matchTemplate(band, tpl, cv2.TM_CCOEFF_NORMED))
+        xs.append(ml[0] + 250 + P); good.append(mv > 0.55 and abs(ml[1] - 6) <= 2)
+    gi = [i for i, ok in enumerate(good) if ok]
+    if not gi: raise SystemExit('alerts: could not track the wordmark')
+    X = np.array(xs, float); first = gi[0]; j3 = gi[min(3, len(gi) - 1)]; v = (X[j3] - X[first]) / max(1, j3 - first)
+    for i in range(len(fr)):
+        if good[i]: continue
+        X[i] = X[first] + v * (i - first) if i < first else X[max(j for j in gi if j < i)]
+    ox, cy, r = AL_DISC
+    D = v2_disc(stat, r); dh = D.width / 2
+    ks = []
+    for i, f in enumerate(fr):
+        fx = int(round(X[i])); c = cyanness(f)
+        ks.append(float(np.clip(c[y:y + h, fx:fx + w].max() / rpeak, 0, 1)) if 0 <= fx < f.shape[1] - w else 0.0)
+    settled = next((i for i, k in enumerate(ks) if k > 0.9), len(fr))
+    out = []
+    for i, f in enumerate(fr):
+        g = f.copy(); k = ks[i]; cx = X[i] + ox
+        if k > 0.02:
+            box = card_box(f, cx, cy, r) if i > settled else None
+            # fade-in and the dim under the alert are both "darker", so scale the face, opaque over the V1 one
+            Dk = Image.fromarray((np.array(D).astype(float) * [k, k, k, 1]).astype(np.uint8))
+            paste(g, Dk, int(round(cx - dh)), int(round(cy - dh)))
+            if box: bx0, by0, bx1, by1 = box; g[by0:by1, bx0:bx1] = f[by0:by1, bx0:bx1]
+        out.append(g)
+    write(out, fps, os.path.join(out_dir, 'alerts.mp4'), 60, os.path.join(out_dir, 'alerts.jpg'))
+    return out
+
+
+RD_DISC = (396.0, 219.5, 61.5)          # remote diagnostics: static stat (1280x720)
+
+
+def brand_remote_v2(stat, out_dir):
+    fr, fps = read('remotediag.mp4')
+    cx, cy, r = RD_DISC; D = v2_disc(stat, r); dh = D.width / 2
+    out = []
+    for f in fr:
+        g = f.copy(); paste(g, D, int(round(cx - dh)), int(round(cy - dh))); out.append(g)
+    write(out, fps, os.path.join(out_dir, 'remotediag.mp4'), 36, os.path.join(out_dir, 'remotediag.jpg'))
+    return out
+
+
+TAP_DISC = (179.0, 126.0, 50.0)         # tap.jpg: stat on the wall (hands overlap both sides)
+
+
+def brand_tap_v2(stat, out_dir):
+    im = cv2.imread(os.path.join(ASSETS, 'tap.jpg'))
+    cx, cy, r = TAP_DISC; D = v2_disc(stat, r); dh = D.width / 2
+    x, y = int(round(cx - dh)), int(round(cy - dh))
+    # keep the fingers in front: drop disc pixels where the photo shows skin
+    b, gch, rch = [im[:, :, k].astype(int) for k in range(3)]
+    skin = ((rch > 95) & (rch - b > 22) & (rch - gch > 8)).astype(np.uint8)
+    skin = cv2.GaussianBlur(cv2.dilate(skin, np.ones((3, 3), np.uint8)).astype(np.float32), (3, 3), 0)
+    arr = np.array(D).astype(np.float32)
+    h, w = arr.shape[:2]; sk = skin[y:y + h, x:x + w]
+    arr[:sk.shape[0], :sk.shape[1], 3] *= (1 - sk)
+    paste(im, Image.fromarray(arr.astype(np.uint8)), x, y)
+    cv2.imwrite(os.path.join(out_dir, 'tap.jpg'), im, [cv2.IMWRITE_JPEG_QUALITY, 90])
+    return im
+
+
 # ---------- remote diagnostics clip: small stat next to the condenser ----------
 RD_C, RD_MAX = (397, 249.5), (42, 15)   # between the menu and calendar icons (1280x720 base)
 
@@ -527,13 +639,15 @@ def brand_remote(logo_light, out_dir):
     return out
 
 
-def brand_all(logo_color, logo_light, brand, out_dir, bg=None):
+def brand_all(logo_color, logo_light, brand, out_dir, bg=None, stat=None):
+    """stat: the page's 2x stat.png (V2 face with the logo). When given, the stat in the alerts,
+    wall-photo and remote-diagnostics visuals is swapped from the V1 face to that V2 face."""
     a = brand_app(logo_light, brand, out_dir, logo_color=logo_color)
-    b = brand_alerts(logo_light, out_dir)
+    b = brand_alerts_v2(stat, out_dir) if stat is not None else brand_alerts(logo_light, out_dir)
     c = brand_dashboard(logo_color, brand, out_dir)
-    t = brand_tap(logo_light, out_dir)
+    t = brand_tap_v2(stat, out_dir) if stat is not None else brand_tap(logo_light, out_dir)
     p = brand_phone(logo_light, out_dir)
-    r = brand_remote(logo_light, out_dir)
+    r = brand_remote_v2(stat, out_dir) if stat is not None else brand_remote(logo_light, out_dir)
     # review sheet: one settled frame from each clip, plus zooms on the small logos (gitignored)
     th = 300
     row = lambda ims: np.hstack([cv2.resize(t, (int(t.shape[1] * th / t.shape[0]), th)) for t in ims])
