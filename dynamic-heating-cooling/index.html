@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nuve for Dynamic Heating and Cooling</title>
+<meta name="description" content="Your logo on a smart thermostat inside every home you service. Built for Dynamic Heating and Cooling.">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Built for Dynamic Heating and Cooling | Nuve">
+<meta property="og:description" content="Your brand inside every home you service. Repeat jobs without rebuying leads.">
+<meta property="og:url" content="https://williamaranasdr.github.io/nuve-demo/dynamic-heating-cooling/">
+<meta property="og:image" content="https://williamaranasdr.github.io/nuve-demo/dynamic-heating-cooling/og.jpg?v=4c3af2b2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://williamaranasdr.github.io/nuve-demo/dynamic-heating-cooling/og.jpg?v=4c3af2b2">
+<meta name="theme-color" content="#e9fbff">
+<link rel="apple-touch-icon" href="stat.png?v=12819a92">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Nuve brand: #000000 #42e8ff #82eeff #bbfdff #132f57 #a6f0e8 #ffffff #f5f7fa #a0aec0 #2d3748 */
+:root{
+  --bg:#f5f7fa; --band:#ffffff; --card:#ffffff; --card2:#f5f7fa; --line:#e3e8ef;
+  --text:#132f57; --body:#2d3748; --muted:#5b6b80; --cyan:#42e8ff; --cyan2:#82eeff; --ice:#bbfdff; --mint:#a6f0e8; --navy:#132f57;
+  --brand:#4fd9d2; --brand-rgb:79,217,210; --brand2:#4fd9d2; --brand2-rgb:79,217,210; --brand-ink:#06090c;
+  --brand-text:#1b7e79;
+  --edge:rgba(var(--brand-rgb),.38);
+  --shadow:0 10px 28px -18px rgba(19,47,87,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--body);font-family:Inter,system-ui,-apple-system,sans-serif;line-height:1.55;
+  padding-bottom:calc(84px + env(safe-area-inset-bottom));overflow-x:hidden}
+img,video{display:block;max-width:100%}
+a{color:inherit}
+button{font:inherit;color:inherit}
+.wrap{max-width:520px;margin:0 auto;padding:0 20px}
+section{padding:56px 0;position:relative}
+.band{background:var(--band);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:Poppins,Inter,sans-serif;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--brand-text)}
+.eyebrow:before{content:"";width:18px;height:3px;border-radius:2px;background:var(--brand)}
+h1,h2,h3{font-family:Poppins,Inter,sans-serif;color:var(--text)}
+h1{font-size:clamp(32px,9vw,44px);line-height:1.08;font-weight:700;letter-spacing:-.02em}
+h2{font-size:clamp(25px,7vw,32px);line-height:1.15;font-weight:700;letter-spacing:-.015em;margin:10px 0 14px}
+h3{font-size:17px;font-weight:600;letter-spacing:-.005em}
+p{color:var(--muted);font-size:16px}
+p strong{color:var(--text);font-weight:600}
+/* Nuve-cyan marker under highlighted words */
+.hl{color:var(--text);background:linear-gradient(transparent 60%,var(--cyan2) 60%,var(--cyan2) 92%,transparent 92%);padding:0 2px}
+
+/* top */
+.top{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 0;max-width:520px;margin:0 auto;position:relative;z-index:1}
+.nuve{display:block;height:24px;width:auto;flex:none}
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--text);
+  background:rgba(255,255,255,.85);border:1px solid var(--line);border-radius:99px;padding:6px 12px;max-width:74%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pill i{width:8px;height:8px;border-radius:50%;background:var(--brand);flex:none}
+
+/* hero: soft Nuve gradient like the brand header */
+.head{background:linear-gradient(180deg,#d9fbff 0%,#eef4ff 55%,var(--bg) 100%)}
+.hero{padding:22px 20px 44px;text-align:center;position:relative}
+.hero:before{content:"";position:absolute;inset:24px 0 auto;height:420px;
+  background:radial-gradient(closest-side,rgba(var(--brand-rgb),.16),rgba(var(--brand2-rgb),.06) 55%,transparent 75%);pointer-events:none}
+.stat{width:min(70vw,300px);height:auto;margin:6px auto 24px;position:relative;animation:breathe 4.5s ease-in-out infinite}
+@keyframes breathe{0%,100%{filter:drop-shadow(0 8px 14px rgba(19,47,87,.18)) drop-shadow(0 0 9px rgba(var(--brand-rgb),.32))}50%{filter:drop-shadow(0 8px 14px rgba(19,47,87,.18)) drop-shadow(0 0 30px rgba(var(--brand-rgb),.68))}}
+.hero p{max-width:420px;margin:14px auto 0}
+.ctas{display:flex;gap:10px;justify-content:center;margin-top:24px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 22px;border-radius:11px;
+  font-weight:600;font-size:16px;text-decoration:none;border:0;cursor:pointer}
+.btn-p{background:var(--cyan);color:var(--navy);box-shadow:0 8px 24px -10px rgba(20,170,200,.7)}
+.btn-s{background:#fff;color:var(--text);border:1px solid var(--line);box-shadow:var(--shadow)}
+.btn svg{width:18px;height:18px}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:4px 0 12px}
+.stats div{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--brand);border-radius:13px;padding:16px 10px;text-align:center;box-shadow:var(--shadow)}
+.stats b{display:block;font-family:Poppins,Inter,sans-serif;font-size:24px;font-weight:700;color:var(--text);letter-spacing:-.02em}
+.stats span{display:block;font-size:12px;color:var(--muted);line-height:1.3;margin-top:4px}
+
+/* problem */
+.cost{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;margin:22px 0 14px;padding:16px 18px;border-radius:13px;
+  background:var(--card);border:1px solid var(--line);border-left:4px solid var(--brand);box-shadow:var(--shadow)}
+.cost b{white-space:nowrap;font-family:Poppins,Inter,sans-serif;font-size:36px;font-weight:700;letter-spacing:-.02em;color:var(--text)}
+.cost span{color:var(--muted);font-size:15px}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+.vs div{border-radius:13px;padding:16px;border:1px solid var(--line);background:var(--card)}
+.vs div:first-child{background:#eef1f5}
+.vs div:first-child h3{color:var(--muted)}
+.vs div:last-child{border:1.5px solid var(--brand);background:linear-gradient(180deg,rgba(var(--brand-rgb),.10),#fff 70%);box-shadow:0 10px 26px -16px rgba(var(--brand-rgb),.6)}
+.vs div:last-child h3{color:var(--brand-text)}
+.vs h3{font-size:14px;margin-bottom:8px}
+.vs ul{list-style:none;font-size:14px;color:var(--muted);display:grid;gap:6px}
+.vs div:last-child ul{color:var(--text);font-weight:500}
+
+/* single feature card (dashboard) */
+.feat{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-top:22px;box-shadow:var(--shadow)}
+.feat .media{background:#000;aspect-ratio:16/10;overflow:hidden}
+.feat .media video,.feat .media img{width:100%;height:100%;object-fit:contain}
+.feat .txt{padding:18px 18px 20px}
+.feat .txt h3{display:flex;align-items:center;gap:10px}
+.feat .txt h3:before{content:"";flex:none;width:4px;height:18px;border-radius:2px;background:var(--brand)}
+.feat .txt p{font-size:15px;margin-top:6px}
+
+/* feature flip cards */
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
+.fc{position:relative;aspect-ratio:4/5;perspective:1000px;border:0;background:none;padding:0;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.fc-in{position:absolute;inset:0;transition:transform .6s cubic-bezier(.3,.7,.3,1);transform-style:preserve-3d}
+.fc.on .fc-in{transform:rotateY(180deg)}
+.fc-f,.fc-b{position:absolute;inset:0;border-radius:16px;overflow:hidden;-webkit-backface-visibility:hidden;backface-visibility:hidden;
+  border:1px solid var(--line);box-shadow:var(--shadow);display:flex;flex-direction:column}
+.fc-b{transform:rotateY(180deg)}
+.fc h3{font-size:15px;line-height:1.25}
+.fc p{font-size:13px;line-height:1.45}
+.fc .m{background:#000;overflow:hidden;position:relative}
+.fc .m img,.fc .m video{width:100%;height:100%;object-fit:cover}
+.flip{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--navy);background:var(--ice);border-radius:99px;padding:4px 9px 4px 7px;white-space:nowrap}
+.flip svg{width:13px;height:13px;flex:none}
+.hint{font-size:13px;color:var(--muted);margin-top:12px;text-align:center}
+@keyframes nudge{0%,100%{transform:rotateY(0)}40%{transform:rotateY(-16deg)}70%{transform:rotateY(5deg)}}
+.fgrid.wiggle .fc:first-child .fc-in{animation:nudge 1.1s ease-in-out 2}
+
+/* A: titles up front, clip on the back */
+.fa .fc-f{background:#fff;padding:16px 14px 14px;justify-content:space-between}
+.fa .fc-f .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:rgba(var(--brand-rgb),.14);color:var(--brand-text)}
+.fa .fc-f .ic svg{width:24px;height:24px}
+.fa .fc-f .cap{margin-top:auto;margin-bottom:12px}
+.fa .fc-f .flip{align-self:flex-start}
+.fa .fc-f h3{font-size:17px}
+.fa .fc-b{background:#fff}
+.fa .fc-b .m{flex:1}
+.fa .fc-b .t{padding:10px 12px 12px}
+.fa .fc-b .t p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+/* B: clip up front, details on the back */
+.fb .fc-f{background:#000;border-color:#0b1220}
+.fb .fc-f .m{position:absolute;inset:0;background:#000}
+.fb .fc-f .cap{position:absolute;left:0;right:0;bottom:0;padding:34px 12px 12px;background:linear-gradient(transparent,rgba(0,0,0,.82))}
+.fb .fc-f .cap h3{color:#fff}
+.fb .fc-f .flip{position:absolute;top:10px;right:10px}
+.fb .fc-b{background:#fff;padding:14px 13px;gap:6px}
+.fb .fc-b h3{color:var(--brand-text);padding-right:34px;margin-bottom:4px}
+.fb .fc-b .flip,.fa .fc-b .flip{position:absolute;top:8px;right:8px;padding:6px}
+.fb .fc-b .flip b,.fa .fc-b .flip b{display:none}
+/* C: clip tiles that open a sheet (no flip) */
+.fcx .fc{aspect-ratio:4/5}
+.fcx .fc-f{background:#000}
+.fcx .fc-f .m{position:absolute;inset:0}
+.fcx .fc-f .cap{position:absolute;left:0;right:0;bottom:0;padding:34px 12px 12px;background:linear-gradient(transparent,rgba(0,0,0,.82))}
+.fcx .fc-f .cap h3{color:#fff}
+.fcx .fc-f .flip{position:absolute;top:10px;right:10px}
+.fcx .fc-b{display:none}
+.sheet{position:fixed;inset:0;z-index:40;display:none}
+.sheet.open{display:block}
+.sheet .bg{position:absolute;inset:0;background:rgba(19,47,87,.45);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.sheet .pn{position:absolute;left:0;right:0;bottom:0;max-width:560px;margin:0 auto;background:#fff;border-radius:18px 18px 0 0;padding:14px 16px calc(20px + env(safe-area-inset-bottom));animation:up .28s ease-out}
+@keyframes up{from{transform:translateY(100%)}}
+.sheet .bar2{width:40px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 12px}
+.sheet .m{background:#000;border-radius:13px;overflow:hidden;aspect-ratio:16/10}
+.sheet .m img,.sheet .m video{width:100%;height:100%;object-fit:contain}
+.sheet h3{margin-top:14px;font-size:19px}
+.sheet p{margin-top:6px;font-size:15px}
+.sheet .x{position:absolute;top:12px;right:14px;width:32px;height:32px;border-radius:50%;border:0;background:var(--bg);font-size:18px;line-height:1;cursor:pointer}
+
+/* list */
+.checks{list-style:none;display:grid;gap:10px;margin-top:18px}
+.checks li{display:flex;gap:12px;align-items:flex-start;font-weight:600;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:11px;padding:14px;box-shadow:var(--shadow)}
+.checks li:before{content:"";flex:none;width:24px;height:24px;border-radius:50%;margin-top:1px;
+  background:var(--brand) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2306090c' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E") center/13px no-repeat}
+.checks li span{display:block;font-weight:400;color:var(--muted);font-size:14px;margin-top:2px}
+
+/* steps */
+.steps{counter-reset:s;display:grid;gap:12px;margin-top:20px}
+.steps div{counter-increment:s;display:flex;gap:14px;background:var(--card2);border:1px solid var(--line);border-radius:13px;padding:16px}
+.steps div:before{content:counter(s);flex:none;width:34px;height:34px;border-radius:8px;background:var(--brand);color:var(--brand-ink);
+  font-family:Poppins,Inter,sans-serif;font-weight:700;display:grid;place-items:center}
+.steps p{font-size:14px;margin-top:2px}
+
+/* testimonials */
+.gbadge{display:inline-flex;white-space:nowrap;align-items:center;gap:8px;margin-top:2px;font-size:14px;font-weight:600;color:var(--text);text-decoration:none;
+  background:#fff;border:1px solid var(--line);border-radius:99px;padding:7px 14px;box-shadow:var(--shadow)}
+.gbadge .stars{font-size:13px}
+.gbadge u{text-decoration:none;color:var(--muted);font-weight:500}
+.rail{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 20px 14px;margin:18px -20px 0;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.quote{flex:0 0 86%;scroll-snap-align:center;background:var(--card);border:1px solid var(--line);border-top:3px solid var(--brand);border-radius:16px;padding:22px 20px;display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.stars{color:#f5b301;letter-spacing:2px;font-size:15px}
+.quote blockquote{font-size:16px;line-height:1.55;color:var(--body);margin:12px 0 16px;flex:1}
+.quote cite{font-style:normal;font-weight:600;color:var(--text);font-size:14px;padding-top:12px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.quote cite span{display:block;font-weight:500;color:var(--muted);font-size:13px}
+.quote cite a{flex:none;font-size:13px;font-weight:600;color:var(--navy);text-decoration:none;background:var(--ice);border-radius:99px;padding:5px 10px}
+.dots{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.dots i{width:6px;height:6px;border-radius:50%;background:#cfd6e0;transition:.2s}
+.dots i.on{background:var(--brand);width:18px;border-radius:3px}
+
+/* ceo */
+.ceo{display:grid;grid-template-columns:110px 1fr;gap:16px;align-items:center;margin-top:18px;background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:14px}
+.ceo img{width:110px;height:140px;object-fit:cover;object-position:50% 50%;border-radius:10px;background:#dff6fd}
+.ceo .big{font-family:Poppins,Inter,sans-serif;font-size:32px;font-weight:700;color:var(--brand-text);letter-spacing:-.02em;line-height:1}
+.ceo .big + span{display:block;margin-top:6px;font-size:13px;color:var(--muted)}
+
+/* book */
+.book{background:linear-gradient(180deg,#e3fbff,var(--bg) 45%);border-top:1px solid var(--line)}
+.me{display:flex;gap:14px;align-items:center;margin:18px 0 18px}
+.me img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid #fff;box-shadow:0 0 0 2px var(--cyan),var(--shadow)}
+.me b{display:block;font-size:17px;color:var(--text)}
+.me span{font-size:14px;color:var(--muted)}
+.cal{background:#fff;border-radius:14px;overflow:hidden;min-height:640px;border:1px solid var(--line);box-shadow:var(--shadow)}
+.cal iframe{width:100%;height:700px;border:0;display:block}
+.alt{text-align:center;margin-top:16px;font-size:14px;color:var(--muted)}
+.alt a{color:var(--navy);font-weight:600}
+
+footer{padding:28px 0 20px;text-align:center;font-size:12px;color:#7a8799}
+footer .guides{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 16px;margin-bottom:14px;font-size:13px}
+footer a{color:#5b6b80}
+.flyer{border-radius:14px;overflow:hidden;border:1px solid var(--line);margin-top:20px;background:#fff;box-shadow:var(--shadow)}
+.flyer img{width:100%;display:block}
+.fine{font-size:12px;color:var(--muted);margin-top:8px;text-align:center;font-style:italic}
+.trades{display:grid;gap:10px;margin-top:18px}
+.trades div{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--brand);border-radius:11px;padding:14px;box-shadow:var(--shadow)}
+.trades b{display:block;color:var(--text);font-size:15px}
+.trades p{font-size:14px;margin-top:4px}
+/* ServiceTitan section sits on a dark navy band, so its logo stays light */
+.st-band{background:var(--navy);color:#eef3f6;border:0}
+.st-band h2{color:#fff}.st-band p{color:#c3cede}.st-band .eyebrow{color:var(--cyan)}.st-band .eyebrow:before{background:var(--cyan)}
+.st-logo{display:block;width:118px;height:auto;margin:0 0 18px;opacity:.94}
+.st{display:grid;gap:12px;margin-top:20px}
+.st div{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:13px;padding:16px 16px 16px 18px;border-left:4px solid var(--cyan)}
+.st b{display:block;font-size:16px;margin-bottom:4px;color:#fff}
+.st p{font-size:14px}
+
+/* sticky bar */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+  background:rgba(255,255,255,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);
+  display:flex;gap:10px;justify-content:center;transform:translateY(110%);transition:transform .3s}
+.bar.show{transform:none}
+.bar .btn{height:50px;flex:1;max-width:260px}
+.bar .btn-s{flex:0 0 auto;box-shadow:none}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s,transform .6s}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.stat{animation:none}.reveal{opacity:1;transform:none;transition:none}.fc-in{transition:none}.fgrid.wiggle .fc:first-child .fc-in{animation:none}}
+</style>
+</head>
+<body>
+
+<div class="head">
+<div class="top">
+  <img class="nuve" src="../assets/nuve-logo.png" alt="Nuve" width="110" height="26">
+  <span class="pill"><i></i>Prepared for Dynamic Heating and Cooling</span>
+</div>
+
+<header class="hero wrap">
+  <img class="stat" src="stat.png?v=12819a92" alt="Nuve smart thermostat with the Dynamic Heating and Cooling logo" width="532" height="543">
+  <div class="eyebrow" style="font-size:11px;letter-spacing:.08em;white-space:nowrap">Built by contractors, for contractors</div>
+  <h1 style="margin-top:10px">Your brand.<br><span class="hl">Inside every home.</span></h1>
+  <p>Shawn, here's what Dynamic Heating and Cooling looks like on the wall. Your logo on the thermostat your customers touch every day, so repeat service comes straight to you across Hamilton instead of the next ad they click.</p>
+  <div class="ctas">
+    <a class="btn btn-p" href="#book">Book 20 min with Will</a>
+    <a class="btn btn-s" href="sms:+17144744974?&body=Hi%20Will%2C%20it%27s%20Shawn%20from%20Dynamic%20Heating%20and%20Cooling.%20I%20checked%20out%20the%20Nuve%20page...">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Text me</a>
+  </div>
+</header>
+</div>
+
+<div class="wrap">
+  <div class="stats reveal">
+    <div><b>1,000+</b><span>contractors on Nuve</span></div>
+    <div><b>3x</b><span>repeat service revenue per customer</span></div>
+    <div><b>40%</b><span>less reliance on paid leads</span></div>
+  </div>
+</div>
+
+<section class="reveal"><div class="wrap">
+  <div class="eyebrow">The problem</div>
+  <h2>Stop paying to win back customers you already earned.</h2>
+  <div class="cost"><b>$75–150</b><span>per lead, just to get a past customer back on the phone</span></div>
+  <p>Once the install is done, your customer forgets your name and Googles "AC repair near me" next time. Nuve keeps <strong>Dynamic Heating and Cooling</strong> one tap away, every day of the year.</p>
+  <div class="vs">
+    <div><h3>Without Nuve</h3><ul><li>Buy the lead again</li><li>Compete with other shops</li><li>Slow shoulder seasons</li></ul></div>
+    <div><h3>With Nuve</h3><ul><li>Customer taps your logo</li><li>Call comes to you</li><li>Alerts create the work</li></ul></div>
+  </div>
+</div></section>
+
+<section class="band" id="feats"><div class="wrap">
+  <div class="eyebrow">What your customers get</div>
+  <h2>Your business, always within reach.</h2>
+  <div class="fgrid fb" id="fgrid">
+    <button class="fc" type="button" data-src="tap.jpg?v=876be331" data-img="1" data-pos="8% 40%">
+      <span class="fc-in">
+        <span class="fc-f"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.3 2.3 4.7-5"/></svg></span><span class="m"></span><span class="cap"><h3>Logo Hosting</h3></span><span class="flip"></span></span>
+        <span class="fc-b"><span class="m"></span><span class="t"><h3>Logo Hosting</h3><p>Your logo sits front and center on the thermostat. One tap and the homeowner is requesting service from you, or calling your team directly.</p></span><span class="flip"></span></span>
+      </span></button>
+    <button class="fc" type="button" data-src="app.mp4?v=fb08b1b4" data-poster="app.jpg?v=70ce6541" data-pos="50% 50%" data-zoom=".88">
+      <span class="fc-in">
+        <span class="fc-f"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg></span><span class="m"></span><span class="cap"><h3>Custom App</h3></span><span class="flip"></span></span>
+        <span class="fc-b"><span class="m"></span><span class="t"><h3>Custom App</h3><p>Customers download <strong>your</strong> app, not ours. Our design team builds it with your logo, so comfort, service and messaging all carry your name.</p></span><span class="flip"></span></span>
+      </span></button>
+    <button class="fc" type="button" data-src="phone.mp4?v=7b1f8692" data-poster="phone.jpg?v=e2896b41" data-pos="50% 50%">
+      <span class="fc-in">
+        <span class="fc-f"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></span><span class="m"></span><span class="cap"><h3>Custom Scheduling</h3></span><span class="flip"></span></span>
+        <span class="fc-b"><span class="m"></span><span class="t"><h3>Custom Scheduling</h3><p>Schedules, vacation mode and temperature from the phone, anywhere. A premium experience that makes your install the best one they've had.</p></span><span class="flip"></span></span>
+      </span></button>
+    <button class="fc" type="button" data-src="alerts.mp4?v=6e5fe999" data-poster="alerts.jpg?v=31f86a58" data-pos="50% 50%" data-fit="contain" data-tf="translate(1.8%,0) scale(1.8)">
+      <span class="fc-in">
+        <span class="fc-f"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg></span><span class="m"></span><span class="cap"><h3>Alerts</h3></span><span class="flip"></span></span>
+        <span class="fc-b"><span class="m"></span><span class="t"><h3>Alerts</h3><p>Real-time system alerts and maintenance reminders, sent to the homeowner and to you, so you're the first call, not the third quote.</p></span><span class="flip"></span></span>
+      </span></button>
+    <button class="fc" type="button" data-src="remotediag.mp4?v=44c7102d" data-poster="remotediag.jpg?v=2c631d4e" data-pos="50% 50%" data-fit="contain" data-tf="translate(2.8%,-7.8%) scale(1.6)" data-clip="24.8%">
+      <span class="fc-in">
+        <span class="fc-f"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2.5-6 5 12 2.5-6h4"/></svg></span><span class="m"></span><span class="cap"><h3>Remote Diagnostics</h3></span><span class="flip"></span></span>
+        <span class="fc-b"><span class="m"></span><span class="t"><h3>Remote Diagnostics</h3><p>See system health and performance across your installed base. Spot aging equipment and replacement work before the phone rings.</p></span><span class="flip"></span></span>
+      </span></button>
+    <button class="fc" type="button" data-src="../assets/backlight.mp4" data-pos="50% 50%" data-fit="contain" data-zoom="1.5">
+      <span class="fc-in">
+        <span class="fc-f"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M2 12h2.5M19.5 12H22M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg></span><span class="m"></span><span class="cap"><h3>Custom Backlight</h3></span><span class="flip"></span></span>
+        <span class="fc-b"><span class="m"></span><span class="t"><h3>Custom Backlight</h3><p>Match the glow to your brand colors. It's a small detail homeowners notice and show off.</p></span><span class="flip"></span></span>
+      </span></button>
+  </div>
+  <p class="hint" id="fhint"></p>
+</div></section>
+
+<div class="sheet" id="sheet" aria-hidden="true"><div class="bg"></div><div class="pn" role="dialog" aria-modal="true">
+  <div class="bar2"></div><button class="x" type="button" aria-label="Close">×</button>
+  <div class="m"></div><h3></h3><p></p>
+</div></div>
+
+<section class="reveal"><div class="wrap">
+  <div class="eyebrow">What you get</div>
+  <h2>Built to win the shoulder seasons.</h2>
+  <p>Nuve keeps demand flowing when calls slow down.</p>
+  <ul class="checks">
+    <li><div>Remote monitoring &amp; alerts<span>Know about problems across your customer base in real time.</span></div></li>
+    <li><div>Predictive maintenance opportunities<span>Turn system data into booked tune-ups and repairs.</span></div></li>
+    <li><div>Easier membership upsells<span>A device in the home makes service agreements an easy yes.</span></div></li>
+    <li><div>Works with ServiceTitan<span>Service requests sync to your CRM by Job ID, so nothing is retyped.</span></div></li>
+  </ul>
+  <div class="feat" style="margin-top:22px">
+    <div class="media"><video muted loop playsinline preload="none" poster="dashboard.jpg?v=e7df4fc0" data-src="dashboard.mp4?v=ee7c95c6"></video></div>
+    <div class="txt"><h3>The Nuve dashboard</h3><p>Every install, alert and service request in one place, so your team decides how customers reach you and when.</p></div>
+  </div>
+</div></section>
+
+<section class="band reveal"><div class="wrap">
+  <div class="eyebrow">Getting started</div>
+  <h2>LIVE with your logo, fast.</h2>
+  <div class="steps">
+    <div><span><h3>Send us your logo</h3><p>Our design team builds your branded thermostat screen and app.</p></span></div>
+    <div><span><h3>Install on your jobs</h3><p>Your techs put Nuve on the wall during installs and service calls.</p></span></div>
+    <div><span><h3>Customers tap you</h3><p>Repeat service, alerts and messages come straight to Dynamic Heating and Cooling.</p></span></div>
+  </div>
+</div></section>
+
+<section class="reveal">
+  <div class="wrap">
+    <div class="eyebrow">From contractors on Nuve</div>
+    <h2>Don't take our word for it.</h2>
+    <a class="gbadge" href="https://search.google.com/local/reviews?placeid=ChIJq3i6DzLR3IARXXAoxftYiG0" target="_blank" rel="noopener"><span class="stars">★★★★★</span>5.0 on Google <u>· Read reviews ↗</u></a>
+    <div class="rail" id="rail">
+      <figure class="quote"><div class="stars">★★★★★</div>
+        <blockquote>“If you’re doing your due diligence — this is it. This company is the one. I’ve been in the trades for over 20 years, and I’ve never experienced anything like Nuve. … The onboarding process was seamless, and the integration with our existing database and systems was handled with precision, care, and real follow-through.”</blockquote>
+        <cite><div>PROVAC Heating &amp; Cooling<span>HVAC contractor · Google review</span></div><a href="https://search.google.com/local/reviews?placeid=ChIJq3i6DzLR3IARXXAoxftYiG0" target="_blank" rel="noopener">Google ↗</a></cite></figure>
+      <figure class="quote"><div class="stars">★★★★★</div>
+        <blockquote>“We absolutely love our Polaris Smartstats!! Our customers love them, we continue to be present in our customer’s home all year around, and that is truly amazing!!!”</blockquote>
+        <cite><div>Clemente Luna<span>Luna Heating &amp; Cooling · branded theirs “Polaris Smartstat”</span></div><a href="https://search.google.com/local/reviews?placeid=ChIJq3i6DzLR3IARXXAoxftYiG0" target="_blank" rel="noopener">Google ↗</a></cite></figure>
+      <figure class="quote"><div class="stars">★★★★★</div>
+        <blockquote>“I have been purchasing the Nuve thermostat for about six months … and have been extremely pleased. The support on the back end has been nothing short of amazing. We now have an app for the Nuve thermostat that is called the True Pros app and it allows us to continue to stay in the forefront of customers’ minds.”</blockquote>
+        <cite><div>Kathryne Higgins<span>True Pros · Google review</span></div><a href="https://search.google.com/local/reviews?placeid=ChIJq3i6DzLR3IARXXAoxftYiG0" target="_blank" rel="noopener">Google ↗</a></cite></figure>
+      <figure class="quote"><div class="stars">★★★★★</div>
+        <blockquote>“Most innovative product out there HANDS DOWN! Absolutely love this product and the company. The customer service is amazing. … Contractors, if you are looking to revolutionize your company… look no further.”</blockquote>
+        <cite><div>Owner<span>Garrett Mechanical</span></div></cite></figure>
+      <figure class="quote"><div class="stars">★★★★★</div>
+        <blockquote>“Nuve has made it simple for me to stay connected with my clients, deliver added value, and deliver an extra ‘wow’ moment on every job. … [The team] has been super helpful and responsive in helping me get set up to offer this awesome product that further differentiates me from my competitors.”</blockquote>
+        <cite><div>Keith Saunders<span>HVAC contractor · Google review</span></div><a href="https://search.google.com/local/reviews?placeid=ChIJq3i6DzLR3IARXXAoxftYiG0" target="_blank" rel="noopener">Google ↗</a></cite></figure>
+    </div>
+    <div class="dots" id="dots"></div>
+  </div>
+</section>
+
+<section class="band reveal"><div class="wrap">
+  <div class="eyebrow">Built by a contractor</div>
+  <h2>Meet our CEO, Ismael Valdez.</h2>
+  <div class="ceo">
+    <img loading="lazy" src="../assets/ismael.jpg" alt="Ismael Valdez">
+    <div><div class="big">$100M+</div><span>exit after founding and scaling NexGen Air, one of Southern California’s largest HVAC companies</span></div>
+  </div>
+  <p style="margin-top:16px">Ismael built Nuve from decades of hands-on contractor experience. He knows what it costs to keep buying back your own customers, and he built the fix he wished he’d had.</p>
+</div></section>
+
+<section class="book" id="book">
+  <div class="wrap">
+    <div class="eyebrow">Next step</div>
+    <h2>Let’s see if Nuve fits Dynamic Heating and Cooling.</h2>
+    <div class="me">
+      <img src="../assets/will.jpg" alt="Will Arana">
+      <div><b>Will Arana</b><span>Nuve · 20 minutes, no pressure. I’ll show you your branded stat and app live.</span></div>
+    </div>
+    <div class="cal"><iframe loading="lazy" title="Book a time with Will" src="https://meetings.hubspot.com/william-arana?embed=true"></iframe></div>
+    <p class="alt">Calendar not loading? <a href="https://meetings.hubspot.com/william-arana">Open it here</a> or <a href="sms:+17144744974?&body=Hi%20Will%2C%20it%27s%20Shawn%20from%20Dynamic%20Heating%20and%20Cooling.%20I%20checked%20out%20the%20Nuve%20page...">text me</a>.</p>
+  </div>
+</section>
+
+<footer class="wrap"><div class="guides"><a href="https://www.nuvehome.com/user_guide/" target="_blank" rel="noopener">User guide</a><a href="https://howto.nuvehome.com/" target="_blank" rel="noopener">How-to videos</a><a href="https://www.nuvehome.com/wp-content/uploads/2024/07/Nuve-Thermostat-Installation-Guide-06252024.pdf" target="_blank" rel="noopener">Installation guide (PDF)</a><a href="https://www.nuvehome.com/installation-process/" target="_blank" rel="noopener">Installation process</a></div>Will Arana · Nuve · <a href="tel:+17144744974">(714) 474-4974</a> · <a href="mailto:william@nuvehome.com">william@nuvehome.com</a><br>© 2026 Nuve Inc.</footer>
+
+<nav class="bar" id="bar">
+  <a class="btn btn-p" href="#book">Book a time</a>
+  <a class="btn btn-s" href="sms:+17144744974?&body=Hi%20Will%2C%20it%27s%20Shawn%20from%20Dynamic%20Heating%20and%20Cooling.%20I%20checked%20out%20the%20Nuve%20page..." aria-label="Text Will">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Text</a>
+</nav>
+
+<script>
+(function(){
+  var io = 'IntersectionObserver' in window;
+  var FLIP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 21v-5h5"/></svg>';
+  var PLAY = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>';
+
+  // ---- feature cards ----
+  var grid = document.getElementById('fgrid'), style = grid.className.match(/\bf(a|b|cx)\b/);
+  var qs = /[?&]style=(a|b|c)\b/.exec(location.search);          // preview: ?style=a|b|c
+  if (qs) { grid.classList.remove('fa','fb','fcx'); grid.classList.add(qs[1]==='c' ? 'fcx' : 'f'+qs[1]); }
+  var mode = grid.classList.contains('fa') ? 'a' : grid.classList.contains('fb') ? 'b' : 'c';
+  var hint = document.getElementById('fhint');
+  hint.textContent = mode === 'c' ? 'Tap a card to watch it' : 'Tap a card to flip it';
+  function media(card, autoplay){
+    var d = card.dataset, el;
+    if (d.img) { el = document.createElement('img'); el.loading = 'lazy'; el.src = d.src; el.alt = ''; }
+    else { el = document.createElement('video'); el.muted = true; el.loop = true; el.setAttribute('playsinline',''); el.preload = 'none';
+      if (d.poster) el.poster = d.poster; el.dataset.src = d.src; }
+    el.style.objectPosition = d.pos || '50% 50%';
+    // card clips: the black backgrounds blend, so a zoom below 1 shrinks the clip inside the card (lifted a bit above the title)
+    if (d.fit) el.style.objectFit = d.fit;
+    if (d.soft) {  // soften the clip's edges so its non-black glow fades into the card
+      var mk = 'radial-gradient(farthest-side, #000 70%, transparent 100%)';
+      el.style.webkitMaskImage = mk; el.style.maskImage = mk; }
+    if (d.tf) el.style.transform = d.tf;  // exact framing, e.g. the alerts clip's last frame centered
+    else if (d.zoom) el.style.transform = (d.zoom < 1 ? 'translateY(-' + Math.round((1 - d.zoom) * 30) + '%) ' : 'translateY(-6%) ') + 'scale(' + d.zoom + ')';
+    return el;
+  }
+  function play(v){ if (!v || v.tagName !== 'VIDEO') return; if (!v.src) v.src = v.dataset.src; var p = v.play(); if (p) p.catch(function(){}); }
+  function stop(v){ if (v && v.tagName === 'VIDEO' && v.src) v.pause(); }
+  var cards = [].slice.call(grid.children);
+  cards.forEach(function(c){
+    var f = c.querySelector('.fc-f'), b = c.querySelector('.fc-b');
+    var fm = f.querySelector('.m'), bm = b.querySelector('.m');
+    if (c.dataset.clip) fm.style.clipPath = 'inset(0 0 ' + c.dataset.clip + ' 0)';  // straight cut just above the title
+    if (mode === 'a') { fm.remove(); bm.appendChild(media(c)); }
+    else { f.querySelector('.ic').remove(); fm.appendChild(media(c)); bm.remove(); }
+    f.querySelector('.flip').innerHTML = mode === 'c' ? PLAY + 'Watch' : FLIP + 'Tap to flip';
+    b.querySelector('.flip').innerHTML = FLIP + '<b>Flip back</b>';
+    c.setAttribute('aria-label', c.querySelector('h3').textContent);
+  });
+  var sheet = document.getElementById('sheet'), sm = sheet.querySelector('.m');
+  function closeSheet(){ stop(sm.firstChild); sheet.classList.remove('open'); sheet.setAttribute('aria-hidden','true'); }
+  sheet.querySelector('.bg').onclick = closeSheet; sheet.querySelector('.x').onclick = closeSheet;
+  grid.addEventListener('click', function(e){
+    var c = e.target.closest('.fc'); if (!c) return;
+    grid.classList.remove('wiggle');
+    if (mode === 'c') {
+      sm.innerHTML = ''; var el = media(c); el.style.objectPosition = '50% 50%'; el.style.transform = ''; el.style.objectFit = ''; el.style.webkitMaskImage = el.style.maskImage = ''; sm.appendChild(el);
+      sheet.querySelector('h3').textContent = c.querySelector('.fc-b h3').textContent;
+      sheet.querySelector('p').innerHTML = c.querySelector('.fc-b p').innerHTML;
+      sheet.classList.add('open'); sheet.setAttribute('aria-hidden','false'); play(el); return;
+    }
+    var on = c.classList.toggle('on');
+    if (mode === 'a') { var v = c.querySelector('.fc-b video'); on ? play(v) : stop(v); }
+  });
+  // front clips (B, C) play while on screen; nudge the first card once so the flip is obvious
+  if (io) {
+    var fo = new IntersectionObserver(function(es){ es.forEach(function(e){
+      var v = e.target.querySelector('.fc-f video'); if (!v) return; e.isIntersecting ? play(v) : stop(v);
+    }); }, {rootMargin:'80px'});
+    if (mode !== 'a') cards.forEach(function(c){ fo.observe(c); });
+    var go = new IntersectionObserver(function(es){ if (es[0].isIntersecting && mode !== 'c') { grid.classList.add('wiggle'); go.disconnect(); } }, {threshold:.5});
+    go.observe(grid);
+  } else if (mode !== 'a') cards.forEach(function(c){ play(c.querySelector('.fc-f video')); });
+
+  // ---- other clips, reveals, sticky bar, testimonials ----
+  document.querySelectorAll('.feat img, .feat video, .ceo img').forEach(function(m){
+    m.addEventListener('error', function(){ var c = m.closest('.feat'); if (c) c.remove(); else m.remove(); });
+  });
+  var vids = document.querySelectorAll('.feat video[data-src]');
+  if (io) {
+    var vo = new IntersectionObserver(function(es){ es.forEach(function(e){ e.isIntersecting ? play(e.target) : stop(e.target); }); }, {rootMargin:'120px'});
+    vids.forEach(function(v){ vo.observe(v); });
+    var ro = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('in'); ro.unobserve(e.target);} }); }, {threshold:.12});
+    document.querySelectorAll('.reveal').forEach(function(el){ ro.observe(el); });
+  } else {
+    vids.forEach(function(v){ v.src = v.dataset.src; v.autoplay = true; });
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+  var bar = document.getElementById('bar'), book = document.getElementById('book');
+  function onScroll(){
+    var y = window.scrollY, b = book.getBoundingClientRect().top;
+    bar.classList.toggle('show', y > 420 && b > window.innerHeight * 0.6);
+  }
+  window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  var rail = document.getElementById('rail'), dots = document.getElementById('dots'), n = rail.children.length;
+  for (var i=0;i<n;i++) dots.appendChild(document.createElement('i'));
+  function dot(){ var w = rail.children[0].offsetWidth + 12, k = Math.round(rail.scrollLeft / w);
+    [].forEach.call(dots.children, function(d,j){ d.classList.toggle('on', j===Math.min(k,n-1)); }); }
+  rail.addEventListener('scroll', dot, {passive:true}); dot();
+})();
+</script>
+</body>
+</html>
