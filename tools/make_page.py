@@ -294,7 +294,30 @@ PLUMBING_HTML = """<section class="reveal"><div class="wrap">
   </ul>
 </div></section>
 
+<section class="reveal"><div class="wrap">
+  <div class="eyebrow">Coming soon: Nuve Flow</div>
+  <h2>Shut off the main from anywhere.</h2>
+  <p>The <strong>Nuve Flow remote main water valve</strong> installs on the main line and comes in the same Home Protection Hub as the thermostat and leak sensors. When a sensor picks up a leak, the water can be shut off at the main remotely, before it turns into a flooded floor. Every install is plumbing work for {{SHORT}}, and every home it protects runs on your logo.</p>
+  <div class="flyer"><img loading="lazy" src="{{HUB}}" alt="Nuve Home Protection Hub with the {{SHORT}} logo: Nuve Flow valve, Sofia V2 thermostat and sensors"></div>
+  <ul class="checks">
+    <li><div>A plumbing install on every protection sale<span>The valve goes on the main, so the job lands with {{SHORT}}'s plumbers.</span></div></li>
+    <li><div>Leak caught, water off<span>The sensor flags it and the main can be shut off remotely before the damage spreads.</span></div></li>
+  </ul>
+</div></section>
+
 """
+
+HUB_C = (730, 829)                # logo center on the Sofia V2 face in assets/hub_base.jpg
+HUB_MAX = (112, 46)
+
+
+def make_hub(logo):
+    """Home Protection Hub (Nuve Flow valve + Sofia V2 + sensors, price removed) with the contractor logo on the stat face."""
+    base = Image.open(os.path.join(ROOT, 'assets', 'hub_base.jpg')).convert('RGB')
+    k = min(HUB_MAX[0] / logo.width, HUB_MAX[1] / logo.height)
+    L = logo.resize((max(1, round(logo.width * k)), max(1, round(logo.height * k))), Image.LANCZOS)
+    base.paste(L, (HUB_C[0] - L.width // 2, HUB_C[1] - L.height // 2), L)
+    return base
 
 SERVICETITAN_HTML = """<section class="band st-band reveal"><div class="wrap">
   <img class="st-logo" src="../assets/servicetitan.png" width="480" height="315" alt="ServiceTitan">
@@ -406,8 +429,13 @@ def main():
             fly = 'protect.jpg'
         else:
             fly = '../assets/protect_base.jpg'
+        if logo is not None:
+            make_hub(logo).save(os.path.join(out, 'hub.jpg'), quality=92)
+            hub = 'hub.jpg'
+        else:
+            hub = '../assets/hub_base.jpg'
         note = f'\n  <p class="fine">{html.escape(args.flyer_note)}</p>' if args.flyer_note else ''
-        extra.append(PLUMBING_HTML.replace('{{FLYER_NOTE}}', note).replace('{{SHORT}}', short).replace('{{FLYER}}', fly))
+        extra.append(PLUMBING_HTML.replace('{{FLYER_NOTE}}', note).replace('{{SHORT}}', short).replace('{{FLYER}}', fly).replace('{{HUB}}', hub))
     if args.servicetitan:
         st_line = ("If {{SHORT}} runs on ServiceTitan, Nuve connects to it, so your team doesn't learn a new process."
                    if args.st_unconfirmed else "{{SHORT}} runs on ServiceTitan, and Nuve connects to it, so your team doesn't learn a new process.")
