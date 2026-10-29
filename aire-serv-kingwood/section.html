@@ -1,102 +1,126 @@
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
-/* Aire Serv per-prospect sections: AE-deck look (deep teal, cyan, condensed caps) */
-.dk{background:radial-gradient(120% 70% at 85% 0%,#0f4a63 0%,rgba(15,74,99,0) 60%),linear-gradient(180deg,#06141f 0%,#082232 55%,#06141f 100%);color:#cfe3ee;border:0}
-.dk .eyebrow{color:var(--cyan)}.dk .eyebrow:before{background:var(--cyan)}
-.dk h2,.dk .dh{font-family:"Bebas Neue",Poppins,sans-serif;font-weight:400;letter-spacing:.02em;color:#42e8ff;line-height:.98}
-.dk h2{font-size:42px;margin-top:8px}
-.dk h2 em{font-style:normal;color:#fff}
-.dk p{color:#b7cbd8}
-.dk strong{color:#fff}
-.glow{background:rgba(66,232,255,.05);border:1.5px solid rgba(66,232,255,.55);border-radius:16px;box-shadow:0 0 22px -6px rgba(66,232,255,.45),inset 0 0 18px -10px rgba(66,232,255,.6)}
-/* team tabs */
-.tabs{display:flex;gap:8px;overflow-x:auto;margin:22px -20px 0;padding:2px 20px 6px;scrollbar-width:none}
-.tabs::-webkit-scrollbar{display:none}
-.tabs button{flex:none;border:1.5px solid rgba(66,232,255,.4);background:transparent;color:#cfe3ee;border-radius:999px;padding:9px 15px;font:600 13px Inter,sans-serif;cursor:pointer}
-.tabs button.on{background:#42e8ff;color:#06141f;border-color:#42e8ff}
-.pane{display:none;margin-top:16px;padding:20px 18px}
-.pane.on{display:block;animation:pin .35s ease}
-@keyframes pin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.pane .dh{font-size:30px}
-.pane .who{font:600 11px Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#82eeff}
-.pane ul{list-style:none;margin-top:12px;display:grid;gap:10px}
-.pane li{position:relative;padding-left:22px;font-size:14.5px;color:#cfe3ee}
-.pane li:before{content:"";position:absolute;left:2px;top:7px;width:9px;height:9px;border-radius:50%;background:#42e8ff;box-shadow:0 0 8px #42e8ff}
-.pane li b{color:#fff}
-.pane .shot{margin-top:16px;border-radius:12px;overflow:hidden;border:1px solid rgba(66,232,255,.3)}
-.pane .shot img,.pane .shot video{width:100%}
-.pane .vid{max-width:250px;margin:16px auto 0}
-.pane .go{display:inline-block;margin-top:14px;font:600 14px Inter,sans-serif;color:#42e8ff;text-decoration:none}
-.brands{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
-.brands a{display:block;text-align:center;padding:12px 6px;border-radius:12px;border:1px solid rgba(66,232,255,.3);text-decoration:none;background:rgba(255,255,255,.03)}
-.brands b{display:block;font-family:"Bebas Neue",sans-serif;font-weight:400;font-size:24px;color:#fff;letter-spacing:.04em}
-.brands span{font-size:11px;color:#82a3b5}
+/* Aire Serv per-prospect sections, light Nuve theme in Aire Serv colors */
+.tint{background:linear-gradient(180deg,#eef4ff 0%,#f7faff 100%);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.tint2{background:linear-gradient(180deg,#fdf2f2 0%,#fffafa 100%);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+.dh{font-family:Poppins,Inter,sans-serif;font-weight:700;color:var(--text);letter-spacing:-.01em;line-height:1.2}
+.lead{margin-top:4px}
+/* features as stacked sections */
+.fs{display:grid;gap:18px;margin-top:22px}
+.fs .feat{margin-top:0}
+.fs .feat .media.img{background:#0b0d12}
+.fs .feat .media.img img{object-fit:cover}
+.fs .feat:nth-child(even) .txt h3:before{background:var(--brand2)}
+#feats{display:none!important}
+/* roles, all open */
+.roles{display:grid;gap:14px;margin-top:20px}
+.role{padding:20px 18px;border-top:4px solid var(--brand)}
+.role:nth-child(even){border-top-color:var(--brand2)}
+.role .who{font:600 11px Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--brand-text)}
+.role:nth-child(even) .who{color:var(--brand2)}
+.role .dh{font-size:21px;margin-top:4px}
+.role ul{list-style:none;margin-top:12px;display:grid;gap:10px}
+.role li{position:relative;padding-left:20px;font-size:14.5px}
+.role li:before{content:"";position:absolute;left:2px;top:8px;width:8px;height:8px;border-radius:50%;background:var(--brand)}
+.role:nth-child(even) li:before{background:var(--brand2)}
+.role li b{color:var(--text)}
+.role .vid{max-width:250px;margin:16px auto 0;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+.role .vid video{width:100%}
+.role .go{display:inline-block;margin-top:14px;font:600 14px Inter,sans-serif;color:var(--brand2);text-decoration:none}
+.brands{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.brands a{display:block;text-align:center;padding:12px 6px;border-radius:12px;border:1px solid var(--line);text-decoration:none;background:var(--card2)}
+.brands b{display:block;font-family:Poppins,sans-serif;font-weight:700;font-size:18px;color:var(--text)}
+.brands span{font-size:11px;color:var(--muted)}
+.stbox{margin-top:16px;padding:14px;border-radius:12px;border:1px dashed rgba(var(--brand2-rgb),.5);background:rgba(var(--brand2-rgb),.05)}
+.sttag{display:inline-block;font:600 10.5px Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:var(--brand2);border-radius:999px;padding:4px 10px}
+.stbox p{font-size:13.5px;margin-top:8px}
+.stbox .vid{margin-top:12px}
+/* reporting */
+.rep{display:grid;gap:16px;margin-top:22px}
+.rep .card{overflow:hidden}
+.rep .shot{background:linear-gradient(160deg,#1c2a55,#5a63d8 70%,#7f8cf0);padding:16px 16px 0;display:flex;justify-content:center}
+.rep .shot img{width:100%;max-width:330px;border-radius:12px 12px 0 0;box-shadow:0 -6px 30px -10px rgba(0,0,0,.5)}
+.rep .txt{padding:18px}
+.rep .tag{display:inline-block;font:600 10.5px Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(var(--brand-rgb),.12);color:var(--brand-text)}
+.rep .card:nth-child(2) .tag{background:rgba(var(--brand2-rgb),.12);color:var(--brand2)}
+.rep h3{margin-top:8px;font-size:19px}
+.rep p{font-size:14.5px;margin-top:6px}
+.rep ul{list-style:none;margin-top:12px;display:grid;gap:8px}
+.rep li{position:relative;padding-left:20px;font-size:14px}
+.rep li:before{content:"";position:absolute;left:2px;top:8px;width:8px;height:8px;border-radius:50%;background:var(--brand)}
+.rep .card:nth-child(2) li:before{background:var(--brand2)}
+.rep li b{color:var(--text)}
+.mtiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:16px;background:linear-gradient(160deg,#5b7cfa,#49d3f2)}
+.mtiles div{background:#fff;border-radius:10px;padding:11px 12px;box-shadow:0 6px 16px -12px rgba(0,0,0,.5)}
+.mtiles small{display:block;font:600 9.5px Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.mtiles b{display:block;font:700 14px Poppins,sans-serif;color:var(--text);margin-top:3px}
+.mtiles svg{width:100%;height:22px;margin-top:6px}
 /* specs */
 .spec-hero{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:22px;text-align:center}
 .spec-hero div{padding:14px 6px 12px}
-.spec-hero small{display:block;font:600 10.5px Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#82eeff}
-.spec-hero b{display:block;font-family:"Bebas Neue",sans-serif;font-weight:400;font-size:28px;color:#fff;line-height:1;margin:4px 0}
-.spec-hero span{font-size:11.5px;color:#9db6c5;line-height:1.35;display:block}
-.spec-hero .star{border-color:#42e8ff;background:rgba(66,232,255,.12)}
-.cmp{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px}
-.cmp th{font:600 11px Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#82eeff;padding:8px 4px;text-align:center}
+.spec-hero small{display:block;font:600 10.5px Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.spec-hero b{display:block;font:700 19px Poppins,sans-serif;color:var(--text);line-height:1.1;margin:4px 0}
+.spec-hero span{font-size:11.5px;color:var(--muted);line-height:1.35;display:block}
+.spec-hero .star{border:1.5px solid var(--brand2);background:linear-gradient(180deg,rgba(var(--brand2-rgb),.10),#fff 75%)}
+.spec-hero .star small{color:var(--brand2)}
+.cmpw{margin-top:14px;padding:6px 12px 8px;overflow-x:auto}
+.cmp{width:100%;border-collapse:collapse;font-size:13px}
+.cmp th{font:600 11px Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:10px 4px;text-align:center}
+.cmp th:nth-child(3){color:var(--brand2)}
 .cmp th:first-child,.cmp td:first-child{text-align:left;padding-left:2px}
-.cmp td{padding:9px 4px;border-top:1px solid rgba(66,232,255,.14);text-align:center;color:#cfe3ee;vertical-align:middle}
-.cmp td:first-child{color:#fff;font-weight:500}
-.cmp td small{display:block;font-size:11px;color:#8aa5b5}
-.cmp .y{color:#42e8ff;font-weight:700;font-size:16px}
-.cmp .n{color:#56707f;font-size:15px}
-.cmp tr td:nth-child(3){background:rgba(66,232,255,.06)}
-.fine2{font-size:12px;color:#7f99a9;margin-top:10px}
+.cmp td{padding:9px 4px;border-top:1px solid var(--line);text-align:center;vertical-align:middle}
+.cmp td:first-child{color:var(--text);font-weight:500}
+.cmp td small{display:block;font-size:11px;color:var(--muted)}
+.cmp .y{color:var(--brand2);font-weight:700;font-size:16px}
+.cmp .n{color:#b5bfcc;font-size:15px}
+.cmp tr td:nth-child(3){background:rgba(var(--brand2-rgb),.06)}
+.fine2{font-size:12px;color:var(--muted);margin-top:10px}
 .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
-.chips span{font:500 12.5px Inter,sans-serif;padding:7px 11px;border-radius:999px;background:rgba(66,232,255,.08);border:1px solid rgba(66,232,255,.32);color:#dff6fb}
+.chips span{font:500 12.5px Inter,sans-serif;padding:7px 11px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--text)}
 .compat{display:grid;gap:10px;margin-top:16px}
-.compat div{padding:14px 15px}
-.compat b{display:block;color:#fff;font-size:15px}
+.compat div{padding:14px 15px;border-left:4px solid var(--brand2)}
+.compat b{display:block;color:var(--text);font-size:15px}
 .compat p{font-size:13.5px;margin-top:3px}
-.compat .warn{border-color:rgba(255,190,90,.6);box-shadow:none;background:rgba(255,190,90,.06)}
-.compat .warn b{color:#ffd28a}
+.compat .warn{border-left-color:#e3a33b;background:#fffaf0}
 .v2clip{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center;margin-top:18px;padding:12px}
 .v2clip video{border-radius:10px;width:120px;aspect-ratio:9/16;object-fit:cover;background:#000}
 .v2clip p{font-size:13.5px}
-/* water (light) */
+/* water */
 .wtr{display:grid;grid-template-columns:132px 1fr;gap:16px;align-items:center;margin-top:18px}
 .wtr video{border-radius:14px;width:132px;box-shadow:var(--shadow)}
 .wtr ul{list-style:none;display:grid;gap:8px}
 .wtr li{font-size:14px;padding-left:18px;position:relative}
 .wtr li:before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:50%;background:var(--brand)}
-.tip{margin-top:16px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--cyan);border-radius:12px;padding:14px 15px;font-size:13.5px;box-shadow:var(--shadow)}
+.tip{margin-top:16px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--brand2);border-radius:12px;padding:14px 15px;font-size:13.5px;box-shadow:var(--shadow)}
 .tip b{color:var(--text)}
 /* testimonial videos */
-.tv{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:20px -20px 0;padding:0 20px 8px;scrollbar-width:none}
+.tv{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:20px -20px 0;padding:0 20px 10px;scrollbar-width:none}
 .tv::-webkit-scrollbar{display:none}
 .tv figure{flex:0 0 62%;scroll-snap-align:center}
-.tv .frame{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:9/16;background:#000;border:1.5px solid rgba(66,232,255,.5);box-shadow:0 0 22px -8px rgba(66,232,255,.6)}
+.tv .frame{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:9/16;background:#000;border:1px solid var(--line);box-shadow:0 14px 30px -18px rgba(19,47,87,.55)}
 .tv video{width:100%;height:100%;object-fit:cover}
-.tv .play{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.55));border:0;cursor:pointer}
-.tv .play i{width:62px;height:62px;border-radius:50%;background:rgba(66,232,255,.92);display:grid;place-items:center;box-shadow:0 0 24px rgba(66,232,255,.8)}
-.tv .play i:after{content:"";margin-left:5px;border-left:18px solid #06141f;border-top:11px solid transparent;border-bottom:11px solid transparent}
+.tv .play{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.5));border:0;cursor:pointer}
+.tv .play i{width:62px;height:62px;border-radius:50%;background:rgba(255,255,255,.95);display:grid;place-items:center;box-shadow:0 6px 22px rgba(0,0,0,.35)}
+.tv .play i:after{content:"";margin-left:5px;border-left:18px solid var(--brand);border-top:11px solid transparent;border-bottom:11px solid transparent}
 .tv .playing .play{display:none}
 .tv figcaption{margin-top:9px}
-.tv figcaption b{display:block;color:#fff;font-size:14.5px}
-.tv figcaption span{font-size:12.5px;color:#8fb0c1}
+.tv figcaption b{display:block;color:var(--text);font-size:14.5px}
+.tv figcaption span{font-size:12.5px;color:var(--muted)}
 /* resources */
 .res{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
-.res a{display:flex;flex-direction:column;gap:6px;padding:15px 14px;min-height:118px;text-decoration:none;color:#cfe3ee;transition:transform .15s}
+.res a{display:flex;flex-direction:column;gap:6px;padding:15px 14px;min-height:118px;text-decoration:none;transition:transform .15s,box-shadow .15s}
+.res a:hover{transform:translateY(-2px)}
 .res a:active{transform:scale(.97)}
-.res .ic{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;background:rgba(66,232,255,.14);color:#42e8ff}
+.res .ic{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;background:rgba(var(--brand2-rgb),.12);color:var(--brand2)}
+.res a:nth-child(even) .ic{background:rgba(var(--brand-rgb),.12);color:var(--brand-text)}
 .res .ic svg{width:19px;height:19px}
-.res b{color:#fff;font-size:14.5px;line-height:1.25}
-.res span{font-size:12px;color:#8fb0c1;line-height:1.35}
-.res em{font-style:normal;margin-top:auto;font:600 12px Inter,sans-serif;color:#42e8ff}
+.res b{color:var(--text);font-size:14.5px;line-height:1.25}
+.res span{font-size:12px;color:var(--muted);line-height:1.35}
+.res em{font-style:normal;margin-top:auto;font:600 12px Inter,sans-serif;color:var(--brand2)}
 footer .guides{display:none}
 /* no booking on this page: Will sends his link by email */
 #book,#bar,.hero .ctas{display:none!important}
 body{padding-bottom:0}
-.stbox{margin-top:18px;padding:14px;border-radius:12px;border:1px dashed rgba(66,232,255,.45);background:rgba(66,232,255,.04)}
-.sttag{display:inline-block;font:600 10.5px Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#06141f;background:#82eeff;border-radius:999px;padding:4px 10px}
-.stbox p{font-size:13.5px;margin-top:8px}
-.stbox .vid{margin-top:12px}
 /* wider layout for presenting on a big screen */
 @media (min-width:900px){
   .wrap{max-width:1040px;padding:0 40px}
@@ -106,51 +130,88 @@ body{padding-bottom:0}
   .stat{width:min(34vw,380px)}
   .stats{max-width:1040px}
   h2{font-size:38px}
-  .dk h2{font-size:64px}
-  .fgrid{grid-template-columns:repeat(3,1fr);gap:18px}
-  .agenda{gap:14px}.agenda b{font-size:34px}.agenda span{font-size:13px}
-  .pane{padding:30px 34px}.pane .dh{font-size:44px}
-  .pane ul{grid-template-columns:1fr 1fr;gap:16px 28px}
-  .pane li{font-size:16px}
-  .stbox{display:grid;grid-template-columns:1fr 200px;gap:28px;align-items:center;padding:20px 24px}
-  .stbox p{font-size:16px}.stbox .vid{margin:0;max-width:200px}
-  .spec-hero b{font-size:40px}.spec-hero span{font-size:14px}
+  .fs{gap:26px}
+  .fs .feat{display:grid;grid-template-columns:1.15fr 1fr;align-items:center}
+  .fs .feat:nth-child(even) .media{order:2}
+  .fs .feat .media{height:100%;min-height:300px;aspect-ratio:auto}
+  .fs .feat .txt{padding:30px 34px}.fs .feat .txt h3{font-size:24px}.fs .feat .txt p{font-size:17px}
+  .roles{grid-template-columns:1fr 1fr;gap:20px}
+  .role{padding:28px 30px}.role .dh{font-size:26px}.role li{font-size:15.5px}
+  .stbox{display:grid;grid-template-columns:1fr 160px;gap:20px;align-items:center}
+  .stbox .vid{margin:0;max-width:160px}
+  .rep{grid-template-columns:1fr 1fr;gap:22px}
+  .rep h3{font-size:22px}.rep p,.rep li{font-size:15.5px}
+  .spec-hero b{font-size:26px}.spec-hero span{font-size:14px}
   .cmp{font-size:16px}.cmp th{font-size:13px}.cmp td{padding:13px 8px}
   .v2clip{grid-template-columns:160px 1fr}.v2clip video{width:160px}.v2clip p{font-size:16px}
   .chips span{font-size:14px}
   .compat{grid-template-columns:1fr 1fr}
   .wtr{grid-template-columns:200px 1fr;gap:32px}.wtr video{width:200px}.wtr li{font-size:16px}
   .tv{justify-content:center;overflow:visible;margin:28px 0 0;padding:0}
-  .tv figure{flex:0 0 320px}
+  .tv figure{flex:0 0 290px}
   .res{grid-template-columns:repeat(3,1fr);gap:16px}
   .res a{min-height:150px}
   .quote{flex:0 0 46%}
-  .feat{gap:28px}
 }
-.agenda{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:18px}
-.agenda button{padding:10px 3px;text-align:center;cursor:pointer;color:inherit;font:inherit;transition:background .2s,border-color .2s}
-.agenda button.on{background:#42e8ff;border-color:#42e8ff;box-shadow:0 0 20px -2px rgba(66,232,255,.7)}
-.agenda button.on b,.agenda button.on span{color:#06141f}
-.agenda b{display:block;font-family:"Bebas Neue",sans-serif;font-weight:400;font-size:24px;color:#fff;line-height:1}
-.agenda span{font-size:10.5px;color:#9db6c5;line-height:1.3;display:block;margin-top:3px}
 </style>
 
-<!-- 1. Whole team -->
-<section class="dk" id="team"><div class="wrap">
-  <div class="eyebrow">For the {{SHORT}} team training</div>
-  <h2>One stat.<br><em>Your whole team.</em></h2>
-  <p style="margin-top:10px">Scott's bringing everyone together next week, so here's what Nuve does for each seat at the table. Tap your role below.</p>
-  <div class="agenda" role="tablist">
-    <button class="glow on" data-p="p-own" type="button"><b>Owner</b><span>Revenue &amp; brand</span></button>
-    <button class="glow" data-p="p-ops" type="button"><b>Office</b><span>Dashboard &amp; messaging</span></button>
-    <button class="glow" data-p="p-csr" type="button"><b>CSRs</b><span>Booked calls</span></button>
-    <button class="glow" data-p="p-tech" type="button"><b>Techs</b><span>Specs &amp; install</span></button>
+<!-- 0. Video testimonials (moved up under the hero stats by script) -->
+<section class="tint" id="voices"><div class="wrap">
+  <div class="eyebrow">Real contractors, real stories</div>
+  <h2>Hear it from the shops using it.</h2>
+  <div class="tv">
+    <figure><div class="frame"><video playsinline preload="none" poster="t-rocket.jpg" src="t-rocket.mp4"></video><button class="play" type="button" aria-label="Play Rocket Group Holdings testimonial"><i></i></button></div>
+      <figcaption><b>Victor Rancour</b><span>CEO, Rocket Group Holdings</span></figcaption></figure>
+    <figure><div class="frame"><video playsinline preload="none" poster="t-sameday.jpg" src="t-sameday.mp4"></video><button class="play" type="button" aria-label="Play Same Day testimonial"><i></i></button></div>
+      <figcaption><b>Same Day Heating, Cooling &amp; Plumbing</b><span>San Diego, CA</span></figcaption></figure>
+    <figure><div class="frame"><video playsinline preload="none" poster="t-veterans.jpg" src="t-veterans.mp4"></video><button class="play" type="button" aria-label="Play Veterans AC testimonial"><i></i></button></div>
+      <figcaption><b>Veterans AC</b><span>Phoenix, AZ</span></figcaption></figure>
   </div>
-  <div class="pane glow on" id="p-own">
+</div></section>
+
+<!-- 1. Features as stacked sections (replaces the flip-card grid) -->
+<section class="band" id="feats2"><div class="wrap">
+  <div class="eyebrow">What your customers get</div>
+  <h2>Your business, always within reach.</h2>
+  <div class="fs">
+  <div class="feat reveal">
+    <div class="media img"><img loading="lazy" src="tap.jpg" alt="{{COMPANY}} logo on the Nuve thermostat screen"></div>
+    <div class="txt"><h3>Tap your logo to book service</h3><p>Your logo sits front and center on the screen. One tap and the homeowner is requesting service from you, or calling your team directly.</p></div>
+  </div>
+  <div class="feat reveal">
+    <div class="media"><video muted loop playsinline preload="none" poster="app.jpg" data-lazy="app.mp4" aria-label="{{{SHORT}}} branded app"></video></div>
+    <div class="txt"><h3>Your own branded app</h3><p>Customers download <strong>your</strong> app, not ours. Our design team builds it with your logo, so comfort, service and messaging all carry your name.</p></div>
+  </div>
+  <div class="feat reveal">
+    <div class="media"><video muted loop playsinline preload="none" poster="phone.jpg" data-lazy="phone.mp4" aria-label="Remote comfort control"></video></div>
+    <div class="txt"><h3>Comfort control from anywhere</h3><p>Remote temperature, schedules and vacation mode from the phone. A premium experience that makes your install the best one they've had.</p></div>
+  </div>
+  <div class="feat reveal">
+    <div class="media"><video muted loop playsinline preload="none" poster="alerts.jpg" data-lazy="alerts.mp4" aria-label="Alerts on the thermostat"></video></div>
+    <div class="txt"><h3>Alerts before the breakdown</h3><p>Real-time system alerts and maintenance reminders, sent to the homeowner and to you, so you're the first call, not the third quote.</p></div>
+  </div>
+  <div class="feat reveal">
+    <div class="media"><video muted loop playsinline preload="none" poster="remotediag.jpg" data-lazy="remotediag.mp4" aria-label="Remote diagnostics"></video></div>
+    <div class="txt"><h3>Remote diagnostics</h3><p>See system health and performance across your installed base. Spot aging equipment and replacement work before the phone rings.</p></div>
+  </div>
+  <div class="feat reveal">
+    <div class="media"><video muted loop playsinline preload="none" data-lazy="../assets/backlight.mp4" aria-label="Custom backlight"></video></div>
+    <div class="txt"><h3>Custom backlight</h3><p>Match the glow to your brand colors. It's a small detail homeowners notice and show off.</p></div>
+  </div>
+  </div>
+</div></section>
+
+<!-- 2. Every role -->
+<section class="tint" id="team"><div class="wrap">
+  <div class="eyebrow">Every role</div>
+  <h2>One stat. Your whole team.</h2>
+  <p class="lead">Here's what Nuve does for each seat at the table.</p>
+  <div class="roles">
+<div class="role" id="p-own">
     <div class="who">Owner &amp; leadership</div>
     <div class="dh">Own the wall, own the home.</div>
     <ul>
-      <li><b>Your brand in every home.</b> Any thermostat on the wall carries a brand. With Nest, that brand is Google. With Nuve, it's {{SHORT}}.</li>
+      <li><b>Your brand in every home.</b> Any thermostat on the wall carries a brand. With Nest, that brand is Google. With Nuve, it's {{{SHORT}}}.</li>
       <li><b>Stop rebuying your own customers.</b> One tap on your logo sends the service request to your team instead of Google.</li>
       <li><b>Your data.</b> You own your customer data and can export it from the dashboard anytime.</li>
       <li><b>Zero risk to the homeowner.</b> If you ever stop, their thermostat keeps working and still shows your logo.</li>
@@ -163,7 +224,7 @@ body{padding-bottom:0}
     </div>
   </div>
 
-  <div class="pane glow" id="p-ops">
+  <div class="role" id="p-ops">
     <div class="who">Office &amp; operations</div>
     <div class="dh">Your whole install base on one screen.</div>
     <ul>
@@ -174,7 +235,7 @@ body{padding-bottom:0}
     </ul>
   </div>
 
-  <div class="pane glow" id="p-csr">
+  <div class="role" id="p-csr">
     <div class="who">CSRs &amp; dispatch</div>
     <div class="dh">The phone rings for you, not the next ad.</div>
     <ul>
@@ -185,12 +246,12 @@ body{padding-bottom:0}
     </ul>
     <div class="stbox">
       <div class="sttxt"><div class="sttag">ServiceTitan users only</div>
-      <p>If {{SHORT}} runs on ServiceTitan, homeowners can book straight into your schedule from the thermostat. No phone tag, no call center.</p></div>
+      <p>If {{{SHORT}}} runs on ServiceTitan, homeowners can book straight into your schedule from the thermostat. No phone tag, no call center.</p></div>
       <div class="vid shot"><video muted loop playsinline preload="none" poster="sched.jpg" data-lazy="sched.mp4" aria-label="ServiceTitan users: homeowner booking service from the thermostat"></video></div>
     </div>
   </div>
 
-  <div class="pane glow" id="p-tech">
+  <div class="role" id="p-tech">
     <div class="who">Technicians</div>
     <div class="dh">Built to install like any 24V stat.</div>
     <ul>
@@ -201,17 +262,53 @@ body{padding-bottom:0}
     </ul>
     <a class="go" href="#specs">Full specs &amp; model comparison ↓</a>
   </div>
+  </div>
 </div></section>
 
-<!-- 2. Specs -->
-<section class="dk" id="specs" style="border-top:1px solid rgba(66,232,255,.15)"><div class="wrap">
-  <div class="eyebrow">For the techs</div>
-  <h2>Three stats.<br><em>Pick the right one for the job.</em></h2>
-  <div class="spec-hero">
-    <div class="glow"><small>Version 1</small><b>Sofia V1</b><span>The proven essentials</span></div>
-    <div class="glow star"><small>Version 2</small><b>Sofia AI</b><span>Flagship: CO, voice, radar</span></div>
-    <div class="glow"><small>Version 3</small><b>Sofia Pro</b><span>Lean, simple installs</span></div>
+<!-- 3. Reporting -->
+<section class="band reveal" id="reports"><div class="wrap">
+  <div class="eyebrow">Reporting</div>
+  <h2>Reports that turn data into booked calls.</h2>
+  <div class="rep">
+    <div class="card">
+      <div class="shot"><img loading="lazy" src="ai-report.jpg" alt="Sample Nuve AI system health report: priority 96, service needed"></div>
+      <div class="txt"><span class="tag">Nuve AI</span><h3>System health reports</h3>
+        <p>Nuve AI reads each system's runtime, comfort, humidity and air quality and writes it up in plain English, with a priority score.</p>
+        <ul>
+          <li><b>For the homeowner:</b> a clear "Service Needed" report with your logo on it, so the call comes to {{SHORT}}.</li>
+          <li><b>For your techs:</b> the detail behind it (runtime %, setpoint gap, dew point, system age and stages) plus a Now / Soon / Monitor checklist before they roll a truck.</li>
+          <li><b>For the office:</b> high-priority systems rise to the top, so you know who to call first.</li>
+        </ul></div>
+    </div>
+    <div class="card">
+      <div class="mtiles">
+        <div><small>Logo clicks</small><b>On the stat</b><svg viewBox="0 0 100 22" preserveAspectRatio="none"><path d="M0 16 C12 8,20 18,32 12 S52 4,64 11 S86 6,100 3" fill="none" stroke="#296dff" stroke-width="2"/></svg></div>
+        <div><small>QR scans</small><b>To your site</b><svg viewBox="0 0 100 22" preserveAspectRatio="none"><path d="M0 16 C12 8,20 18,32 12 S52 4,64 11 S86 6,100 3" fill="none" stroke="#dd4a50" stroke-width="2"/></svg></div>
+        <div><small>Tech requests</small><b>From the app</b><svg viewBox="0 0 100 22" preserveAspectRatio="none"><path d="M0 16 C12 8,20 18,32 12 S52 4,64 11 S86 6,100 3" fill="none" stroke="#dd4a50" stroke-width="2"/></svg></div>
+        <div><small>Calls &amp; texts</small><b>To your team</b><svg viewBox="0 0 100 22" preserveAspectRatio="none"><path d="M0 16 C12 8,20 18,32 12 S52 4,64 11 S86 6,100 3" fill="none" stroke="#296dff" stroke-width="2"/></svg></div>
+      </div>
+      <div class="txt"><span class="tag">Every month</span><h3>Engagement report</h3>
+        <p>A monthly report on how your customers use your brand on the wall and in the app, and what it turns into.</p>
+        <ul>
+          <li><b>Thermostat engagement:</b> logo taps and QR scans, with your most-engaged homes listed.</li>
+          <li><b>App engagement:</b> app installs, website visits, technician requests, calls and texts.</li>
+          <li><b>Conversions and calls:</b> how many taps became a request or a call, and which calls were answered or missed, so your team can call back.</li>
+          <li><b>Trends:</b> week by week and against last month.</li>
+        </ul></div>
+    </div>
   </div>
+</div></section>
+
+<!-- 4. Specs -->
+<section class="reveal" id="specs"><div class="wrap">
+  <div class="eyebrow">Tech specs</div>
+  <h2>Three stats. Pick the right one for the job.</h2>
+  <div class="spec-hero">
+    <div class="card"><small>Version 1</small><b>Sofia V1</b><span>The proven essentials</span></div>
+    <div class="card star"><small>Version 2</small><b>Sofia AI</b><span>Flagship: CO, voice, radar</span></div>
+    <div class="card"><small>Version 3</small><b>Sofia Pro</b><span>Lean, simple installs</span></div>
+  </div>
+  <div class="card cmpw">
   <table class="cmp">
     <thead><tr><th></th><th>V1</th><th>V2 AI</th><th>V3 Pro</th></tr></thead>
     <tbody>
@@ -231,8 +328,9 @@ body{padding-bottom:0}
     </tbody>
   </table>
   <p class="fine2">Sofia Pro: Google Home and Apple Home coming soon. A dash means the feature isn't listed for that model.</p>
+  </div>
 
-  <div class="v2clip glow">
+  <div class="v2clip card">
     <video muted loop playsinline preload="none" poster="sofia.jpg" data-lazy="sofia.mp4" aria-label="Sofia AI V2 thermostat"></video>
     <p><strong>Sofia AI (V2)</strong> is what most partners put on the wall: round screen, built-in CO detection, mics and speaker, radar wake, and it pairs with our wireless water and temp/humidity sensors.</p>
   </div>
@@ -242,63 +340,44 @@ body{padding-bottom:0}
     <span>24V conventional</span><span>Heat pumps + aux / emergency heat</span><span>Dual fuel</span><span>Cool only</span><span>Heat only (1–3 stages)</span><span>Furnaces &amp; boilers</span><span>24V zoning</span><span>Humidifier / dehumidifier / ventilator</span>
   </div>
   <div class="compat">
-    <div class="glow"><b>Dual fuel, done right</b><p>Balance point is built into the settings, using local weather data by zip code.</p></div>
-    <div class="glow"><b>C-Wire Adapter (CWA)</b><p>Creates a C wire from the Y and G wires. Not for dual-transformer or heat-only systems. A spare wire at the stat can often be used as C instead.</p></div>
-    <div class="glow"><b>Power</b><p>24V AC, up to 2A output. Not for line-voltage (110/120V) or millivolt systems.</p></div>
-    <div class="glow warn"><b>Straight answer: communicating systems</b><p>Nuve doesn't run proprietary communicating equipment yet. Most of your base is conventional 24V, and that's where Nuve goes.</p></div>
+    <div class="card"><b>Dual fuel, done right</b><p>Balance point is built into the settings, using local weather data by zip code.</p></div>
+    <div class="card"><b>C-Wire Adapter (CWA)</b><p>Creates a C wire from the Y and G wires. Not for dual-transformer or heat-only systems. A spare wire at the stat can often be used as C instead.</p></div>
+    <div class="card"><b>Power</b><p>24V AC, up to 2A output. Not for line-voltage (110/120V) or millivolt systems.</p></div>
+    <div class="card warn"><b>Straight answer: communicating systems</b><p>Nuve doesn't run proprietary communicating equipment yet. Most of your base is conventional 24V, and that's where Nuve goes.</p></div>
   </div>
 </div></section>
 
 <!-- 3. Water sensors (light touch) -->
-<section class="reveal"><div class="wrap">
-  <div class="eyebrow">Add-on for {{SHORT}}</div>
+<section class="tint2 reveal"><div class="wrap">
+  <div class="eyebrow">Add-on for {{{SHORT}}}</div>
   <h2>Catch the leak before the callback.</h2>
   <div class="wtr">
     <video muted loop playsinline preload="none" poster="water.jpg" data-lazy="water.mp4" aria-label="Nuve wireless water sensor"></video>
     <ul>
       <li>Wireless water sensors at the drain pan, water heater and under sinks</li>
-      <li>A leak flashes an alert on the stat telling the homeowner to call {{SHORT}}, and your team gets it too</li>
+      <li>A leak flashes an alert on the stat telling the homeowner to call {{{SHORT}}}, and your team gets it too</li>
       <li>Temp / humidity sensors even out hot rooms, which matters in Houston humidity</li>
     </ul>
   </div>
   <div class="tip"><b>Tech tip on placement:</b> put temp/humidity sensors in bedrooms and living areas, about 5 ft up on an interior wall, within 50 ft of the stat. Keep them out of direct sun, kitchens and bathrooms, and away from exterior walls and vents.</div>
 </div></section>
 
-<!-- 4. Video testimonials -->
-<section class="dk"><div class="wrap">
-  <div class="eyebrow">Real contractors, real stories</div>
-  <h2>Hear it from<br><em>the shops using it.</em></h2>
-  <div class="tv">
-    <figure><div class="frame"><video playsinline preload="none" poster="t-sameday.jpg" src="t-sameday.mp4"></video><button class="play" type="button" aria-label="Play Same Day testimonial"><i></i></button></div>
-      <figcaption><b>Same Day Heating, Cooling &amp; Plumbing</b><span>San Diego, CA</span></figcaption></figure>
-    <figure><div class="frame"><video playsinline preload="none" poster="t-veterans.jpg" src="t-veterans.mp4"></video><button class="play" type="button" aria-label="Play Veterans AC testimonial"><i></i></button></div>
-      <figcaption><b>Veterans AC</b><span>Phoenix, AZ</span></figcaption></figure>
-  </div>
-</div></section>
-
-<!-- 5. Resources (moved above the footer by script) -->
-<section class="dk" id="resources"><div class="wrap">
-  <div class="eyebrow">For the techs to check out</div>
-  <h2>Tech <em>resources.</em></h2>
+<!-- 6. Resources (moved above the footer by script) -->
+<section class="band" id="resources"><div class="wrap">
+  <div class="eyebrow">Tech resources</div>
+  <h2>Guides to check out.</h2>
   <div class="res">
-    <a class="glow" href="nuve-install-guide-2026.pdf" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg></span><b>Install guide</b><span>Wiring diagrams, setup, thresholds (April 2026)</span><em>Open PDF ↗</em></a>
-    <a class="glow" href="https://www.nuvehome.com/wp-content/uploads/2025/07/Nuve-CWA-Installation-Guide.pdf" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></span><b>C-Wire Adapter guide</b><span>For homes short a wire</span><em>Open PDF ↗</em></a>
-    <a class="glow" href="https://howto.nuvehome.com/" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z"/></svg></span><b>How-to videos</b><span>Install and setup walkthroughs</span><em>Watch ↗</em></a>
-    <a class="glow" href="https://www.nuvehome.com/installation-process/" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-.5-.5-2.5z"/></svg></span><b>Installation process</b><span>Step by step on the wall</span><em>Open ↗</em></a>
-    <a class="glow" href="https://www.nuvehome.com/wp-content/uploads/2025/07/Nuve-Thermostat-User-Guide-07_05_2025.docx.pdf" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg></span><b>Homeowner user guide</b><span>What your customers see</span><em>Open PDF ↗</em></a>
-    <a class="glow" href="https://get.nuvehome.com/" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span><b>Nuve overview</b><span>The quick tour for the office</span><em>Open ↗</em></a>
+    <a class="card" href="nuve-install-guide-2026.pdf" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg></span><b>Install guide</b><span>Wiring diagrams, setup, thresholds (April 2026)</span><em>Open PDF ↗</em></a>
+    <a class="card" href="https://www.nuvehome.com/wp-content/uploads/2025/07/Nuve-CWA-Installation-Guide.pdf" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></span><b>C-Wire Adapter guide</b><span>For homes short a wire</span><em>Open PDF ↗</em></a>
+    <a class="card" href="https://howto.nuvehome.com/" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z"/></svg></span><b>How-to videos</b><span>Install and setup walkthroughs</span><em>Watch ↗</em></a>
+    <a class="card" href="https://www.nuvehome.com/installation-process/" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-.5-.5-2.5z"/></svg></span><b>Installation process</b><span>Step by step on the wall</span><em>Open ↗</em></a>
+    <a class="card" href="https://www.nuvehome.com/wp-content/uploads/2025/07/Nuve-Thermostat-User-Guide-07_05_2025.docx.pdf" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg></span><b>Homeowner user guide</b><span>What your customers see</span><em>Open PDF ↗</em></a>
+    <a class="card" href="https://get.nuvehome.com/" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span><b>Nuve overview</b><span>The quick tour for the office</span><em>Open ↗</em></a>
   </div>
 </div></section>
 
 <script>
 (function(){
-  // role tabs
-  var tabs=document.querySelectorAll('#team .agenda button');
-  tabs.forEach(function(b){b.addEventListener('click',function(){
-    tabs.forEach(function(x){x.classList.toggle('on',x===b)});
-    document.querySelectorAll('#team .pane').forEach(function(p){p.classList.toggle('on',p.id===b.dataset.p)});
-    var v=document.querySelector('#'+b.dataset.p+' video[data-lazy]');if(v)load(v);
-  })});
   // lazy, muted loop clips
   function load(v){if(!v.src){v.src=v.dataset.lazy}var p=v.play();if(p&&p.catch)p.catch(function(){})}
   var lz=document.querySelectorAll('video[data-lazy]');
@@ -315,8 +394,14 @@ body{padding-bottom:0}
     });
     v.addEventListener('ended',function(){f.classList.remove('playing');v.controls=false});
   });
-  // resources sit right above the footer
-  function mv(){var r=document.getElementById('resources'),ft=document.querySelector('footer');if(r&&ft)ft.parentNode.insertBefore(r,ft)}
+  function mv(){
+    // testimonials right under the hero stats; stacked features where the flip grid was; resources above the footer
+    var st=document.querySelector('.stats'),vo=document.getElementById('voices');
+    if(st&&vo){var w=st.closest('.wrap');w.parentNode.insertBefore(vo,w.nextSibling)}
+    var fo=document.getElementById('feats'),f2=document.getElementById('feats2');
+    if(fo&&f2)fo.parentNode.insertBefore(f2,fo);
+    var r=document.getElementById('resources'),ft=document.querySelector('footer');if(r&&ft)ft.parentNode.insertBefore(r,ft);
+  }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mv);else mv();
 })();
 </script>
